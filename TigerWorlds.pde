@@ -55,6 +55,8 @@ float healthT = 120;
 int fstage = 0;
 PImage back;
 int bCounter = 0;
+PImage cena;
+float healthTo, healthBo;
 // Page 7
 // Page 8
 
@@ -1537,28 +1539,35 @@ void spaceship5(float x, float y) {
 void setup6() {
   buzz = loadImage("buzz.png");
   back = loadImage("back.png");
+  cena = loadImage("cena.png");
 }
 void draw6() {
   battle();
 }
-void mouse6() {
-  if (anim == 6) {
-    if (bCounter>= 60 || bCounter==0 ) {
+void mouse6() {if (bCounter>= 60 || bCounter==0 ) {
       if (310< mouseX && 440>mouseX && 480<mouseY && 535> mouseY) {
         fstage=1;
         bCounter = 0;
+        healthBo=healthB;
+        healthTo=healthT;
       }
       if (310< mouseX && 440>mouseX && 540<mouseY && 595> mouseY) {
         fstage=2;
         bCounter = 0;
+        healthBo=healthB;
+        healthTo=healthT;
       }
       if ( 445 < mouseX && 575>mouseX && 480<mouseY &&535 >mouseY) {
         fstage=3;
         bCounter = 0;
+        healthBo=healthB;
+        healthTo=healthT;
       }
       if (  445 < mouseX && 575>mouseX && 540<mouseY &&595 >mouseY) {
         fstage=4;
         bCounter = 0;
+        healthBo=healthB;
+        healthTo=healthT;
       }
     }
     if (healthT<=0) {
@@ -1568,12 +1577,13 @@ void mouse6() {
       bCounter=0;
     }
     if (healthB<=0) {
-      anim=7;
+      anim++;
+      setup();
     }
-  }
+  
 }
 void battle() {
-  if (healthB<=0) {
+ if (healthB<=0) {
     fill(255);
     rect(0, 0, width, height);
     textSize(70);
@@ -1668,7 +1678,7 @@ void battle() {
         rect(310, 480, 130, 55, PI);
         fill(0);
         textSize(18);
-        text("Caddy-Smack", 315, 510);
+        text("Body-Slam", 320, 510);
 
         //mulligan
         if ( 310< mouseX && 440>mouseX && 540<mouseY && 595> mouseY) {
@@ -1679,9 +1689,9 @@ void battle() {
         rect(310, 540, 130, 55, PI);
         fill(0);
         textSize(18);
-        text("Mulligan", 335, 570);
+        text("Heal", 355, 570);
 
-        //wedge
+        //give up
         if ( 445 < mouseX && 575>mouseX && 480<mouseY &&535 >mouseY) {
           fill(243, 243, 32);
         } else {
@@ -1703,6 +1713,12 @@ void battle() {
         textSize(18);
         text("chop", 475, 570);
       }
+      if (fstage!=10) {
+        buzz(450, 200, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+      }
+      if (fstage==0|| fstage==10) {
+        tiger(137, 373, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+      }
       if (fstage == 1) {
         bCounter++;
         if (bCounter <120) {
@@ -1714,8 +1730,16 @@ void battle() {
           rect(20, 490, 530, 90, PI);
           fill(0);
           textSize(40);
-          text("Tiger used Caddy-Smack!", 30, 550);
-          healthB-=.25;
+          text("Tiger used Body-Slam!", 30, 550);
+          tiger(137, 373, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+          image(cena, 200, -400+bCounter*4);
+          if (bCounter > 80) {
+            if (healthBo-100<0) {
+              healthB-= healthBo/35;
+            } else {
+              healthB-=100/40;
+            }
+          }
         } else {
           fstage = 0;
         }
@@ -1723,6 +1747,9 @@ void battle() {
       if (fstage == 2) {
         bCounter++;
         if (bCounter <120) {
+          tiger(137, 373, .5, 1+bCounter, 1+bCounter*.5, 1-bCounter, 1-bCounter*.5, 1, 1, 1, 1, 1, 1);
+          fill(0, 255, 0, 100);
+          
           fill(255, 221, 23);
           rect(10, 480, 550, 110, PI);
           fill(95, 93, 80);
@@ -1731,7 +1758,7 @@ void battle() {
           rect(20, 490, 530, 90, PI);
           fill(0);
           textSize(40);
-          text("Tiger used Mulligan!", 30, 550);
+          text("Tiger used Heal!", 30, 550);
           if (healthT<120) {
             healthT+=.25;
           }
@@ -1742,6 +1769,7 @@ void battle() {
       if (fstage == 3) {
         bCounter++;
         if (bCounter <120) {
+          tiger(137, 373, .5, 1, 1, 1-bCounter*2, 1-bCounter, 1, 1, 1, 1, 1-bCounter, 1);
           fill(255, 221, 23);
           rect(10, 480, 550, 110, PI);
           fill(95, 93, 80);
@@ -1751,7 +1779,11 @@ void battle() {
           fill(0);
           textSize(40);
           text("Tiger used GIVE UP!", 30, 550);
-          healthT-=1;
+          if (healthTo-119<0) {
+            healthT-= healthTo/110;
+          } else {
+            healthT-=1.1;
+          }
         } else {
           fstage = 0;
         }
@@ -1759,6 +1791,7 @@ void battle() {
       if (fstage == 4) {
         bCounter++;
         if (bCounter <120) {
+          tiger(137+bCounter*2, 373-bCounter*1.25, .5, 1, 1, 1-bCounter/2, 1-bCounter, 1, 1, 1, 1, 1, 1);
           fill(255, 221, 23);
           rect(10, 480, 550, 110, PI);
           fill(95, 93, 80);
@@ -1768,16 +1801,37 @@ void battle() {
           fill(0);
           textSize(40);
           text("Tiger used chop!", 30, 550);
-          healthB-=1;
+          if (bCounter>100) {
+            pushMatrix();
+            translate(450, 100);
+            stroke(0);
+            fill(255, 0, 0);
+            beginShape();
+            vertex(50, 0);
+            vertex(40, 10);
+            vertex(20, 40);
+            vertex(-10, 50);
+            vertex(-30, 20);
+            vertex(-40, 5);
+            vertex(-60, 0);
+            vertex(-50, -10);
+            vertex(-20, -40);
+            vertex(0, -50);
+            vertex(10, -40);
+            vertex(30, -20);
+            vertex(50, 0);
+            endShape();
+            popMatrix();
+          }
+          if (healthBo-60<0) {
+            healthB-= healthBo/110;
+          } else {
+            healthB-=.5;
+          }
         } else {
           fstage = 0;
         }
       }
-      //buzz
-      buzz6(450, 200, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
-
-      //tiger
-      tiger6(137, 373, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
     }
   }
 }
