@@ -1071,7 +1071,11 @@ void setup4() {
   rx = 300;
   ry = 500;
   rvx = rvy = 0;
-  frameRate(60);
+  isGameOver = false;
+  shield = 100;
+  asteroids.clear();
+  pickups.clear();
+  bullets.clear();
 
   for (int i = 0; i < 120; i++) {
     stars.add(new Star((int)random(0, width), (int)random(0, height)));
@@ -1083,7 +1087,7 @@ void draw4() {
   Rocket roc = new Rocket((int)rx, (int)ry, 0.6);
 
   if (!isGameOver) {
-    if (tAlive < 10000) { // ~~~~~~~~~~~~~~~~~~PLACEHOLDER
+    if (tAlive < 5000) { // ~~~~~~~~~~~~~~~~~~PLACEHOLDER
       tDead = 0;
       background(12, 34, 56);
 
@@ -1223,6 +1227,7 @@ void draw4() {
     if (tDead > 40) {
       fill(255);
       background(255);
+      
     }
 
     fill(0);

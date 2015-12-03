@@ -2,7 +2,7 @@ class Rocket extends Object {
   float size;
   int radius = 125;
   int shieldOp = 100;
-  
+
   Rocket(float xPos, float yPos, float s) {
     super(xPos, yPos, 125);
     this.size = s;
@@ -61,6 +61,12 @@ class Rocket extends Object {
     line(-55, 60, 55, 60);
 
     //window
+    pushMatrix();
+    translate(0, -2);
+    scale(.25);
+    translate(-60, -70);
+    image(face, 0, 0);
+    popMatrix();
     fill(220, 210, 220, 100);
     ellipse(0, 0, 50, 50);
 
@@ -119,7 +125,7 @@ class Rocket extends Object {
     rect(-80, -50, 30, 90);
     rect(50, -50, 30, 90);
     popMatrix();
-    
+
     //BOUNDING FOR ROCKET
     if (x < 120) {
       rx = 120;
