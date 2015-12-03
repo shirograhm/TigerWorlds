@@ -30,6 +30,7 @@ float bS;
 float rx, ry, rvx, rvy;
 float counter3;
 // Page 4
+int count4 = 0;
 
 ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
 ArrayList<Star> stars = new ArrayList<Star>();
@@ -948,6 +949,7 @@ void draw3() {
   counter3++;
   if (counter3 > 240) {
     anim++;
+    setup();
   }
 }
 void spaceship(float x, float y) {
@@ -1071,7 +1073,7 @@ void setup4() {
   rvx = rvy = 0;
   frameRate(60);
 
-  for (int i = 0; i < 45; i++) {
+  for (int i = 0; i < 120; i++) {
     stars.add(new Star((int)random(0, width), (int)random(0, height)));
   }
 }
@@ -1248,7 +1250,6 @@ void draw4() {
     fill(0);
     textSize(20);
     text("YOU WIN", random(100, 300), random(100, 300));
-    int count4 = 0;
     count4++;
     if (count4 > 20) {
       anim++;
