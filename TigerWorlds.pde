@@ -34,6 +34,7 @@ float counter3;
 ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
 ArrayList<Star> stars = new ArrayList<Star>();
 ArrayList<Bullet> bullets = new ArrayList<Bullet>();
+ArrayList<Pickup> pickups = new ArrayList<Pickup>();
 
 boolean isGameOver = false;
 boolean isGameComplete = false;
@@ -55,6 +56,7 @@ PImage back;
 int bCounter = 0;
 // Page 7
 // Page 8
+
 void setup() {
   size(600, 600);
   if (anim == 0) {
@@ -100,11 +102,11 @@ void draw() {
 
 void mousePressed() {
   /*anim++;
-  setup();
-  if (anim > 6) {
-    anim = 0;
-    setup();
-  } */
+   setup();
+   if (anim > 6) {
+   anim = 0;
+   setup();
+   } */
   if (anim == 6) {
     mouse6();
   }
@@ -884,11 +886,13 @@ void moon3(float cx, float cy, float s) {
   arc(-6, -19, 15, 15, .8*PI, 2*PI);
   popMatrix();
 }
+
 void keyp1() {
   if (keyCode == 32) {
     power=true;
   }
 }
+
 void keyr1() {
   if (keyCode == 32) {
     power=false;   
@@ -901,9 +905,8 @@ void keyr1() {
     }
   }
 }
+
 void drawCloud(float tx, float ty, float scaleF) {
-
-
   pushMatrix();
 
   noStroke();
@@ -1063,7 +1066,7 @@ void spaceship(float x, float y) {
 
 // Page 4
 void setup4() {
-    rx = 300;
+  rx = 300;
   ry = 500;
   rvx = rvy = 0;
   frameRate(60);
@@ -1072,12 +1075,13 @@ void setup4() {
     stars.add(new Star((int)random(0, width), (int)random(0, height)));
   }
 }
+
 void draw4() {
   tAlive++;
   Rocket roc = new Rocket((int)rx, (int)ry, 0.6);
 
   if (!isGameOver) {
-    if (tAlive < 10000) {
+    if (tAlive < 10000) { // ~~~~~~~~~~~~~~~~~~PLACEHOLDER
       tDead = 0;
       background(12, 34, 56);
 
@@ -1087,12 +1091,26 @@ void draw4() {
       }
 
       //health bar
-      fill(255);
-      rect(13, 297, 13, 283);
-      text("Shield Strength", 5, height - 5);
-      noStroke();
+      fill(0);
+      textSize(14);
+      rect(13, 278, 13, 304);
       fill(100, 255, 0);
-      rect(15, 300 - ((shield - 100) * 3), 10, shield * 2.77);
+      text("Shield Strength: " + shield, 5, height - 5);
+      noStroke();
+
+      if (shield <= 20) {
+        fill(255, 100, 0);
+      } else if (shield < 50 && shield > 20) {
+        fill(240, 240, 0);
+      } else {
+        fill(100, 255, 0);
+      }
+      rect(15, 280 - (shield - 100) * 3, 10, shield * 3);
+      if (shield > 100) {
+        int sh = shield - 100;
+        fill(160);
+        rect(15, 280 - sh * 3, 10, sh * 3);
+      }
       stroke(1);
       fill(255);
 
@@ -1106,15 +1124,25 @@ void draw4() {
         }
       }
 
+      for (int q = 0; q < pickups.size(); q++) {
+        Pickup p = pickups.get(q);
+
+        p.drawPickup();
+        p.y = p.y + rate;
+        if (p.y < 0) {
+          pickups.remove(p);
+        }
+      }
+
       roc.drawRocket();
       rx += rvx;
       ry += rvy;
 
-      if (random(0, 100) < 10) {
+      if (random(0, 100) < 40) {
         stars.add(new Star((int)random(0, width), 0));
       }
-      if (random(0, 100) < tAlive / 100) {
-        asteroids.add(new Asteroid((int)random(30, width - 30), 0, (int)random(0, 3), random(0, 2 * PI), (int)random(3)));
+      if (random(0, 100) < 10 + tAlive / 1000) {
+        asteroids.add(new Asteroid((int)random(60, width - 60), 0, random(1, 3), random(0, 2 * PI), (int)random(3)));
       }
       if (asteroids != null) {
         for (int i = 0; i < asteroids.size(); i++) {
@@ -1122,8 +1150,8 @@ void draw4() {
 
           a.drawAst();
 
-          if (a.y < height) {
-            a.y = a.y + rate;
+          if (a.y < height + 25) {
+            a.y += 5 / a.size;
           } else {
             asteroids.remove(a);
           }
@@ -1131,21 +1159,48 @@ void draw4() {
           if (a.doesCollide(roc)) {
             if (shield > 0) {
               shield -= a.size;
+              roc.shieldOp = 80;
               asteroids.remove(a);
             } else {
               isGameOver = true;
             }
           }
 
-
           for (Bullet b : bullets) {
             if (abs(b.x - a.x) < b.rad + 5 && abs(b.y - a.y) < b.rad + 5) {
               asteroids.remove(a);
-              bullets.remove(b);
-              if(shield < 99) {
-              shield += 1;
+              if (b.id == 0) {
+                bullets.remove(b);
+              }
+
+              //drop pickup health or antihealth
+              if (random(100) <= 10) {
+                pickups.add(new Pickup(a.x, a.y, (int)random(1, 3)));
               }
               break;
+            }
+          }
+        }
+        for (int w = 0; w < pickups.size(); w++) {
+          Pickup p = pickups.get(w);
+
+          if (p.doesCollide(roc)) {
+            if (p.id == 1) {
+              if (shield < 100) {
+                shield += 30;
+              }
+
+              pickups.remove(p);
+            } 
+
+            if (p.id == 2) {
+              if (shield > 30) {
+                shield -= 30;
+              } else {
+                isGameOver = true;
+              }
+
+              pickups.remove(p);
             }
           }
         }
@@ -1193,7 +1248,7 @@ void draw4() {
     fill(0);
     textSize(20);
     text("YOU WIN", random(100, 300), random(100, 300));
-    int count4=0;
+    int count4 = 0;
     count4++;
     if (count4 > 20) {
       anim++;
@@ -1201,6 +1256,7 @@ void draw4() {
     }
   }
 }
+
 void keyp4() {
   if (key == CODED) {
     if (keyCode == LEFT) {
@@ -1217,8 +1273,13 @@ void keyp4() {
     }
   }
   if (keyCode == 32) {
-    bullets.add(new Bullet((int)rx + 45, 10));
-    bullets.add(new Bullet((int)rx - 45, 10));
+    if (shield <= 100) {
+      bullets.add(new Bullet((int)rx + 45, 10, 0));
+      bullets.add(new Bullet((int)rx - 45, 10, 0));
+    } else {
+      bullets.add(new Bullet((int)rx + 45, 10, 1));
+      bullets.add(new Bullet((int)rx - 45, 10, 1));
+    }
   }
 }
 void keyr4() {
@@ -1245,6 +1306,7 @@ void keyr4() {
     }
   }
 }
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~STATIC~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 void staticScreen() {
   imgStatic = createImage(width, height, RGB);
@@ -1257,6 +1319,7 @@ void staticScreen() {
   }
   image(imgStatic, 0, 0);
 }
+
 // Page 5
 void setup5() {
   background(12, 34, 56);
@@ -1304,6 +1367,7 @@ void draw5() {
     setup();
   }
 }
+
 void moon(float cx, float cy, float s) {
   pushMatrix();
   translate(cx, cy);
@@ -1497,20 +1561,20 @@ void mouse6() {
       fstage=0;
       bCounter=0;
     }
-    if(healthB<=0){
+    if (healthB<=0) {
       anim=7;
     }
   }
 }
 void battle() {
   if (healthB<=0) {
-      fill(255);
-      rect(0, 0, width, height);
-      textSize(70);
-      fill(0);
-      text("YOU WIN", width/4, height/2);
-      textSize(30);
-      text("click to continue", width/4+30, height/2+100);
+    fill(255);
+    rect(0, 0, width, height);
+    textSize(70);
+    fill(0);
+    text("YOU WIN", width/4, height/2);
+    textSize(30);
+    text("click to continue", width/4+30, height/2+100);
   } else {
     if (healthT <= 0) {
       fill(255);
