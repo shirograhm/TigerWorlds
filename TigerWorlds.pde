@@ -1118,7 +1118,8 @@ void draw4() {
                 if (random(100) <= 10) {
                   pickups.add(new Pickup(a.x, a.y, (int)random(1, 3)));
                 }
-                if (shield < 50 && random(100) <= 10) {
+                //drop nukes
+                if (shield < 50 && random(100) <= 5) {
                   pickups.add(new Pickup(a.x, a.y, 3));
                 }
                 break;
@@ -1167,6 +1168,7 @@ void draw4() {
     }
   } else { //IF YOU LOSE THE GAME
     kombat.stop();
+    shield = -10;
     if (tDead < 20) {
       staticScreen();
     }
