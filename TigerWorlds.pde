@@ -1,4 +1,9 @@
-// Page 0
+//Xavier Graham, Ryan _____, Jake ______, Evin ______, Jeremy _______
+//Tiger Worlds
+
+import processing.sound.*;
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Page 0~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 int anim = 0;
 float counter = 0;
 float rLA, rLA2, rRA, rRA2, rLL, rLL2, rRL, rRL2, rH, rT = 0;
@@ -10,7 +15,8 @@ float ADH = 1;
 float ADT = 1;
 PImage face;
 PImage buzz;
-// Page 1
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Page 1~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 float p;
 float pv;
 boolean power;
@@ -25,11 +31,13 @@ float twy;
 float bx3, by3;
 float ttx, tty, tS;
 float bS;
-// Page 2
-// Page 3
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Page 2~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Page 3~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 float rx, ry, rvx, rvy;
 float counter3;
-// Page 4
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Page 4~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 int count4 = 0;
 
 ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
@@ -42,14 +50,22 @@ boolean isGameComplete = false;
 int shield = 100;
 
 int tDead = 0;
-int tAlive = 0;
+int tAlive;
 int rate = 1;
 
+SoundFile kombat;
+SoundFile pew;
+SoundFile ouch;
+SoundFile laser;
+SoundFile boom;
+
 PImage imgStatic;
-// Page 5
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Page 5~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 float tx5, ty5, t, t2, exUp;
 color explosionColor, explosionColor2, explosionColor3, explosionColor4;
-// Page 6
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Page 6~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 float healthB = 120;
 float healthT = 120;
 int fstage = 0;
@@ -57,8 +73,10 @@ PImage back;
 int bCounter = 0;
 PImage cena;
 float healthTo, healthBo;
-// Page 7
-// Page 8
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Page 7~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Page 8~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 void setup() {
   size(600, 600);
@@ -1073,11 +1091,19 @@ void setup4() {
   rx = 300;
   ry = 500;
   rvx = rvy = 0;
+  tAlive = -40;
   isGameOver = false;
   shield = 100;
   asteroids.clear();
   pickups.clear();
+  stars.clear();
   bullets.clear();
+
+  kombat = new SoundFile(this, "Mortal Kombat Theme Song.mp3");
+  pew = new SoundFile(this, "Pew pew lame sound effect.mp3");
+  ouch = new SoundFile(this, "ouch.mp3");
+  laser = new SoundFile(this, "laser.mp3");
+  boom = new SoundFile(this, "boom.mp3");
 
   for (int i = 0; i < 120; i++) {
     stars.add(new Star((int)random(0, width), (int)random(0, height)));
@@ -1089,7 +1115,10 @@ void draw4() {
   Rocket roc = new Rocket((int)rx, (int)ry, 0.6);
 
   if (!isGameOver) {
-    if (tAlive < 5000) { // ~~~~~~~~~~~~~~~~~~PLACEHOLDER
+    if (tAlive < 5000) {
+      if (tAlive < -38) {
+        kombat.play();
+      }
       tDead = 0;
       background(12, 34, 56);
 
@@ -1106,6 +1135,7 @@ void draw4() {
       text("Shield Strength: " + shield, 5, height - 5);
       noStroke();
 
+      //Logic for Shield
       if (shield <= 20) {
         fill(255, 100, 0);
       } else if (shield < 50 && shield > 20) {
@@ -1122,6 +1152,7 @@ void draw4() {
       stroke(1);
       fill(255);
 
+      //Draw Bullets
       for (int q = 0; q < bullets.size(); q++) {
         Bullet b = bullets.get(q);
 
@@ -1132,6 +1163,7 @@ void draw4() {
         }
       }
 
+      //Draw Pickups
       for (int q = 0; q < pickups.size(); q++) {
         Pickup p = pickups.get(q);
 
@@ -1145,70 +1177,87 @@ void draw4() {
       roc.drawRocket();
       rx += rvx;
       ry += rvy;
-
-      if (random(0, 100) < 40) {
-        stars.add(new Star((int)random(0, width), 0));
-      }
-      if (random(0, 100) < 10 + tAlive / 1000) {
-        asteroids.add(new Asteroid((int)random(60, width - 60), 0, random(1, 3), random(0, 2 * PI), (int)random(3)));
-      }
-      if (asteroids != null) {
-        for (int i = 0; i < asteroids.size(); i++) {
-          Asteroid a = asteroids.get(i);
-
-          a.drawAst();
-
-          if (a.y < height + 25) {
-            a.y += 5 / a.size;
-          } else {
-            asteroids.remove(a);
-          }
-
-          if (a.doesCollide(roc)) {
-            if (shield > 0) {
-              shield -= a.size;
-              roc.shieldOp = 80;
-              asteroids.remove(a);
-            } else {
-              isGameOver = true;
-            }
-          }
-
-          for (Bullet b : bullets) {
-            if (abs(b.x - a.x) < b.rad + 5 && abs(b.y - a.y) < b.rad + 5) {
-              asteroids.remove(a);
-              if (b.id == 0) {
-                bullets.remove(b);
-              }
-
-              //drop pickup health or antihealth
-              if (random(100) <= 10) {
-                pickups.add(new Pickup(a.x, a.y, (int)random(1, 3)));
-              }
-              break;
-            }
-          }
+      if (tAlive > 0) {
+        if (random(0, 100) < 40) {
+          stars.add(new Star((int)random(0, width), 0));
         }
-        for (int w = 0; w < pickups.size(); w++) {
-          Pickup p = pickups.get(w);
+        if (random(0, 100) < 10 + tAlive / 200) {
+          asteroids.add(new Asteroid((int)random(60, width - 60), 0, random(1, 3), random(0, 2 * PI), (int)random(3)));
+        }
+        if (asteroids != null) {
+          for (int i = 0; i < asteroids.size(); i++) {
+            Asteroid a = asteroids.get(i);
 
-          if (p.doesCollide(roc)) {
-            if (p.id == 1) {
-              if (shield < 100) {
-                shield += 30;
-              }
+            a.drawAst();
 
-              pickups.remove(p);
-            } 
+            if (a.y < height + 25) {
+              a.y += 5 / a.size;
+            } else {
+              asteroids.remove(a);
+            }
 
-            if (p.id == 2) {
-              if (shield > 30) {
-                shield -= 30;
+            if (a.doesCollide(roc)) {
+              ouch.play();
+              if (shield > 2) {
+                shield -= a.size;
+                roc.shieldOp = 80;
+                asteroids.remove(a);
               } else {
                 isGameOver = true;
               }
+            }
 
-              pickups.remove(p);
+            for (Bullet b : bullets) {
+              if (abs(b.x - a.x) < b.rad + 5 && abs(b.y - a.y) < b.rad + 5) {
+                asteroids.remove(a);
+                if (b.id == 0) {
+                  bullets.remove(b);
+                }
+
+                //drop pickup health or antihealth
+                if (random(100) <= 10) {
+                  pickups.add(new Pickup(a.x, a.y, (int)random(1, 3)));
+                }
+                if (shield < 50 && random(100) <= 10) {
+                  pickups.add(new Pickup(a.x, a.y, 3));
+                }
+                break;
+              }
+            }
+          }
+          for (int w = 0; w < pickups.size(); w++) {
+            Pickup p = pickups.get(w);
+
+            if (p.doesCollide(roc)) {
+              //IF HEALTH
+              if (p.id == 1) {
+                if (shield < 100) {
+                  shield += 30;
+                }
+
+                pickups.remove(p);
+              } 
+
+              //IF ANTIHEALTH
+              if (p.id == 2) {
+                ouch.play();
+                if (shield > 30) {
+                  shield -= 30;
+                } else {
+                  isGameOver = true;
+                }
+
+                pickups.remove(p);
+              }
+
+              //IF NUKE
+              if (p.id == 3) {
+                boom.play();
+                if (asteroids.size() > 0) {
+                  asteroids.clear();
+                }
+                pickups.clear();
+              }
             }
           }
         }
@@ -1217,6 +1266,7 @@ void draw4() {
       isGameComplete = true;
     }
   } else { //IF YOU LOSE THE GAME
+    kombat.stop();
     if (tDead < 20) {
       staticScreen();
     }
@@ -1229,7 +1279,6 @@ void draw4() {
     if (tDead > 40) {
       fill(255);
       background(255);
-      
     }
 
     fill(0);
@@ -1238,19 +1287,16 @@ void draw4() {
       if (tDead - i > 0) {
         text("Error.", 10, 18 * i);
         if (tDead > 20) {
-          text("GAME OVER.", 10, 18 * (21));
+          text("GAME OVER.\nPress R to restart.", 10, 18 * (21));
         }
       }
     }
     tDead++;
-    if (tDead > 60) {
-      anim--;
-      setup();
-    }
   }
 
   //IF YOU WIN THE GAME
   if (isGameComplete) {
+    kombat.stop();
     asteroids.clear();
     background(random(255), random(255), random(255));
     roc.drawRocket();
@@ -1281,13 +1327,22 @@ void keyp4() {
     }
   }
   if (keyCode == 32) {
-    if (shield <= 100) {
-      bullets.add(new Bullet((int)rx + 45, 10, 0));
-      bullets.add(new Bullet((int)rx - 45, 10, 0));
-    } else {
-      bullets.add(new Bullet((int)rx + 45, 10, 1));
-      bullets.add(new Bullet((int)rx - 45, 10, 1));
+    if (!isGameOver) {
+      if (shield <= 100) {
+        pew.play();
+        bullets.add(new Bullet((int)rx + 45, 10, 0));
+        bullets.add(new Bullet((int)rx - 45, 10, 0));
+      } else {
+        laser.play();
+        bullets.add(new Bullet((int)rx + 45, 10, 1));
+        bullets.add(new Bullet((int)rx - 45, 10, 1));
+      }
     }
+  }
+  if (key == 'r' && tDead > 60) {
+    anim--;
+    isGameOver = false;
+    setup();
   }
 }
 void keyr4() {
@@ -1544,46 +1599,46 @@ void setup6() {
 void draw6() {
   battle();
 }
-void mouse6() {if (bCounter>= 60 || bCounter==0 ) {
-      if (310< mouseX && 440>mouseX && 480<mouseY && 535> mouseY) {
-        fstage=1;
-        bCounter = 0;
-        healthBo=healthB;
-        healthTo=healthT;
-      }
-      if (310< mouseX && 440>mouseX && 540<mouseY && 595> mouseY) {
-        fstage=2;
-        bCounter = 0;
-        healthBo=healthB;
-        healthTo=healthT;
-      }
-      if ( 445 < mouseX && 575>mouseX && 480<mouseY &&535 >mouseY) {
-        fstage=3;
-        bCounter = 0;
-        healthBo=healthB;
-        healthTo=healthT;
-      }
-      if (  445 < mouseX && 575>mouseX && 540<mouseY &&595 >mouseY) {
-        fstage=4;
-        bCounter = 0;
-        healthBo=healthB;
-        healthTo=healthT;
-      }
+void mouse6() {
+  if (bCounter>= 60 || bCounter==0 ) {
+    if (310< mouseX && 440>mouseX && 480<mouseY && 535> mouseY) {
+      fstage=1;
+      bCounter = 0;
+      healthBo=healthB;
+      healthTo=healthT;
     }
-    if (healthT<=0) {
-      healthT=120;
-      healthB=120;
-      fstage=0;
-      bCounter=0;
+    if (310< mouseX && 440>mouseX && 540<mouseY && 595> mouseY) {
+      fstage=2;
+      bCounter = 0;
+      healthBo=healthB;
+      healthTo=healthT;
     }
-    if (healthB<=0) {
-      anim++;
-      setup();
+    if ( 445 < mouseX && 575>mouseX && 480<mouseY &&535 >mouseY) {
+      fstage=3;
+      bCounter = 0;
+      healthBo=healthB;
+      healthTo=healthT;
     }
-  
+    if (  445 < mouseX && 575>mouseX && 540<mouseY &&595 >mouseY) {
+      fstage=4;
+      bCounter = 0;
+      healthBo=healthB;
+      healthTo=healthT;
+    }
+  }
+  if (healthT<=0) {
+    healthT=120;
+    healthB=120;
+    fstage=0;
+    bCounter=0;
+  }
+  if (healthB<=0) {
+    anim++;
+    setup();
+  }
 }
 void battle() {
- if (healthB<=0) {
+  if (healthB<=0) {
     fill(255);
     rect(0, 0, width, height);
     textSize(70);
@@ -1749,7 +1804,7 @@ void battle() {
         if (bCounter <120) {
           tiger(137, 373, .5, 1+bCounter, 1+bCounter*.5, 1-bCounter, 1-bCounter*.5, 1, 1, 1, 1, 1, 1);
           fill(0, 255, 0, 100);
-          
+
           fill(255, 221, 23);
           rect(10, 480, 550, 110, PI);
           fill(95, 93, 80);
