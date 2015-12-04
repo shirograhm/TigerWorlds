@@ -47,8 +47,9 @@ ArrayList<Pickup> pickups = new ArrayList<Pickup>();
 
 boolean isGameOver = false;
 boolean isGameComplete = false;
+boolean isGameStart = false;
 int shield = -10;
-
+int distMoon = 0;
 int tDead = 0;
 int tAlive;
 int rate = 1;
@@ -122,12 +123,12 @@ void draw() {
 }
 
 void mousePressed() {
-  /*anim++;
-   setup();
-   if (anim > 6) {
-   anim = 0;
-   setup();
-   } */
+  //anim++;
+  //setup();
+  //if (anim > 6) {
+  //anim = 0;
+  //setup();
+  //}
   if (anim == 6) {
     mouse6();
   }
@@ -965,7 +966,7 @@ void draw3() {
   rect(0, 0, 600, 360);
   fill(#40FF03);
   rect(0, 360, 600, 240);
-  
+
   pushMatrix();
   if (counter3 > 100 && counter3 < 160) {
     translate(random(-10, 10), random(-10, 10));
@@ -976,11 +977,12 @@ void draw3() {
   Rocket rShake = new Rocket(rx, ry, 1);
   rShake.drawRocket();
   popMatrix();
-  
+
   rx += rvx;
   ry += rvy;
   counter3++;
   if (counter3 > 240) {
+    isGameStart = true;
     anim++;
     setup();
   }
@@ -993,7 +995,9 @@ void setup4() {
   rvx = rvy = 0;
   tAlive = -40;
   isGameOver = false;
+  isGameStart = false;
   shield = 100;
+  distMoon = 0;
   asteroids.clear();
   pickups.clear();
   stars.clear();
@@ -1015,156 +1019,181 @@ void draw4() {
   Rocket roc = new Rocket((int)rx, (int)ry, 0.6);
 
   if (!isGameOver) {
-    if (tAlive < 5000) {
-      if (tAlive < -38) {
-        kombat.play();
-      }
-      tDead = 0;
-      background(12, 34, 56);
+    if (isGameStart) {
+      if (tAlive < 4211) {
+        if (tAlive < -2) {
+          kombat.play();
+        }
+        distMoon += 57;
+        tDead = 0;
+        background(12, 34, 56);
 
-      for (Star s : stars) {
-        s.drawStar();
-        s.y = s.y + rate;
-      }
+        for (Star s : stars) {
+          s.drawStar();
+          s.y = s.y + rate;
+        }
 
-      //health bar
-      fill(0);
-      textSize(14);
-      rect(13, 278, 13, 304);
-      fill(100, 255, 0);
-      text("Shield Strength: " + shield, 5, height - 5);
-      noStroke();
-
-      //Logic for Shield
-      if (shield <= 20) {
-        fill(255, 100, 0);
-      } else if (shield < 50 && shield > 20) {
-        fill(240, 240, 0);
-      } else {
+        //health bar
+        fill(0);
+        textSize(14);
+        rect(13, 278, 13, 304);
         fill(100, 255, 0);
-      }
-      rect(15, 280 - (shield - 100) * 3, 10, shield * 3);
-      if (shield > 100) {
-        int sh = shield - 100;
-        fill(160);
-        rect(15, 280 - sh * 3, 10, sh * 3);
-      }
-      stroke(1);
-      fill(255);
+        text("Shield Strength: " + shield, 5, height - 5);
+        noStroke();
 
-      //Draw Bullets
-      for (int q = 0; q < bullets.size(); q++) {
-        Bullet b = bullets.get(q);
+        //Distance Traveled
+        fill(255);
+        text("Distance Traveled: " + distMoon, 500, height - 5);
 
-        b.drawBullet();
-        b.y = b.y - 10;
-        if (b.y < 0) {
-          bullets.remove(b);
+        //Logic for Shield
+        if (shield <= 20) {
+          fill(255, 100, 0);
+        } else if (shield < 50 && shield > 20) {
+          fill(240, 240, 0);
+        } else {
+          fill(100, 255, 0);
         }
-      }
-
-      //Draw Pickups
-      for (int q = 0; q < pickups.size(); q++) {
-        Pickup p = pickups.get(q);
-
-        p.drawPickup();
-        p.y = p.y + rate;
-        if (p.y < 0) {
-          pickups.remove(p);
+        rect(15, 280 - (shield - 100) * 3, 10, shield * 3);
+        if (shield > 100) {
+          int sh = shield - 100;
+          fill(160);
+          rect(15, 280 - sh * 3, 10, sh * 3);
         }
-      }
+        stroke(1);
+        fill(255);
 
-      roc.drawRocket();
-      rx += rvx;
-      ry += rvy;
-      if (tAlive > 0) {
-        if (random(0, 100) < 40) {
-          stars.add(new Star((int)random(0, width), 0));
-        }
-        if (random(0, 100) < 10 + tAlive / 200) {
-          asteroids.add(new Asteroid((int)random(60, width - 60), 0, random(1, 3), random(0, 2 * PI), (int)random(3)));
-        }
-        if (asteroids != null) {
-          for (int i = 0; i < asteroids.size(); i++) {
-            Asteroid a = asteroids.get(i);
+        //Draw Bullets
+        for (int q = 0; q < bullets.size(); q++) {
+          Bullet b = bullets.get(q);
 
-            a.drawAst();
-
-            if (a.y < height + 25) {
-              a.y += 5 / a.size;
-            } else {
-              asteroids.remove(a);
-            }
-
-            if (a.doesCollide(roc)) {
-              ouch.play();
-              if (shield > 2) {
-                shield -= a.size;
-                roc.shieldOp = 80;
-                asteroids.remove(a);
-              } else {
-                isGameOver = true;
-              }
-            }
-
-            for (Bullet b : bullets) {
-              if (abs(b.x - a.x) < b.rad + 5 && abs(b.y - a.y) < b.rad + 5) {
-                asteroids.remove(a);
-                if (b.id == 0) {
-                  bullets.remove(b);
-                }
-
-                //drop pickup health or antihealth
-                if (random(100) <= 10) {
-                  pickups.add(new Pickup(a.x, a.y, (int)random(1, 3)));
-                }
-                //drop nukes
-                if (shield < 50 && random(100) <= 5) {
-                  pickups.add(new Pickup(a.x, a.y, 3));
-                }
-                break;
-              }
-            }
+          b.drawBullet();
+          b.y = b.y - 10;
+          if (b.y < 0) {
+            bullets.remove(b);
           }
-          for (int w = 0; w < pickups.size(); w++) {
-            Pickup p = pickups.get(w);
+        }
 
-            if (p.doesCollide(roc)) {
-              //IF HEALTH
-              if (p.id == 1) {
-                if (shield < 100) {
-                  shield += 30;
-                }
+        //Draw Pickups
+        for (int q = 0; q < pickups.size(); q++) {
+          Pickup p = pickups.get(q);
 
-                pickups.remove(p);
-              } 
+          p.drawPickup();
+          p.y = p.y + rate;
+          if (p.y < 0) {
+            pickups.remove(p);
+          }
+        }
 
-              //IF ANTIHEALTH
-              if (p.id == 2) {
+        roc.drawRocket();
+        rx += rvx;
+        ry += rvy;
+        if (tAlive > 0) {
+          if (random(0, 100) < 40) {
+            stars.add(new Star((int)random(0, width), 0));
+          }
+          if (random(0, 100) < 10 + tAlive / 200) {
+            asteroids.add(new Asteroid((int)random(60, width - 60), 0, random(1, 3), random(0, 2 * PI), (int)random(3)));
+          }
+          if (asteroids != null) {
+            for (int i = 0; i < asteroids.size(); i++) {
+              Asteroid a = asteroids.get(i);
+
+              a.drawAst();
+
+              if (a.y < height + 25) {
+                a.y += 5 / a.size;
+              } else {
+                asteroids.remove(a);
+              }
+
+              if (a.doesCollide(roc)) {
                 ouch.play();
-                if (shield > 30) {
-                  shield -= 30;
+                if (shield > 2) {
+                  shield -= a.size;
+                  roc.shieldOp = 80;
+                  asteroids.remove(a);
                 } else {
                   isGameOver = true;
                 }
-
-                pickups.remove(p);
               }
 
-              //IF NUKE
-              if (p.id == 3) {
-                boom.play();
-                if (asteroids.size() > 0) {
-                  asteroids.clear();
+              for (Bullet b : bullets) {
+                if (abs(b.x - a.x) < b.rad + 5 && abs(b.y - a.y) < b.rad + 5) {
+                  asteroids.remove(a);
+
+                  //drop pickup health
+                  if (random(100) <= 10) {    //7% Chance
+                    pickups.add(new Pickup(a.x, a.y, 1));
+                  }
+                  //drop pickup antihealth
+                  if (random(100) <= 3) {    //3% Chance
+                    pickups.add(new Pickup(a.x, a.y, 2));
+                  }
+                  //drop nukes
+                  if (shield < 50 && random(100) <= 7) {  //5% Chance
+                    pickups.add(new Pickup(a.x, a.y, 3));
+                  }
+
+                  if (b.id == 0) {
+                    bullets.remove(b);
+                    break;
+                  }
                 }
-                pickups.clear();
+              }
+            }
+            for (int w = 0; w < pickups.size(); w++) {
+              Pickup p = pickups.get(w);
+
+              if (p.doesCollide(roc)) {
+                //IF HEALTH
+                if (p.id == 1) {
+                  if (shield < 100) {
+                    shield += 30;
+                  }
+
+                  pickups.remove(p);
+                } 
+
+                //IF ANTIHEALTH
+                if (p.id == 2) {
+                  ouch.play();
+                  if (shield > 30) {
+                    shield -= 30;
+                  } else {
+                    isGameOver = true;
+                  }
+
+                  pickups.remove(p);
+                }
+
+                //IF NUKE
+                if (p.id == 3) {
+                  boom.play();
+                  if (asteroids.size() > 0) {
+                    asteroids.clear();
+                  }
+                  pickups.clear();
+                }
               }
             }
           }
         }
+      } else {
+        isGameComplete = true;
       }
     } else {
-      isGameComplete = true;
+      //PLACEHOLDER INSTRUCTIONS
+      background(255);
+      fill(0);
+      textSize(16);
+      text("Welcome to \"To the Moon\"", 5, 20);
+      text("Travel a distance of 240,000 miles", 5, 40);
+      text("while dodging asteroids to get to the moon.", 5, 60);
+
+      text("Use the arrow keys to move your ship.", 5, 100);
+
+      text("Collect pickups for health and avoid the antimatter!", 5, 120);
+      text("Press spacebar to start.", 5, 140);
     }
   } else { //IF YOU LOSE THE GAME
     kombat.stop();
@@ -1229,7 +1258,10 @@ void keyp4() {
     }
   }
   if (keyCode == 32) {
-    if (!isGameOver) {
+    if (!isGameStart) {
+      isGameStart = true;
+    }
+    if (!isGameOver && isGameStart) {
       if (shield <= 100) {
         pew.play();
         bullets.add(new Bullet((int)rx + 45, 10, 0));
