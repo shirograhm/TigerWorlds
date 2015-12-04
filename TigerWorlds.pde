@@ -47,7 +47,7 @@ ArrayList<Pickup> pickups = new ArrayList<Pickup>();
 
 boolean isGameOver = false;
 boolean isGameComplete = false;
-int shield = 100;
+int shield = -10;
 
 int tDead = 0;
 int tAlive;
@@ -948,12 +948,14 @@ void drawCloud(float tx, float ty, float scaleF) {
   popMatrix();
 }
 // Page 2
-// Page 3
 
+
+// Page 3
 void setup3() {
-  rx=300;
-  ry=450;
-  rvx=rvy=0;
+  rx = 300;
+  ry = 400;
+  rvx = 0;
+  rvy = 0;
   counter3 = 0;
 }
 
@@ -963,127 +965,25 @@ void draw3() {
   rect(0, 0, 600, 360);
   fill(#40FF03);
   rect(0, 360, 600, 240);
-  spaceship(rx, ry);
-  rx+=rvx;
-  ry+=rvy;
+  
+  pushMatrix();
+  if (counter3 > 100 && counter3 < 160) {
+    translate(random(-10, 10), random(-10, 10));
+  }
+  if (counter3 > 160) {
+    rvy -= counter3 / 3;
+  }
+  Rocket rShake = new Rocket(rx, ry, 1);
+  rShake.drawRocket();
+  popMatrix();
+  
+  rx += rvx;
+  ry += rvy;
   counter3++;
   if (counter3 > 240) {
     anim++;
     setup();
   }
-}
-void spaceship(float x, float y) {
-  pushMatrix();
-  translate(x, y);
-  if (counter3 > 100 && counter3 < 160) {
-    translate(random(-10, 10), random(-10, 10));
-  }
-  if (counter3 > 160) {
-    rvy -= counter3/3;
-  }
-  //fire
-  if (counter3 > 100) {
-    float firex[] = new float[7];
-    float firey[] = new float[7];
-    float fire2[] = new float[7];
-    for (int i=0; i<7; i++) {
-      firex[i] = random(-35+10*i, -25+10*i);
-      if (i%2 == 0) {
-        firey[i] = random(30, 50);
-        fire2[i] = random(20, firey[i]-10);
-      } else {
-        firey[i] = random(10, 20);
-        fire2[i] = random(0, firey[i]-10);
-      }
-    }
-    noStroke();
-    beginShape();
-    vertex(-35, 0);
-    for (int i=0; i<7; i++) {
-      fill(200, 50, 0);
-      vertex(firex[i], firey[i]);
-    }
-    vertex(35, 0);
-    endShape();
-    beginShape();
-    vertex(-30, 0);
-    for (int i=0; i<7; i++) {
-      fill(200, 150, 0);
-      vertex(firex[i], fire2[i]);
-    }
-    vertex(30, 0);
-    endShape();
-  }
-  stroke(0);
-  //wings
-  fill(250, 100, 0);
-  arc(-35, 0, 80, 120, 3*PI/4, TWO_PI);
-  line(-35, 0, -35-40*sqrt(2)/2, 60*sqrt(2)/2);
-  arc(35, 0, 80, 120, PI, 9*PI/4);
-  line(35, 0, 35+40*sqrt(2)/2, 60*sqrt(2)/2);
-  //body
-  fill(250, 250, 200);
-  rect(-70, -90, 140, 40); //part of blasters
-  arc(0, 0, 110, 280, PI, TWO_PI);
-  line(-55, 0, 55, 0);
-  //window
-  pushMatrix();
-  translate(0, -62);
-  scale(.25);
-  translate(-60, -70);
-  image(face, 0, 0);
-  popMatrix();
-  fill(220, 210, 220, 100);
-  ellipse(0, -60, 50, 50);
-  //blasters 
-  noFill();
-  stroke(0, 50, 0);
-  strokeWeight(4);
-  ellipse(-85, -75, 15, 50);
-  ellipse(85, -75, 15, 50);
-  //clubs 
-  stroke(100);
-  fill(120);
-  line(-55, -30, -75, -120);
-  line(-55, -30, -55, -120);
-  line(55, -30, 80, -120);
-  line(70, -30, 55, -120);
-  line(65, -30, 70, -120);
-  stroke(0);
-  strokeWeight(1);
-
-  pushMatrix();
-  translate(-83, -120);
-  rotate(-PI/8);
-  ellipse(0, 0, 20, 10);
-  popMatrix();
-
-  ellipse(-48, -122, 16, 11);
-
-  pushMatrix();
-  translate(51, -120);
-  rotate(-PI/8.5);
-  ellipse(0, 0, 17, 6);
-  popMatrix();
-
-  pushMatrix();
-  translate(85, -120);
-  rotate(PI/8);
-  ellipse(0, 0, 15, 10);
-  popMatrix();
-
-  pushMatrix();
-  translate(70, -120);
-  rotate(-PI/8);
-  ellipse(0, 0, 10, 10);
-  popMatrix();
-
-  stroke(0);
-  strokeWeight(1);
-  fill(100, 150, 100);
-  rect(-80, -110, 30, 90);
-  rect(50, -110, 30, 90);
-  popMatrix();
 }
 
 // Page 4

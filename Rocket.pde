@@ -13,39 +13,41 @@ class Rocket extends Object {
     translate(x, y);
     scale(size);
 
-    //fire
-    float firex[] = new float[7];
-    float firey[] = new float[7];
-    float fire2[] = new float[7];
-    for (int i=0; i<7; i++) {
-      firex[i] = random(-35+10*i, -25+10*i);
-      if (i%2 == 0) {
-        firey[i] = random(30, 50);
-        fire2[i] = random(20, firey[i]-10);
-      } else {
-        firey[i] = random(10, 20);
-        fire2[i] = random(0, firey[i]-10);
+    if (counter3 > 100) {
+      //fire
+      float firex[] = new float[7];
+      float firey[] = new float[7];
+      float fire2[] = new float[7];
+      for (int i=0; i<7; i++) {
+        firex[i] = random(-35+10*i, -25+10*i);
+        if (i%2 == 0) {
+          firey[i] = random(30, 50);
+          fire2[i] = random(20, firey[i]-10);
+        } else {
+          firey[i] = random(10, 20);
+          fire2[i] = random(0, firey[i]-10);
+        }
       }
-    }
 
-    noStroke();
-    beginShape();
-    vertex(-35, 60);
-    for (int i=0; i<7; i++) {
-      fill(200, 50, 0);
-      vertex(firex[i], firey[i] + 60);
+      noStroke();
+      beginShape();
+      vertex(-35, 60);
+      for (int i=0; i<7; i++) {
+        fill(200, 50, 0);
+        vertex(firex[i], firey[i] + 60);
+      }
+      vertex(35, 60);
+      endShape();
+      beginShape();
+      vertex(-30, 60);
+      for (int i=0; i<7; i++) {
+        fill(200, 150, 0);
+        vertex(firex[i], fire2[i] + 60);
+      }
+      vertex(30, 60);
+      endShape();
     }
-    vertex(35, 60);
-    endShape();
-    beginShape();
-    vertex(-30, 60);
-    for (int i=0; i<7; i++) {
-      fill(200, 150, 0);
-      vertex(firex[i], fire2[i] + 60);
-    }
-    vertex(30, 60);
-    endShape();
-
+    
     stroke(0);
     //wings
     fill(250, 100, 0);
@@ -115,11 +117,13 @@ class Rocket extends Object {
     popMatrix();
 
     //SHIELD
-    fill(255, shieldOp);
-    noStroke();
-    ellipse(0, 0, radius * 2, radius * 2);
-    if(shield > 100) {
-      ellipse(0, 0, radius * 2 + ((shield - 100) * 3), radius * 2 + ((shield - 100) * 3));
+    if (shield > 0) {
+      fill(255, shieldOp);
+      noStroke();
+      ellipse(0, 0, radius * 2, radius * 2);
+      if (shield > 100) {
+        ellipse(0, 0, radius * 2 + ((shield - 100) * 3), radius * 2 + ((shield - 100) * 3));
+      }
     }
 
     stroke(0);
