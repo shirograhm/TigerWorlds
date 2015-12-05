@@ -1024,7 +1024,7 @@ void draw4() {
     if (isGameStart) {
       if (tAlive < 4211) {
         if (tAlive < -37) {
-          kombat.play();
+          //kombat.play();
         }
         distMoon += 57;
         tDead = 0;
@@ -1124,7 +1124,7 @@ void draw4() {
                   asteroids.remove(a);
 
                   //drop pickup health
-                  if (random(100) <= 10) {    //7% Chance
+                  if (random(100) <= 7) {    //7% Chance
                     pickups.add(new Pickup(a.x, a.y, 1));
                   }
                   //drop pickup antihealth
@@ -1132,7 +1132,7 @@ void draw4() {
                     pickups.add(new Pickup(a.x, a.y, 2));
                   }
                   //drop nukes
-                  if (shield < 50 && random(100) <= 7) {  //5% Chance
+                  if (shield < 50 && random(100) <= 5) {  //5% Chance
                     pickups.add(new Pickup(a.x, a.y, 3));
                   }
 
@@ -1149,7 +1149,7 @@ void draw4() {
               if (p.doesCollide(roc)) {
                 //IF HEALTH
                 if (p.id == 1) {
-                  if (shield < 100) {
+                  if (shield < 120) {
                     shield += 30;
                   }
 
