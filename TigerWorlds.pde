@@ -1002,13 +1002,15 @@ void setup4() {
   pickups.clear();
   stars.clear();
   bullets.clear();
-
+  
+  /*
   kombat = new SoundFile(this, "kombat.mp3");
   pew = new SoundFile(this, "pew.mp3");
   ouch = new SoundFile(this, "ouch.mp3");
   laser = new SoundFile(this, "laser.mp3");
   boom = new SoundFile(this, "boom.mp3");
-
+  */
+  
   for (int i = 0; i < 120; i++) {
     stars.add(new Star((int)random(0, width), (int)random(0, height)));
   }
