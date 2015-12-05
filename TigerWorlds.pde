@@ -1,4 +1,4 @@
-//Xavier Graham, Ryan _____, Jake ______, Evin ______, Jeremy _______
+//Xavier Graham, Ryan _____, Jake ______, Evin ______, Jeremy Roberts
 //Tiger Worlds
 
 import processing.sound.*;
@@ -1158,7 +1158,7 @@ void draw4() {
 
                 //IF ANTIHEALTH
                 if (p.id == 2) {
-                  ouch.play();
+                  //ouch.play();
                   if (shield > 30) {
                     shield -= 30;
                   } else {
@@ -1170,7 +1170,7 @@ void draw4() {
 
                 //IF NUKE
                 if (p.id == 3) {
-                  boom.play();
+                  //boom.play();
                   if (asteroids.size() > 0) {
                     asteroids.clear();
                   }
@@ -1265,11 +1265,11 @@ void keyp4() {
     }
     if (!isGameOver && isGameStart) {
       if (shield <= 100) {
-        pew.play();
+        //pew.play();
         bullets.add(new Bullet((int)rx + 45, 10, 0));
         bullets.add(new Bullet((int)rx - 45, 10, 0));
       } else {
-        laser.play();
+        //laser.play();
         bullets.add(new Bullet((int)rx + 45, 10, 1));
         bullets.add(new Bullet((int)rx - 45, 10, 1));
       }
