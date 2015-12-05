@@ -1003,8 +1003,8 @@ void setup4() {
   stars.clear();
   bullets.clear();
 
-  kombat = new SoundFile(this, "Mortal Kombat Theme Song.mp3");
-  pew = new SoundFile(this, "Pew pew lame sound effect.mp3");
+  kombat = new SoundFile(this, "kombat.mp3");
+  pew = new SoundFile(this, "pew.mp3");
   ouch = new SoundFile(this, "ouch.mp3");
   laser = new SoundFile(this, "laser.mp3");
   boom = new SoundFile(this, "boom.mp3");
