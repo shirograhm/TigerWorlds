@@ -1,4 +1,4 @@
-//Xavier Graham, Ryan _____, Jake ______, Evin ______, Jeremy Roberts
+//Xavier Graham, Ryan Cook, Jake Territo, Evin Killian, Jeremy Roberts
 //Tiger Worlds
 
 import processing.sound.*;
