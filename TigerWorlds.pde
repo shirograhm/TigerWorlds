@@ -1109,7 +1109,7 @@ void draw4() {
               }
 
               if (a.doesCollide(roc)) {
-                ouch.play();
+                //ouch.play();
                 if (shield > 2) {
                   shield -= a.size;
                   roc.shieldOp = 80;
@@ -1198,7 +1198,7 @@ void draw4() {
       text("Press spacebar to start.", 5, 140);
     }
   } else { //IF YOU LOSE THE GAME
-    kombat.stop();
+    //kombat.stop();
     shield = -10;
     if (tDead < 20) {
       staticScreen();
@@ -1229,7 +1229,7 @@ void draw4() {
 
   //IF YOU WIN THE GAME
   if (isGameComplete) {
-    kombat.stop();
+    //kombat.stop();
     asteroids.clear();
     background(random(255), random(255), random(255));
     roc.drawRocket();
