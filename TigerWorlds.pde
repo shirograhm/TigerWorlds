@@ -1,4 +1,4 @@
-//Xavier Graham, Ryan _____, Jake ______, Evin ______, Jeremy Roberts
+//Xavier Graham, Ryan _____, Jake ______, Evin ______, Jeremy _______
 //Tiger Worlds
 
 import processing.sound.*;
@@ -547,7 +547,6 @@ void setup1() {
   bS = 40;
 }
 void draw1() {
-  background(255);
   for (int y=3; y<golf.height-3; y+=6) {
     for (int x=3; x<golf.width-3; x+=6) {
       int loc = x + golf.width*y;
@@ -1022,7 +1021,7 @@ void draw4() {
   if (!isGameOver) {
     if (isGameStart) {
       if (tAlive < 4211) {
-        if (tAlive < -2) {
+        if (tAlive < -37) {
           kombat.play();
         }
         distMoon += 57;
@@ -1044,7 +1043,7 @@ void draw4() {
 
         //Distance Traveled
         fill(255);
-        text("Distance Traveled: " + distMoon, 500, height - 5);
+        text("Distance Traveled: " + distMoon, 400, height - 5);
 
         //Logic for Shield
         if (shield <= 20) {
@@ -1184,6 +1183,7 @@ void draw4() {
       }
     } else {
       //PLACEHOLDER INSTRUCTIONS
+      tAlive = -40;
       background(255);
       fill(0);
       textSize(16);
