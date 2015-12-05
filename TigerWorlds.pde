@@ -1,4 +1,4 @@
-//Xavier Graham, Ryan _____, Jake ______, Evin ______, Jeremy _______
+//Xavier Graham, Ryan _____, Jake ______, Evin ______, Jeremy Roberts
 //Tiger Worlds
 
 import processing.sound.*;
@@ -547,6 +547,7 @@ void setup1() {
   bS = 40;
 }
 void draw1() {
+  background(255);
   for (int y=3; y<golf.height-3; y+=6) {
     for (int x=3; x<golf.width-3; x+=6) {
       int loc = x + golf.width*y;
