@@ -1023,7 +1023,7 @@ void draw4() {
   if (!isGameOver) {
     if (isGameStart) {
       if (tAlive < 4211) {
-        if (tAlive < -2) {
+        if (tAlive < -37) {
           kombat.play();
         }
         distMoon += 57;
@@ -1045,7 +1045,7 @@ void draw4() {
 
         //Distance Traveled
         fill(255);
-        text("Distance Traveled: " + distMoon, 500, height - 5);
+        text("Distance Traveled: " + distMoon, 400, height - 5);
 
         //Logic for Shield
         if (shield <= 20) {
@@ -1230,6 +1230,7 @@ void draw4() {
   //IF YOU WIN THE GAME
   if (isGameComplete) {
     //kombat.stop();
+    tAlive = -40;
     asteroids.clear();
     background(random(255), random(255), random(255));
     roc.drawRocket();
