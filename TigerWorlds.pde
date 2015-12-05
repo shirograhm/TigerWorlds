@@ -1124,15 +1124,15 @@ void draw4() {
                   asteroids.remove(a);
 
                   //drop pickup health
-                  if (random(100) <= 7) {    //7% Chance
+                  if (random(1, 101) <= 7) {    //7% Chance
                     pickups.add(new Pickup(a.x, a.y, 1));
                   }
                   //drop pickup antihealth
-                  if (random(100) <= 3) {    //3% Chance
+                  if (random(1, 101) <= 3) {    //3% Chance
                     pickups.add(new Pickup(a.x, a.y, 2));
                   }
                   //drop nukes
-                  if (shield < 50 && random(100) <= 5) {  //5% Chance
+                  if (shield < 50 && random(1, 101) <= 5) {  //5% Chance
                     pickups.add(new Pickup(a.x, a.y, 3));
                   }
 
