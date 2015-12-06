@@ -7,6 +7,7 @@ class Bullet extends Object {
   }
 
   void drawBullet() {
+    fill(255);
     if (id == 1) {//LAZORS
       ellipse(x, y, rad / 2, rad * 8);
     } else {

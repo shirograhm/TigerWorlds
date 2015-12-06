@@ -1,4 +1,4 @@
-//Xavier Graham, Ryan _____, Jake ______, Evin ______, Jeremy _______
+//Xavier Graham, Ryan Cook, Jake Territo, Evin Killian, Jeremy Roberts
 //Tiger Worlds
 
 import processing.sound.*;
@@ -71,10 +71,10 @@ float healthB = 120;
 float healthT = 120;
 int fstage = 0;
 PImage back;
-int bCounter = 0;
 PImage cena;
+int bCounter = 0;
 float healthTo, healthBo;
-
+int miss;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Page 7~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Page 8~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -97,6 +97,11 @@ void setup() {
     setup5();
   } else if (anim == 6) {
     setup6();
+  } else if (anim == 7) {
+    anim++;
+    setup();
+  } else if (anim == 8) {
+    setup8();
   }
 }
 
@@ -115,8 +120,11 @@ void draw() {
     draw5();
   } else if (anim == 6) {
     draw6();
+  } else if (anim == 7) {
+  } else if (anim == 8) {
+    draw8();
   }
-  if (anim > 6) {
+  if (anim > 8) {
     anim = 0;
     setup();
   }
@@ -545,8 +553,10 @@ void setup1() {
   bx3 = 0;
   by3 = 450;
   bS = 40;
+  p = 0;
 }
 void draw1() {
+  background(255);
   for (int y=3; y<golf.height-3; y+=6) {
     for (int x=3; x<golf.width-3; x+=6) {
       int loc = x + golf.width*y;
@@ -1003,11 +1013,13 @@ void setup4() {
   stars.clear();
   bullets.clear();
 
-  kombat = new SoundFile(this, "kombat.mp3");
-  pew = new SoundFile(this, "pew.mp3");
-  ouch = new SoundFile(this, "ouch.mp3");
-  laser = new SoundFile(this, "laser.mp3");
-  boom = new SoundFile(this, "boom.mp3");
+  
+   kombat = new SoundFile(this, "kombat.mp3");
+   pew = new SoundFile(this, "pew.mp3");
+   ouch = new SoundFile(this, "ouch.mp3");
+   laser = new SoundFile(this, "laser.mp3");
+   boom = new SoundFile(this, "boom.mp3");
+   
 
   for (int i = 0; i < 120; i++) {
     stars.add(new Star((int)random(0, width), (int)random(0, height)));
@@ -1020,7 +1032,7 @@ void draw4() {
 
   if (!isGameOver) {
     if (isGameStart) {
-      if (tAlive < 4211) {
+      if (distMoon < 240000) {
         if (tAlive < -37) {
           kombat.play();
         }
@@ -1033,19 +1045,10 @@ void draw4() {
           s.y = s.y + rate;
         }
 
-        //health bar
-        fill(0);
-        textSize(14);
-        rect(13, 278, 13, 304);
-        fill(100, 255, 0);
-        text("Shield Strength: " + shield, 5, height - 5);
-        noStroke();
-
-        //Distance Traveled
-        fill(255);
-        text("Distance Traveled: " + distMoon, 400, height - 5);
-
         //Logic for Shield
+        fill(0);
+        rect(13, 278, 13, 304);
+        noStroke();
         if (shield <= 20) {
           fill(255, 100, 0);
         } else if (shield < 50 && shield > 20) {
@@ -1059,9 +1062,26 @@ void draw4() {
           fill(160);
           rect(15, 280 - sh * 3, 10, sh * 3);
         }
+        textSize(14);
+        text("Shield Strength: " + shield, 5, height - 5);
+
+        //Distance Traveled
+        fill(255);
+        text("Distance Traveled: " + distMoon, 400, height - 5);
         stroke(1);
         fill(255);
+        
+        //Draw Pickups
+        for (int q = 0; q < pickups.size(); q++) {
+          Pickup p = pickups.get(q);
 
+          p.drawPickup();
+          p.y = p.y + rate;
+          if (p.y < 0) {
+            pickups.remove(p);
+          }
+        }
+        
         //Draw Bullets
         for (int q = 0; q < bullets.size(); q++) {
           Bullet b = bullets.get(q);
@@ -1073,17 +1093,6 @@ void draw4() {
           }
         }
 
-        //Draw Pickups
-        for (int q = 0; q < pickups.size(); q++) {
-          Pickup p = pickups.get(q);
-
-          p.drawPickup();
-          p.y = p.y + rate;
-          if (p.y < 0) {
-            pickups.remove(p);
-          }
-        }
-
         roc.drawRocket();
         rx += rvx;
         ry += rvy;
@@ -1091,6 +1100,7 @@ void draw4() {
           if (random(0, 100) < 40) {
             stars.add(new Star((int)random(0, width), 0));
           }
+
           if (random(0, 100) < 10 + tAlive / 200) {
             asteroids.add(new Asteroid((int)random(60, width - 60), 0, random(1, 3), random(0, 2 * PI), (int)random(3)));
           }
@@ -1122,15 +1132,22 @@ void draw4() {
                   asteroids.remove(a);
 
                   //drop pickup health
-                  if (random(100) <= 10) {    //7% Chance
+                  if (random(1, 101) <= 4) {    //4% Chance
                     pickups.add(new Pickup(a.x, a.y, 1));
                   }
                   //drop pickup antihealth
-                  if (random(100) <= 3) {    //3% Chance
+                  if (random(1, 101) <= 4) {    //4% Chance
                     pickups.add(new Pickup(a.x, a.y, 2));
                   }
+                  
+                  boolean nukes = false;
+                  for(Pickup p : pickups) {
+                    if(p.getID() == 3) {
+                      nukes = true;
+                    }
+                  }
                   //drop nukes
-                  if (shield < 50 && random(100) <= 7) {  //5% Chance
+                  if (nukes == false && shield < 50 && random(1, 101) <= 7) {  //7% Chance
                     pickups.add(new Pickup(a.x, a.y, 3));
                   }
 
@@ -1147,7 +1164,7 @@ void draw4() {
               if (p.doesCollide(roc)) {
                 //IF HEALTH
                 if (p.id == 1) {
-                  if (shield < 100) {
+                  if (shield < 120) {
                     shield += 30;
                   }
 
@@ -1183,18 +1200,22 @@ void draw4() {
       }
     } else {
       //PLACEHOLDER INSTRUCTIONS
-      tAlive = -40;
-      background(255);
+      background(12, 34, 56);
+      fill(255);
+      stroke(0);
+      rect(150, 150, 300, 300);
       fill(0);
       textSize(16);
-      text("Welcome to \"To the Moon\"", 5, 20);
-      text("Travel a distance of 240,000 miles", 5, 40);
-      text("while dodging asteroids to get to the moon.", 5, 60);
 
-      text("Use the arrow keys to move your ship.", 5, 100);
+      text("Welcome to \"Tiger Moons\"", 205, 220);
+      text("Travel a distance of 240,000 miles", 205, 240);
+      text("while dodging asteroids.", 205, 260);
 
-      text("Collect pickups for health and avoid the antimatter!", 5, 120);
-      text("Press spacebar to start.", 5, 140);
+      text("Use the arrow keys to move.", 205, 300);
+
+      text("Collect pickups for health", 205, 320);
+      text("and avoid the antimatter!", 205, 340);
+      text("Press spacebar to start.", 205, 360);
     }
   } else { //IF YOU LOSE THE GAME
     kombat.stop();
@@ -1229,6 +1250,7 @@ void draw4() {
   //IF YOU WIN THE GAME
   if (isGameComplete) {
     kombat.stop();
+    tAlive = -40;
     asteroids.clear();
     background(random(255), random(255), random(255));
     roc.drawRocket();
@@ -1535,9 +1557,10 @@ void draw6() {
   battle();
 }
 void mouse6() {
-  if (bCounter>= 60 || bCounter==0 ) {
+  if (fstage == 0) {
     if (310< mouseX && 440>mouseX && 480<mouseY && 535> mouseY) {
       fstage=1;
+      miss = int(random(0, 2));
       bCounter = 0;
       healthBo=healthB;
       healthTo=healthT;
@@ -1556,6 +1579,7 @@ void mouse6() {
     }
     if (  445 < mouseX && 575>mouseX && 540<mouseY &&595 >mouseY) {
       fstage=4;
+      miss = int(random(0, 7));
       bCounter = 0;
       healthBo=healthB;
       healthTo=healthT;
@@ -1659,55 +1683,52 @@ void battle() {
         text("What will", 25, 530);
         text("Mr.Woods do?", 25, 560);
         //Right buttons
-        //caddysmack
         if (310< mouseX && 440>mouseX && 480<mouseY && 535> mouseY) {
           fill(255, 0, 0);
         } else {
           fill(150, 60, 26);
         }
         rect(310, 480, 130, 55, PI);
-        fill(0);
+        fill(255);
         textSize(18);
-        text("Body-Slam", 320, 510);
+        text("BODY-SLAM", 320, 510);
 
-        //mulligan
+
         if ( 310< mouseX && 440>mouseX && 540<mouseY && 595> mouseY) {
           fill(0, 255, 0);
         } else {
           fill(63, 142, 56);
         }
         rect(310, 540, 130, 55, PI);
-        fill(0);
+        fill(255);
         textSize(18);
-        text("Heal", 355, 570);
+        text("HEAL", 355, 570);
 
-        //give up
         if ( 445 < mouseX && 575>mouseX && 480<mouseY &&535 >mouseY) {
           fill(243, 243, 32);
         } else {
           fill(232, 164, 26);
         }
         rect(445, 480, 130, 55, PI);
-        fill(0);
+        fill(255);
         textSize(18);
         text("GIVE UP", 475, 510);
 
-        //chop
         if ( 445 < mouseX && 575>mouseX && 540<mouseY &&595 >mouseY) {
           fill(0, 0, 255);
         } else {
           fill(62, 100, 193);
         }
         rect(445, 540, 130, 55, PI);
-        fill(0);
+        fill(255);
         textSize(18);
-        text("chop", 475, 570);
+        text("FIST OF FURY", 450, 570);
       }
-      if (fstage!=10) {
-        buzz(450, 200, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+      if (fstage!=5 && fstage!=6 && fstage!=7) {
+        buzz6(450, 200, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
       }
-      if (fstage==0|| fstage==10) {
-        tiger(137, 373, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+      if (fstage==0|| fstage==10 || fstage==5  || fstage==6 || fstage==7 || fstage==8) {
+        tiger6(137, 373, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
       }
       if (fstage == 1) {
         bCounter++;
@@ -1720,26 +1741,32 @@ void battle() {
           rect(20, 490, 530, 90, PI);
           fill(0);
           textSize(40);
-          text("Tiger used Body-Slam!", 30, 550);
-          tiger(137, 373, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+          text("Tiger used BODY-SLAM!", 30, 550);
+          tiger6(137, 373, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
           image(cena, 200, -400+bCounter*4);
-          if (bCounter > 80) {
-            if (healthBo-100<0) {
-              healthB-= healthBo/35;
-            } else {
-              healthB-=100/40;
+          if (miss!= 1) {
+            if (bCounter > 80) {
+              if (healthBo-40<1) {
+                healthB-= healthBo/30;
+              } else {
+                healthB-=1;
+              }
             }
           }
         } else {
-          fstage = 0;
+          if (miss==1) {
+            fstage=8;
+          } else {
+            fstage = 10;
+          }
+          bCounter=0;
         }
       }
       if (fstage == 2) {
         bCounter++;
         if (bCounter <120) {
-          tiger(137, 373, .5, 1+bCounter, 1+bCounter*.5, 1-bCounter, 1-bCounter*.5, 1, 1, 1, 1, 1, 1);
+          tiger6(137, 373, .5, 1+bCounter, 1+bCounter*.5, 1-bCounter, 1-bCounter*.5, 1, 1, 1, 1, 1, 1);
           fill(0, 255, 0, 100);
-
           fill(255, 221, 23);
           rect(10, 480, 550, 110, PI);
           fill(95, 93, 80);
@@ -1748,18 +1775,23 @@ void battle() {
           rect(20, 490, 530, 90, PI);
           fill(0);
           textSize(40);
-          text("Tiger used Heal!", 30, 550);
+          text("Tiger used HEAL!", 30, 550);
+          fill(0, 255, 0, 150);
+          for (int j = 0; j <20; j++) {
+            ellipse(random(50, 250), random(400-bCounter*2, 450), 10, 20);
+          }
           if (healthT<120) {
-            healthT+=.25;
+            healthT+=.5;
           }
         } else {
-          fstage = 0;
+          fstage = 10;
+          bCounter=0;
         }
       }
       if (fstage == 3) {
         bCounter++;
         if (bCounter <120) {
-          tiger(137, 373, .5, 1, 1, 1-bCounter*2, 1-bCounter, 1, 1, 1, 1, 1-bCounter, 1);
+          tiger6(137, 373, .5, 1, 1, 1-bCounter*2, 1-bCounter, 1, 1, 1, 1, 1-bCounter, 1);
           fill(255, 221, 23);
           rect(10, 480, 550, 110, PI);
           fill(95, 93, 80);
@@ -1775,13 +1807,14 @@ void battle() {
             healthT-=1.1;
           }
         } else {
-          fstage = 0;
+          fstage = 10;
+          bCounter=0;
         }
       }
       if (fstage == 4) {
         bCounter++;
         if (bCounter <120) {
-          tiger(137+bCounter*2, 373-bCounter*1.25, .5, 1, 1, 1-bCounter/2, 1-bCounter, 1, 1, 1, 1, 1, 1);
+          tiger6(137+bCounter*2, 373-bCounter*1.25, .5, 1, 1, 1-bCounter/2, 1-bCounter, 1, 1, 1, 1, 1, 1);
           fill(255, 221, 23);
           rect(10, 480, 550, 110, PI);
           fill(95, 93, 80);
@@ -1790,7 +1823,7 @@ void battle() {
           rect(20, 490, 530, 90, PI);
           fill(0);
           textSize(40);
-          text("Tiger used chop!", 30, 550);
+          text("Tiger used FIST OF FURY!", 30, 550);
           if (bCounter>100) {
             pushMatrix();
             translate(450, 100);
@@ -1813,13 +1846,126 @@ void battle() {
             endShape();
             popMatrix();
           }
-          if (healthBo-60<0) {
-            healthB-= healthBo/110;
-          } else {
-            healthB-=.5;
+          if (miss!=1) {
+            if (healthBo-30<1) {
+              healthB-= healthBo/110;
+            } else {
+              healthB-=.25;
+            }
           }
         } else {
-          fstage = 0;
+          if (miss==1) {
+            fstage=8;
+          } else {
+            fstage = 10;
+          }
+          bCounter=0;
+        }
+      }
+      if (fstage==10) {
+        bCounter++;
+        if (bCounter < 120) {
+          fill(255, 221, 23);
+          rect(10, 480, 550, 110, PI);
+          fill(95, 93, 80);
+          rect(15, 485, 540, 100, PI);
+          fill(255);
+          rect(20, 490, 530, 90, PI);
+          fill(0);
+          textSize(40);
+          text("Buzz is thinking...", 30, 550);
+        } else {
+          if (healthB<60) {
+            fstage=int(random(5, 8));
+            healthTo=healthT;
+            healthBo=healthB;
+            bCounter=0;
+          } else {
+            healthTo=healthT;
+            healthBo=healthB;
+            fstage=int(random(6, 8));
+            bCounter=0;
+          }
+        }
+      }
+      if (fstage==5) {
+        bCounter++;
+        if (bCounter < 120) {
+          fill(255, 221, 23);
+          rect(10, 480, 550, 110, PI);
+          fill(95, 93, 80);
+          rect(15, 485, 540, 100, PI);
+          fill(255);
+          rect(20, 490, 530, 90, PI);
+          fill(0);
+          textSize(40);
+          text("Buzz used Heal!", 30, 550);
+          healthB+=.25;
+          buzz6(450, 200, .5, 1+bCounter, 1+bCounter*.5, 1-bCounter, 1-bCounter*.5, 1, 1, 1, 1, 1, 1);
+          fill(255, 0, 255, 150);
+          for (int j = 0; j <20; j++) {
+            ellipse(random(375, 525), random(250-bCounter*2, 300), 10, 20);
+          }
+        } else {
+          fstage=0;
+        }
+      }
+      if (fstage==6) {
+        bCounter++;
+        if (bCounter < 120) {
+          fill(255, 221, 23);
+          rect(10, 480, 550, 110, PI);
+          fill(95, 93, 80);
+          rect(15, 485, 540, 100, PI);
+          fill(255);
+          rect(20, 490, 530, 90, PI);
+          fill(0);
+          textSize(40);
+          text("Buzz used puncheroo", 30, 550);
+          if (healthTo-30<1) {
+            healthT-= healthTo/100;
+          } else {
+            healthT-=.25;
+          }
+        } else {
+          fstage=0;
+        }
+      }
+      if (fstage==7) {
+        bCounter++;
+        if (bCounter < 120) {
+          fill(255, 221, 23);
+          rect(10, 480, 550, 110, PI);
+          fill(95, 93, 80);
+          rect(15, 485, 540, 100, PI);
+          fill(255);
+          rect(20, 490, 530, 90, PI);
+          fill(0);
+          textSize(40);
+          text("Buzz used ultimatePOWERRRRRRR", 30, 550);
+          if (healthTo-48<1) {
+            healthT-= healthTo/110;
+          } else {
+            healthT-=.4;
+          }
+        } else {
+          fstage=0;
+        }
+      }
+      if (fstage==8) {
+        bCounter++;
+        if (bCounter < 120) {
+          fill(255, 221, 23);
+          rect(10, 480, 550, 110, PI);
+          fill(95, 93, 80);
+          rect(15, 485, 540, 100, PI);
+          fill(255);
+          rect(20, 490, 530, 90, PI);
+          fill(0);
+          textSize(40);
+          text("It missed!", 30, 550);
+        } else {
+          fstage=10;
         }
       }
     }
@@ -2119,3 +2265,84 @@ void tiger6(float tx, float ty, float S, float rLA, float rLA2, float rRA, float
 }
 // Page 7
 // Page 8
+void setup8() {
+}
+void draw8() {
+}
+
+void spaceshipbuzz(float x, float y) {
+  pushMatrix();
+  translate(x, y);
+  //fire
+  float firex[] = new float[7];
+  float firey[] = new float[7];
+  float fire2[] = new float[7];
+  for (int i=0; i<7; i++) {
+    firex[i] = random(-35+10*i, -25+10*i);
+    if (i%2 == 0) {
+      firey[i] = random(30, 50);
+      fire2[i] = random(20, firey[i]-10);
+    } else {
+      firey[i] = random(10, 20);
+      fire2[i] = random(0, firey[i]-10);
+    }
+  }
+  noStroke();
+  beginShape();
+  vertex(-35, 0);
+  for (int i=0; i<7; i++) {
+    fill(200, 50, 0);
+    vertex(firex[i], firey[i]);
+  }
+  vertex(35, 0);
+  endShape();
+  beginShape();
+  vertex(-30, 0);
+  for (int i=0; i<7; i++) {
+    fill(200, 150, 0);
+    vertex(firex[i], fire2[i]);
+  }
+  vertex(30, 0);
+  endShape();
+  stroke(0);
+  //ship
+  strokeWeight(2);
+  line(-70, -45, -100, 45);
+  line(70, -45, 100, 45);
+  line(-70, -45, -50, -50);
+  line(70, -45, 50, -50);
+  line(-70, -45, -50, 0);
+  line(70, -45, 50, 0);
+  line(-85, 0, 85, 0);
+  line(-105, 45, -95, 45);
+  line(105, 45, 95, 45);
+  
+  line(0, -125, 0, -145);
+  strokeWeight(1);
+  
+  pushMatrix();
+  translate(8, -150);
+  rotate(PI/4);
+  fill(100);
+  line(-10, 0, 10, 0);
+  arc(0, 0, 20, 20, 0, PI);
+  popMatrix();
+  
+  fill(70);
+  ellipse(0, -80, 90, 90);
+  
+  fill(220, 210, 220, 100);
+  ellipse(0, -75, 40, 40);
+  
+  
+  fill(70, 70, 0);
+  beginShape();
+  vertex(-50, 0);
+  vertex(-50, -50);
+  vertex(50, -50);
+  vertex(50, 0);
+  vertex(-50, 0);
+  endShape();
+  
+  popMatrix();
+}
