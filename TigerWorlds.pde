@@ -1031,14 +1031,14 @@ void setup4() {
   pickups.clear();
   stars.clear();
   bullets.clear();
-  
+
   /*
   kombat = new SoundFile(this, "kombat.mp3");
-  pew = new SoundFile(this, "pew.mp3");
-  ouch = new SoundFile(this, "ouch.mp3");
-  laser = new SoundFile(this, "laser.mp3");
-  boom = new SoundFile(this, "boom.mp3");
-  */
+   pew = new SoundFile(this, "pew.mp3");
+   ouch = new SoundFile(this, "ouch.mp3");
+   laser = new SoundFile(this, "laser.mp3");
+   boom = new SoundFile(this, "boom.mp3");
+   */
 
   for (int i = 0; i < 120; i++) {
     stars.add(new Star((int)random(0, width), (int)random(0, height)));
@@ -2894,7 +2894,6 @@ void draw8() {
   } else {
     brkvx = brkvy = 5;
     image(earth, 100, 100);
-
     if (brks > 0) {
 
       pushMatrix();
@@ -2908,57 +2907,62 @@ void draw8() {
       brkx2 += brkvx;
       brky2 += brkvy;
       brks -= .025;
-    } else {
+    } else if (counter8 > 320 && counter8 < 340) {
+
       starthing(400, 400);
+    } else if (counter8 > 340 && counter8 < 595) {
+      fill(0, counter8 - 340);
+      rect(0, 0, width, height);
     }
   }
-
-  counter8++;
-  if (counter8 > 400) {
-    //anim++;
-    //setup();
+  if (counter8 >= 595) {
+    fill(0);
+    rect(0, 0, width, height);
+    anim++;
+    setup();
   }
 }
 
-float impCir(float cx, float cy, float x, float y, float r) {
-  return((cx-x)*(cx-x)+(cy-y)*(cy-y)-r*r);
-}
 void starthing(float cx, float cy) {
   fill(255);
   noStroke();
   pushMatrix();
-  rotate(counter8);
+  translate(cx, cy);
+  rotate(radians(10*counter8));
   beginShape();
   for (int i=0; i<360; i+=60) {
     float x, y;
     if (i%120 == 0) {
-      x = 20*cos(radians(i))+cx;
-      y = 20*sin(radians(i))+cy;
+      x = 20*cos(radians(i));
+      y = 20*sin(radians(i));
     } else {
-      x = 4*cos(radians(i))+cx;
-      y = 4*sin(radians(i))+cy;
+      x = 4*cos(radians(i));
+      y = 4*sin(radians(i));
     }
     vertex(x, y);
   }
   endShape();
   popMatrix();
+
   pushMatrix();
-  rotate(counter8);
+  translate(cx, cy);
+  rotate(radians(-10*counter8));
   beginShape();
   for (int i=0; i<360; i+=60) {
     float x, y;
     if (i%120 == 0) {
-      x = 4*cos(radians(i))+cx;
-      y = 4*sin(radians(i))+cy;
+      x = 4*cos(radians(i));
+      y = 4*sin(radians(i));
     } else {
-      x = 20*cos(radians(i))+cx;
-      y = 20*sin(radians(i))+cy;
+      x = 20*cos(radians(i));
+      y = 20*sin(radians(i));
     }
     vertex(x, y);
   }
-  popMatrix();
   endShape();
+  popMatrix();
 }
+
 
 void spaceshipbuzz(float x, float y) {
   pushMatrix();
