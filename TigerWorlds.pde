@@ -2471,42 +2471,62 @@ void battle() {
           rect(20, 490, 530, 90, PI);
           fill(0);
           textSize(40);
-          text("Buzz used puncheroo", 30, 550);
-          if (bCounter>100) {
-            tiger6(137-bCounter%5, 373, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+          text("Buzz used HYPERBEAM", 30, 550);
+          if (bCounter<25) {
+            buzz6(450, 200, .5, 1+bCounter*1.5, 1+bCounter*1, 1, 1, 1, 1, 1, 1, 1, 1);
+          } else {
+            if (healthTo-30<1) {
+              healthT-= healthTo/85;
+            } else {
+              healthT-=.316;
+            }
+            //beam
             pushMatrix();
-            translate(140, 250);
-            stroke(0);
-            strokeWeight(1);
-            fill(255, 0, 0);
-            beginShape();
-            vertex(50, 0);
-            vertex(40, 10);
-            vertex(20, 40);
-            vertex(-10, 50);
-            vertex(-30, 20);
-            vertex(-40, 5);
-            vertex(-60, 0);
-            vertex(-50, -10);
-            vertex(-20, -40);
-            vertex(0, -50);
-            vertex(10, -40);
-            vertex(30, -20);
-            vertex(50, 0);
-            endShape();
+            translate(150, 255);
+            rotate(-.5);
+            noStroke();
+            if (bCounter%3==0) {
+              fill(0, 0, 255, 150);
+            }
+            if (bCounter%3==1) {
+              fill(0, 0, 150, 150);
+            }
+            if (bCounter%3==2) {
+              fill(0, 0, 50, 150);
+            }
+            rect(0, 0, 175, 9);
             popMatrix();
-            fill(232, 227, 89);
-            textSize(30);
-            text("POW", 110, 260);
-          } else {
-            tiger6(137, 373, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+            buzz6(450, 200, .5, 1+25*1.5, 1+25, 1, 1, 1, 1, 1, 1, 1, 1);
+            //lasergun
+            pushMatrix();
+            translate(350, 150);
+            rotate(-.5);
+            scale(.3);
+            noStroke();
+            fill(150);
+            rect(-200, -5, 100, 10);
+            stroke(0);
+            noFill();
+            arc(-160, 0, 10, 30, .1*PI, 1.9*PI);
+            arc(-180, 0, 10, 30, .1*PI, 1.9*PI);
+            noStroke();
+            pushMatrix();
+            rotate(-.17*PI);
+            translate(0, 40);
+            fill(#CEBA04);
+            ellipse(0, 0, 40, 100);
+            popMatrix();
+            fill(#F0D90A);
+            ellipse(-50, 0, 200, 40);
+            for (int i=0; i<360; i++) {
+              float tx = (5-.7)*cos(radians(i))+7*cos((5/.7-1)*radians(i))-80;
+              float ty = (5-.7)*sin(radians(i))-7*sin((5/.7-1)*radians(i));
+              fill(0, 0, 255);
+              ellipse(tx, ty, 1, 1);
+            }
+            popMatrix();
           }
-          buzz6(450-bCounter*2, 200+bCounter*1.25, .5, 1+bCounter/2, 1+bCounter, 1, 1, 1, 1, 1, 1, 1, 1);
-          if (healthTo-30<1) {
-            healthT-= healthTo/100;
-          } else {
-            healthT-=.25;
-          }
+          tiger6(137, 373, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
         } else {
           fstage=0;
         }
