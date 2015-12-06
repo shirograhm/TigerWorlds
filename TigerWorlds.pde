@@ -2901,6 +2901,8 @@ float impCir(float cx, float cy, float x, float y, float r) {
 void starthing(float cx, float cy) {
   fill(255);
   noStroke();
+  pushMatrix();
+  rotate(counter8);
   beginShape();
   for (int i=0; i<360; i+=60) {
     float x, y;
@@ -2914,6 +2916,9 @@ void starthing(float cx, float cy) {
     vertex(x, y);
   }
   endShape();
+  popMatrix();
+  pushMatrix();
+  rotate(counter8);
   beginShape();
   for (int i=0; i<360; i+=60) {
     float x, y;
@@ -2926,6 +2931,7 @@ void starthing(float cx, float cy) {
     }
     vertex(x, y);
   }
+  popMatrix();
   endShape();
 }
 
