@@ -1557,7 +1557,7 @@ void draw6() {
   battle();
 }
 void mouse6() {
-  if (fstage==0) {
+  if (bCounter>= 60 || bCounter==0 ) {
     if (310< mouseX && 440>mouseX && 480<mouseY && 535> mouseY) {
       fstage=1;
       miss = int(random(0, 2));
