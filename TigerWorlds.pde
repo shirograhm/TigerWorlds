@@ -2101,7 +2101,7 @@ void mouse6() {
   if (fstage==0) {
     if (310< mouseX && 440>mouseX && 480<mouseY && 535> mouseY) {
       fstage=1;
-      miss = int(random(0, 2));
+      miss = int(random(0, 3));
       bCounter = 0;
       healthBo=healthB;
       healthTo=healthT;
@@ -2120,7 +2120,7 @@ void mouse6() {
     }
     if (  445 < mouseX && 575>mouseX && 540<mouseY &&595 >mouseY) {
       fstage=4;
-      miss = int(random(0, 7));
+      miss = int(random(0, 8));
       bCounter = 0;
       healthBo=healthB;
       healthTo=healthT;
