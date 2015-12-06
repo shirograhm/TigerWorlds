@@ -545,6 +545,7 @@ void setup1() {
   bx3 = 0;
   by3 = 450;
   bS = 40;
+  p = 0;
 }
 void draw1() {
   for (int y=3; y<golf.height-3; y+=6) {
