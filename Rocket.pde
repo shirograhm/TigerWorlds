@@ -117,7 +117,7 @@ class Rocket extends Object {
     popMatrix();
 
     //SHIELD
-    if (shield > 0) {
+    if (shield > 0 && anim != 5) {
       fill(255, shieldOp);
       noStroke();
       ellipse(0, 0, radius * 2, radius * 2);

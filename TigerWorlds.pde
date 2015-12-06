@@ -65,6 +65,16 @@ PImage imgStatic;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Page 5~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 float tx5, ty5, t, t2, exUp;
 color explosionColor, explosionColor2, explosionColor3, explosionColor4;
+float TX1, TY1;
+float ca, mtw;
+float SM;
+float cntr;
+float tbx;
+float dxm;
+float dir;
+float rRAB;
+float inc;
+SoundFile horn;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Page 6~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 float healthB = 120;
@@ -143,6 +153,9 @@ void mousePressed() {
   //anim = 0;
   //setup();
   //}
+  if (anim == 4) {
+    distMoon = 230000;
+  }
   if (anim == 6) {
     mouse6();
   }
@@ -1019,13 +1032,13 @@ void setup4() {
   stars.clear();
   bullets.clear();
 
-  /*
+
   kombat = new SoundFile(this, "kombat.mp3");
-   pew = new SoundFile(this, "pew.mp3");
-   ouch = new SoundFile(this, "ouch.mp3");
-   laser = new SoundFile(this, "laser.mp3");
-   boom = new SoundFile(this, "boom.mp3");
-   */
+  pew = new SoundFile(this, "pew.mp3");
+  ouch = new SoundFile(this, "ouch.mp3");
+  laser = new SoundFile(this, "laser.mp3");
+  boom = new SoundFile(this, "boom.mp3");
+
 
   for (int i = 0; i < 120; i++) {
     stars.add(new Star((int)random(0, width), (int)random(0, height)));
@@ -1039,7 +1052,7 @@ void draw4() {
   if (!isGameOver) {
     if (isGameStart) {
       if (distMoon < 240000) {
-        if (tAlive < -37) {
+        if (distMoon == 0) {
           //kombat.play();
         }
         distMoon += 57;
@@ -1138,11 +1151,11 @@ void draw4() {
                   asteroids.remove(a);
 
                   //drop pickup health
-                  if (random(1, 101) <= 4) {    //4% Chance
+                  if (random(1, 101) <= 3) {    //3% Chance
                     pickups.add(new Pickup(a.x, a.y, 1));
                   }
                   //drop pickup antihealth
-                  if (random(1, 101) <= 4) {    //4% Chance
+                  if (random(1, 101) <= 3) {    //3% Chance
                     pickups.add(new Pickup(a.x, a.y, 2));
                   }
 
@@ -1224,8 +1237,10 @@ void draw4() {
       text("Press spacebar to start.", 205, 360);
     }
   } else { //IF YOU LOSE THE GAME
-    //kombat.stop();
+    kombat.stop();
     shield = -10;
+    distMoon = 0;
+    tAlive = -40;
     if (tDead < 20) {
       staticScreen();
     }
@@ -1255,7 +1270,7 @@ void draw4() {
 
   //IF YOU WIN THE GAME
   if (isGameComplete) {
-    //kombat.stop();
+    kombat.stop();
     tAlive = -40;
     asteroids.clear();
     background(random(255), random(255), random(255));
@@ -1358,10 +1373,24 @@ void setup5() {
   tx5=0;
   ty5=0;
   exUp=0;
+  counter = 0;
+  TX1 = 300;
+  TY1 = 400;
+  SM = 3;
+  face = loadImage("face.png");
+  back = loadImage("back.png");
+  horn = new SoundFile(this, "horn.mp3");
+  mtw = 0;
+  buzz = loadImage("buzz.png");
+  dxm = 0;
+  rRAB = 90;
+  dir = 1;
+  inc = 0;
 }
 void draw5() {
   background(12, 34, 56);
-  moon(450, 150, 1+(tx5*tx5/50000));
+  fill(128);
+  moon(450, 150, 1+(tx5/40));
   if (t2 <= 1250) {
     spaceship5(150+5*sin(tx5), 450+5*sin(ty5));
   } else if (t2 >= 1275 && t2 <= 1300) {
@@ -1382,16 +1411,248 @@ void draw5() {
     t2 = 951;
   }
   if (t2 > 950 && t2 <= 1250) {
-    t2+=2;
+    t2++;
     explosion(150, 450);
     explosion(150, 450);
   } else if (t2 > 1250) {
-    t2+=2;
+    t2++;
+
+    background(0);
+    counter++;
+
+    if (counter >= 150 && counter < 300) {
+      background(180);
+      if (counter == 150) {
+        //horn.play();
+      }
+      //tigerlegs(TX1 + 30, TY1 + 30, .25);
+      spaceship_broken(TX1, TY1, PI/4, 2);
+      TX1= TX1 - .5;
+      TY1 = TY1 - .3;
+      //file.play();
+    } else if (counter >= 300 && counter < 450) {
+      background(0);
+      TX1 = 300;
+      TY1 = 250;
+    } else if (counter >=450 && counter < 600) {
+      if (counter == 450) {
+        //horn.play();
+      }
+      background(180);
+      tigerlegs(TX1 + -200, TY1 + 100, .5, 51);
+      spaceship_broken(TX1, TY1, -PI/4, 2);
+
+      TX1 = TX1 + .25;
+      TY1 = TY1 + .25;
+    } else if (counter >=600 && counter < 750) {
+      background(0);
+    } else if (counter >= 750 && counter < 1000) {
+      if (counter == 750) {
+        //horn.play();
+      }
+      moon(300, 300, SM);
+      SM+= -.003;
+    } else if (counter >= 1000 && counter < 1200) {
+      background(0);
+    } else if (counter >= 1200) {
+      background(180);
+      cntr = cntr + 1;
+      int rotationH = 0;
+      if (cntr > 600) {
+        rotationH = -36;
+      }
+      tiger5(252 + mtw, 222 - mtw / 2, .35, 124 - ca, 62 + ca * 2, -144 + ca, -52 - ca * 2, 0, 0, 0, 0, rotationH, 0, -298);
+      strokeWeight(1);
+      spaceship_broken(TX1 - 96, TY1, -2, 1.8);
+      if (cntr < 60) {
+        //delay(1000);
+        ca = ca +.5 ;
+        mtw = mtw + .2;
+      } else if (cntr < 120 ) {
+        mtw = mtw + 0;
+        ca = ca - .5;
+      } else if ( cntr < 180) {
+        mtw = mtw + .2;
+        ca = ca + .5;
+      } else if ( cntr < 240) {
+        mtw = mtw + 0;
+        ca = ca - .5;
+      } else if ( cntr < 300) {
+        mtw = mtw + .2;
+        ca = ca + .5;
+      } else if ( cntr < 360) {
+        mtw = mtw + 0;
+        ca = ca - .5;
+      } else if ( cntr < 420) {
+        mtw = mtw + .2;
+        ca = ca + .5;
+      } else if ( cntr >= 420) {
+        mtw = mtw + 0;
+        ca = ca - 0;
+
+        buzz5(654 - tbx, 206, .35, -2, rRAB, -30, 34, 0, 0, 0, 0, 2, 0, dxm);
+
+        if ( tbx < 170) {
+          tbx = tbx + 1;
+        } else {
+          tbx = 170;
+        }
+        dxm = - abs(sin((cntr- 420)/20) )* 150;
+        if (dxm > -30) {
+          rRAB = 78;
+        } else {
+          rRAB = 90;
+        }
+
+        if (cntr >= 600 && cntr < 700) {
+          fill( 0, 0, 0);
+          ellipse( 386, 72, 10, 36);
+          ellipse( 386, 104, 10, 10);
+        }
+
+
+        if (cntr >= 750 && cntr < 900) {
+          textSize(14);
+          fill(0);
+          text("Hello, Tiger Woods...", 280, 50);
+        }
+        if (cntr >= 900 && cntr < 1150) {
+          textSize(14);
+          fill(0);
+          text("Did you know I was", 280, 50);
+          text("the second man on", 280, 70);
+          text("the moon?...", 280, 90);
+        }
+        if (cntr >= 1150) {
+          textSize(18);
+          fill(0);
+          text("NEIL BEFORE", 320, 50);
+          text("ME!!!", 320, 80);
+        }
+
+        if (cntr >= 1300) {
+          inc = inc + 4;
+          for (int i=0; i < 20; i++) {
+            rect(0, i*30, inc, 15);
+          }
+          for (int i=0; i<20; i++) {
+            rect(600, 15+i*30, -inc, 15);
+          }
+          if (cntr > 1500) {
+            anim++;
+            setup();
+          }
+        }
+      }
+    }
   }
-  if (t2 > 1400) {
-    anim++;
-    setup();
+}
+
+void spaceship_broken(float x, float y, float r, float S) {
+  pushMatrix();
+  translate(x, y);
+  rotate(r);
+  scale(S);
+  //fire
+  float firex[] = new float[7];
+  float firey[] = new float[7];
+  float fire2[] = new float[7];
+  for (int i=0; i<7; i++) {
+    firex[i] = random(-35+10*i, -25+10*i);
+    if (i%2 == 0) {
+      firey[i] = random(30, 50);
+      fire2[i] = random(20, firey[i]-10);
+    } else {
+      firey[i] = random(10, 20);
+      fire2[i] = random(0, firey[i]-10);
+    }
   }
+  noStroke();
+  beginShape();
+  vertex(-35, 0);
+  for (int i=0; i<7; i++) {
+    fill(200, 50, 0);
+    vertex(firex[i], firey[i]);
+  }
+  vertex(35, 0);
+  endShape();
+  beginShape();
+  vertex(-30, 0);
+  for (int i=0; i<7; i++) {
+    fill(200, 150, 0);
+    vertex(firex[i], fire2[i]);
+  }
+  vertex(30, 0);
+  endShape();
+  stroke(0);
+  //wings
+  fill(250, 100, 0);
+  arc(-35, 0, 80, 120, 3*PI/4, TWO_PI);
+  line(-35, 0, -35-40*sqrt(2)/2, 60*sqrt(2)/2);
+  arc(35, 0, 80, 120, PI, 9*PI/4);
+  line(35, 0, 35+40*sqrt(2)/2, 60*sqrt(2)/2);
+  //body
+  pushMatrix();
+
+  rotate(PI/3);
+  fill(250, 250, 200);
+  rect(-30, -110, 140, 40); //part of blasters
+  arc(0, 0, 110, 280, PI, TWO_PI);
+  line(-55, 0, 55, 0);
+
+  popMatrix();
+  //window
+  fill(220, 210, 220, 100);
+  ellipse(0, -60, 50, 50);
+  //blasters 
+  noFill();
+  stroke(0, 50, 0);
+  strokeWeight(4);
+  ellipse(-85, -75, 15, 50);
+  ellipse(85, -75, 15, 50);
+  //clubs 
+  stroke(100);
+  fill(120);
+  line(-55, -30, -75, -120);
+  line(-55, -30, -55, -120);
+  line(55, -30, 80, -120);
+  line(70, -30, 55, -120);
+  line(65, -30, 70, -120);
+  stroke(0);
+  strokeWeight(1);
+
+  pushMatrix();
+  translate(-50, -170);
+  rotate(-PI/2);
+  ellipse(0, -10, 20, 10);
+  popMatrix();
+
+  ellipse(-20, -122, 16, 11);
+
+  pushMatrix();
+  translate(47, -150);
+  rotate(-PI/8.5 + 2);
+  ellipse(0, 2, 17, 6);
+  popMatrix();
+
+  pushMatrix();
+  translate(85, -120);
+  rotate(PI/2);
+  ellipse(0, 0, 15, 10);
+  popMatrix();
+
+  pushMatrix();
+  translate(70, -120);
+  rotate(-PI/8);
+  ellipse(0, 0, 10, 10);
+  popMatrix();
+
+  stroke(0);
+  strokeWeight(1);
+  fill(100, 150, 100);
+  rect(-80, -110, 30, 90);
+  rect(50, -110, 30, 90);
+  popMatrix();
 }
 
 void moon(float cx, float cy, float s) {
@@ -1450,113 +1711,386 @@ void spaceship5(float x, float y) {
   pushMatrix();
   translate(x, y);
   rotate(PI/4.0);
-  //fire
-  float firex[] = new float[7];
-  float firey[] = new float[7];
-  float fire2[] = new float[7];
-  for (int i=0; i<7; i++) {
-    firex[i] = random(-35+10*i, -25+10*i);
-    if (i%2 == 0) {
-      firey[i] = random(30, 50);
-      fire2[i] = random(20, firey[i]-10);
-    } else {
-      firey[i] = random(10, 20);
-      fire2[i] = random(0, firey[i]-10);
-    }
-  }
+  Rocket roc5 = new Rocket(0, 0, 1);
+  roc5.drawRocket();
+  popMatrix();
+}
+
+void tigerlegs(float tx, float ty, float S, float R) {
   noStroke();
-  beginShape();
-  vertex(-35, 0);
-  for (int i=0; i<7; i++) {
-    fill(200, 50, 0);
-    vertex(firex[i], firey[i]);
+  pushMatrix();
+
+  translate(tx, ty);
+  rotate(radians(R));
+  scale(S);
+
+  //hip
+  fill(36);
+  rect(-71, -14, 142, 28);
+  //fill(186);
+  //rect(-17, -17, 34, 34);
+  pushMatrix();
+
+  //leg-left
+  translate(-56, 0);
+  //rotate(radians(rLL));
+  translate(56, 0);
+
+  fill(36);
+  rect(-71, 0, 35, 100);
+
+  pushMatrix();
+
+  translate(-56, 90);
+  //rotate(radians(rLL2));
+  translate(56, -90);
+
+
+  rect(-71, 90, 35, 80);
+  popMatrix();
+
+  popMatrix();
+
+  pushMatrix();
+
+  //leg-right
+
+  translate(56, 0);
+  //rotate(radians(rRL));
+  translate(-56, 0);
+  rect(36, 0, 35, 100);
+
+  pushMatrix();
+
+  translate(56, 90);
+  //rotate(radians(rRL2));
+  translate(-56, -90);
+
+  rect(36, 90, 35, 80);
+
+  popMatrix();
+  popMatrix();
+
+  pushMatrix();
+
+  //rotate(0);
+  //torso
+
+  //rotate(radians(rT));
+
+  fill(232, 36, 50);
+  rect(-40, -200, 80, 186);
+  popMatrix();
+  popMatrix();
+}
+
+void tiger5(float tx, float ty, float S, float rLA, float rLA2, float rRA, float rRA2, float rLL, float rLL2, float rRL, float rRL2, float rH, float rT, float rTW) {
+
+  pushMatrix();
+
+  translate(tx, ty);
+  rotate(radians(rTW));
+  scale(S);
+
+  //hip
+  fill(36);
+  rect(-71, -14, 142, 28);
+  //fill(186);
+  //rect(-17, -17, 34, 34);
+  pushMatrix();
+
+  //leg-left
+  translate(-56, 0);
+  rotate(radians(rLL));
+  translate(56, 0);
+
+  fill(36);
+  rect(-71, 0, 35, 100);
+
+  pushMatrix();
+
+  translate(-56, 90);
+  rotate(radians(rLL2));
+  translate(56, -90);
+
+
+  rect(-71, 90, 35, 80);
+  popMatrix();
+
+  popMatrix();
+
+  pushMatrix();
+
+  //leg-right
+
+  translate(56, 0);
+  rotate(radians(rRL));
+  translate(-56, 0);
+  rect(36, 0, 35, 100);
+
+  pushMatrix();
+
+  translate(56, 90);
+  rotate(radians(rRL2));
+  translate(-56, -90);
+
+  rect(36, 90, 35, 80);
+
+  popMatrix();
+  popMatrix();
+  pushMatrix();
+
+  rotate(0);
+  //torso
+
+  rotate(radians(rT));
+
+  fill(232, 36, 50);
+  rect(-40, -200, 80, 186);
+
+  pushMatrix();
+
+  translate(0, -200);
+  rotate(0);
+  translate(0, 200);
+  //shoulder
+
+  rect(-70, -200, 140, 30);
+
+  pushMatrix();
+
+  //neck
+  fill(165, 104, 57);
+  rect(-20, -250, 40, 60);
+
+  pushMatrix();
+  if (cntr > 600) {
+    translate(-60, -360);
+    translate(60, 140);
+    rotate(radians(rH));
+    translate(-60, -140);
+    image(face, 0, 0);
+  } else {
+    translate(-110, -433);
+    translate(60, 140);
+    rotate(radians(rH));
+    scale(.65);
+    translate(-60, -140);
+    image(back, 0, 0);
   }
-  vertex(35, 0);
-  endShape();
-  beginShape();
-  vertex(-30, 0);
-  for (int i=0; i<7; i++) {
-    fill(200, 150, 0);
-    vertex(firex[i], fire2[i]);
-  }
-  vertex(30, 0);
-  endShape();
-  stroke(0);
-  //wings
-  fill(250, 100, 0);
-  arc(-35, 0, 80, 120, 3*PI/4, TWO_PI);
-  line(-35, 0, -35-40*sqrt(2)/2, 60*sqrt(2)/2);
-  arc(35, 0, 80, 120, PI, 9*PI/4);
-  line(35, 0, 35+40*sqrt(2)/2, 60*sqrt(2)/2);
-  //body
-  fill(250, 250, 200);
-  rect(-70, -90, 140, 40); //part of blasters
-  arc(0, 0, 110, 280, PI, TWO_PI);
-  line(-55, 0, 55, 0);
-  //window
-  pushMatrix();
-  translate(0, -62);
-  scale(.25);
-  translate(-60, -70);
-  image(face, 0, 0);
   popMatrix();
-  fill(220, 210, 220, 100);
-  ellipse(0, -60, 50, 50);
-  //blasters 
-  noFill();
-  stroke(0, 50, 0);
-  strokeWeight(4);
-  ellipse(-85, -75, 15, 50);
-  ellipse(85, -75, 15, 50);
-  //clubs 
-  stroke(100);
-  fill(120);
-  line(-55, -30, -75, -120);
-  line(-55, -30, -55, -120);
-  line(55, -30, 80, -120);
-  line(70, -30, 55, -120);
-  line(65, -30, 70, -120);
-  stroke(0);
-  strokeWeight(1);
-
-  pushMatrix();
-  translate(-83, -120);
-  rotate(-PI/8);
-  ellipse(0, 0, 20, 10);
-  popMatrix();
-
-  ellipse(-48, -122, 16, 11);
-
-  pushMatrix();
-  translate(51, -120);
-  rotate(-PI/8.5);
-  ellipse(0, 0, 17, 6);
   popMatrix();
 
   pushMatrix();
-  translate(85, -120);
-  rotate(PI/8);
-  ellipse(0, 0, 15, 10);
+
+  //left-arms
+  fill(232, 36, 50);
+  translate(-70, -190);
+  rotate(radians(rLA));
+  translate(70, 190);
+
+  rect(-85, -190, 30, 100);
+  pushMatrix();
+
+  translate(-70, -100);
+  rotate(radians(rLA2));
+  translate(70, 100);
+
+  fill(165, 104, 57);
+  rect(-85, -100, 30, 100);
+
+
+  popMatrix();
+
+
   popMatrix();
 
   pushMatrix();
-  translate(70, -120);
-  rotate(-PI/8);
-  ellipse(0, 0, 10, 10);
+  //right-arms
+
+  translate(70, -190);
+  rotate(radians(rRA));
+  translate(-70, 190);
+
+  fill(232, 36, 50);
+  rect(55, -190, 30, 100);
+  pushMatrix();
+
+  translate(70, -100);
+  rotate(radians(rRA2));
+  translate(-70, 100);
+
+  fill(165, 104, 57);
+  rect(55, -100, 30, 100);
+
   popMatrix();
 
-  stroke(0);
-  strokeWeight(1);
-  fill(100, 150, 100);
-  rect(-80, -110, 30, 90);
-  rect(50, -110, 30, 90);
+  popMatrix();
+  popMatrix();
+
+  popMatrix();
+
+
+  popMatrix();
+}
+
+void buzz5(float tx, float ty, float S, float rLA, float rLA2, float rRA, float rRA2, float rLL, float rLL2, float rRL, float rRL2, float rH, float rT, float dxm) {
+  noStroke();
+  pushMatrix();
+
+  translate(tx, ty);
+  scale(S);
+
+  //hip
+  fill(185);
+  rect(-71, -14, 142, 28);
+  //fill(186);
+  //rect(-17, -17, 34, 34);
+
+  pushMatrix();
+
+  rotate(0);
+  //torso
+
+  rotate(radians(rT));
+
+  fill(195);
+  rect(-40, -200, 80, 186);
+
+  pushMatrix();
+
+  translate(0, -200);
+  rotate(0);
+  translate(0, 200);
+  //shoulder
+
+  rect(-70, -200, 140, 30);
+
+  pushMatrix();
+
+  //neck
+  fill(180);
+  rect(-20, -250, 40, 60);
+
+  pushMatrix();
+
+
+  translate(-205, -715);
+  translate(200, 500);
+  rotate(radians(rH));
+  scale(.35);
+  translate(-200, -500);
+  fill(100);
+  stroke(180);
+  strokeWeight(20);
+  ellipse(200, 250, 600, 600);
+  image(buzz, 0, 0);
+  noStroke();
+  popMatrix();
+  popMatrix();
+
+  pushMatrix();
+
+  //left-arms
+  fill(190);
+  translate(-70, -190);
+  rotate(radians(rLA));
+  translate(70, 190);
+
+  rect(-85, -190, 30, 100);
+  pushMatrix();
+
+  translate(-70, -100);
+  rotate(radians(rLA2));
+  translate(70, 100);
+
+  fill(#F2CD9F);
+  rect(-85, -100, 30, 100);
+
+  fill(255);
+  pushMatrix();
+  translate(dxm, 0);
+  ellipse(-72, -10, 30, 30);
+
+  popMatrix();
+
+  popMatrix();
+
+
+  popMatrix();
+
+  pushMatrix();
+  //right-arms
+
+  translate(70, -190);
+  rotate(radians(rRA));
+  translate(-70, 190);
+
+  fill(190);
+  rect(55, -190, 30, 100);
+  pushMatrix();
+
+  translate(70, -100);
+  rotate(radians(rRA2));
+  translate(-70, 100);
+
+  fill(#F2CD9F);
+  rect(55, -100, 30, 100);
+
+  popMatrix();
+
+  popMatrix();
+  popMatrix();
+
+  popMatrix();
+
+  pushMatrix();
+
+  //leg-left
+  translate(-56, 0);
+  rotate(radians(rLL));
+  translate(56, 0);
+
+  fill(185);
+  rect(-71, 0, 35, 100);
+
+  pushMatrix();
+
+  translate(-56, 90);
+  rotate(radians(rLL2));
+  translate(56, -90);
+
+
+  rect(-71, 90, 35, 80);
+  popMatrix();
+
+  popMatrix();
+
+  pushMatrix();
+
+  //leg-right
+
+  translate(56, 0);
+  rotate(radians(rRL));
+  translate(-56, 0);
+  rect(36, 0, 35, 100);
+
+  pushMatrix();
+
+  translate(56, 90);
+  rotate(radians(rRL2));
+  translate(-56, -90);
+
+  rect(36, 90, 35, 80);
+
+  popMatrix();
+  popMatrix();
   popMatrix();
 }
 
 // Page 6
 void setup6() {
   buzz = loadImage("buzz.png");
-  back = loadImage("back.png");
   cena = loadImage("cena.png");
   buzzL = loadImage("buzzL.png");
 }
