@@ -2312,7 +2312,6 @@ void battle() {
         bCounter++;
         if (bCounter <120) {
           tiger6(137, 373, .5, 1+bCounter, 1+bCounter*.5, 1-bCounter, 1-bCounter*.5, 1, 1, 1, 1, 1, 1);
-          fill(0, 255, 0, 100);
           fill(255, 221, 23);
           rect(10, 480, 550, 110, PI);
           fill(95, 93, 80);
@@ -2337,7 +2336,8 @@ void battle() {
       if (fstage == 3) {
         bCounter++;
         if (bCounter <120) {
-          tiger(137, 373, .5, 1+bCounter*.35, 1+bCounter*.9, 1-bCounter*.35, 1-bCounter*.9, 1, 1, 1, 1, 1, 1);
+          tiger6(137, 373, .5, 1+bCounter*.35, 1+bCounter*.9, 1-bCounter*.35, 1-bCounter*.9, 1, 1, 1, 1, 1, 1);
+          fill(255, 221, 23);
           rect(10, 480, 550, 110, PI);
           fill(95, 93, 80);
           rect(15, 485, 540, 100, PI);
@@ -2396,7 +2396,7 @@ void battle() {
           tiger6(137+bCounter*2, 373-bCounter*1.25, .5, 1, 1, 1-bCounter/2, 1-bCounter, 1, 1, 1, 1, 1, 1);
           if (miss!=1 && bCounter>100) {
             if (healthBo-30<1) {
-              healthB-= healthBo/10;
+              healthB-= healthBo/20;
             } else {
               healthB-=1.333;
             }
@@ -2470,11 +2470,36 @@ void battle() {
           fill(0);
           textSize(40);
           text("Buzz used puncheroo", 30, 550);
-          if (bCounter>70) {
-            tiger6(137-bCounter%3, 373, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+          if (bCounter>100) {
+            tiger6(137-bCounter%5, 373, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+            pushMatrix();
+            translate(140, 250);
+            stroke(0);
+            strokeWeight(1);
+            fill(255, 0, 0);
+            beginShape();
+            vertex(50, 0);
+            vertex(40, 10);
+            vertex(20, 40);
+            vertex(-10, 50);
+            vertex(-30, 20);
+            vertex(-40, 5);
+            vertex(-60, 0);
+            vertex(-50, -10);
+            vertex(-20, -40);
+            vertex(0, -50);
+            vertex(10, -40);
+            vertex(30, -20);
+            vertex(50, 0);
+            endShape();
+            popMatrix();
+            fill(232, 227, 89);
+            textSize(30);
+            text("POW", 110, 260);
           } else {
             tiger6(137, 373, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
           }
+          buzz6(450-bCounter*2, 200+bCounter*1.25, .5, 1+bCounter/2, 1+bCounter, 1, 1, 1, 1, 1, 1, 1, 1);
           if (healthTo-30<1) {
             healthT-= healthTo/100;
           } else {
