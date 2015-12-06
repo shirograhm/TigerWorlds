@@ -1035,20 +1035,11 @@ void draw4() {
           s.drawStar();
           s.y = s.y + rate;
         }
-
-        //health bar
-        fill(0);
-        textSize(14);
-        rect(13, 278, 13, 304);
-        fill(100, 255, 0);
-        text("Shield Strength: " + shield, 5, height - 5);
-        noStroke();
-
-        //Distance Traveled
-        fill(255);
-        text("Distance Traveled: " + distMoon, 400, height - 5);
-
+        
         //Logic for Shield
+        fill(0);
+        rect(13, 278, 13, 304);
+        noStroke();
         if (shield <= 20) {
           fill(255, 100, 0);
         } else if (shield < 50 && shield > 20) {
@@ -1062,6 +1053,12 @@ void draw4() {
           fill(160);
           rect(15, 280 - sh * 3, 10, sh * 3);
         }
+        textSize(14);
+        text("Shield Strength: " + shield, 5, height - 5);
+
+        //Distance Traveled
+        fill(255);
+        text("Distance Traveled: " + distMoon, 400, height - 5);
         stroke(1);
         fill(255);
 
@@ -1133,7 +1130,7 @@ void draw4() {
                     pickups.add(new Pickup(a.x, a.y, 2));
                   }
                   //drop nukes
-                  if (shield < 50 && random(1, 101) <= 3) {  //3% Chance
+                  if (shield < 50 && random(1, 101) <= 7) {  //7% Chance
                     pickups.add(new Pickup(a.x, a.y, 3));
                   }
 
@@ -1186,7 +1183,7 @@ void draw4() {
       }
     } else {
       //PLACEHOLDER INSTRUCTIONS
-      background(255);
+      background(12, 34, 56);
       fill(0);
       textSize(16);
       text("Welcome to \"To the Moon\"", 5, 20);
