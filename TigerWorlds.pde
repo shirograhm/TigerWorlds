@@ -2396,7 +2396,7 @@ void battle() {
           tiger6(137+bCounter*2, 373-bCounter*1.25, .5, 1, 1, 1-bCounter/2, 1-bCounter, 1, 1, 1, 1, 1, 1);
           if (miss!=1 && bCounter>100) {
             if (healthBo-30<1) {
-              healthB-= healthBo/20;
+              healthB-= healthBo/10;
             } else {
               healthB-=1.333;
             }
