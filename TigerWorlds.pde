@@ -1,4 +1,4 @@
-//Xavier Graham, Ryan Cook, Jake Territo, Evin Killian, Jeremy Roberts
+   //Xavier Graham, Ryan Cook, Jake Territo, Evin Killian, Jeremy Roberts
 //Tiger Worlds
 
 import processing.sound.*;
@@ -2862,6 +2862,7 @@ void setup8() {
   brks = 2;
 }
 void draw8() {
+  stroke(0);
   background(12, 34, 56);
   if (counter8 <= 240) {
     pushMatrix();
@@ -2921,6 +2922,7 @@ void draw8() {
     anim++;
     setup();
   }
+  counter8++;
 }
 
 void starthing(float cx, float cy) {
