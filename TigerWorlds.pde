@@ -90,7 +90,7 @@ int miss;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Page 8~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 PImage earth;
-float brkx, brky, brkvx, brkvy;
+float brkx, brky, brkvx, brkvy, brkx2, brky2, brks;
 int counter8;
 
 
@@ -2834,42 +2834,99 @@ void setup8() {
   earth = loadImage("Earth.png");
   brkx = 300;
   brky = 380;
+  brks = 2;
 }
 void draw8() {
   background(12, 34, 56);
+  if (counter8 <= 240) {
+    pushMatrix();
+    translate(0, 200);
+    //Moon ground
+    fill(128);
+    ellipse(300, 520, 1200, 750);
 
-  pushMatrix();
-  translate(0, 200);
-  //Moon ground
-  fill(128);
-  ellipse(300, 520, 1200, 750);
+    //Tiger Worlds circle
+    fill(170);
+    ellipse(150, 420, 300, 100);
 
-  //Tiger Worlds circle
-  fill(170);
-  ellipse(150, 420, 300, 100);
+    //Buzz circle
+    fill(170);
+    ellipse(450, 270, 200, 70);
+    popMatrix();
+    pushMatrix();
+    if (counter8 > 100 && counter8 < 160) {
+      translate(random(-10, 10), random(-10, 10));
+    }
+    if (counter8 > 160) {
+      brkvy -= counter8 / 3;
+    }
+    spaceshipbuzz(brkx, brky);
+    popMatrix();
+    brkx += brkvx;
+    brky += brkvy;
+  } else if (counter8 == 240) {
+    brkx2 = brky2 = -20;
+  } else {
+    brkvx = brkvy = 5;
+    image(earth, 100, 100);
 
-  //Buzz circle
-  fill(170);
-  ellipse(450, 270, 200, 70);
-  popMatrix();
-  pushMatrix();
-  if (counter8 > 100 && counter8 < 160) {
-    translate(random(-10, 10), random(-10, 10));
+    if (brks > 0) {
+
+      pushMatrix();
+      translate(brkx2, brky2);
+      rotate(3*PI/4);
+      scale(brks);
+      spaceshipbuzz(0, 0);
+      popMatrix();
+      brkvx -= .1;
+      brkvy -= .1;
+      brkx2 += brkvx;
+      brky2 += brkvy;
+      brks -= .025;
+    } else {
+      starthing(400, 400);
+    }
   }
-  if (counter8 > 160) {
-    brkvy -= counter8 / 3;
-  }
-  spaceshipbuzz(brkx, brky);
-  popMatrix();
 
-  brkx += brkvx;
-  brky += brkvy;
   counter8++;
-  if (counter8 > 240) {
-    isGameStart = true;
-    anim++;
-    setup();
+  if (counter8 > 400) {
+    //anim++;
+    //setup();
   }
+}
+
+float impCir(float cx, float cy, float x, float y, float r) {
+  return((cx-x)*(cx-x)+(cy-y)*(cy-y)-r*r);
+}
+void starthing(float cx, float cy) {
+  fill(255);
+  noStroke();
+  beginShape();
+  for (int i=0; i<360; i+=60) {
+    float x, y;
+    if (i%120 == 0) {
+      x = 20*cos(radians(i))+cx;
+      y = 20*sin(radians(i))+cy;
+    } else {
+      x = 4*cos(radians(i))+cx;
+      y = 4*sin(radians(i))+cy;
+    }
+    vertex(x, y);
+  }
+  endShape();
+  beginShape();
+  for (int i=0; i<360; i+=60) {
+    float x, y;
+    if (i%120 == 0) {
+      x = 4*cos(radians(i))+cx;
+      y = 4*sin(radians(i))+cy;
+    } else {
+      x = 20*cos(radians(i))+cx;
+      y = 20*sin(radians(i))+cy;
+    }
+    vertex(x, y);
+  }
+  endShape();
 }
 
 void spaceshipbuzz(float x, float y) {
