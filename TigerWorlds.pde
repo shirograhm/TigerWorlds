@@ -1,4 +1,4 @@
-   //Xavier Graham, Ryan Cook, Jake Territo, Evin Killian, Jeremy Roberts
+//Xavier Graham, Ryan Cook, Jake Territo, Evin Killian, Jeremy Roberts
 //Tiger Worlds
 
 import processing.sound.*;
@@ -31,6 +31,7 @@ float twy;
 float bx3, by3;
 float ttx, tty, tS;
 float bS;
+int spacestop=0;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Page 2~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Page 3~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -575,6 +576,7 @@ void setup1() {
   p = 0;
 }
 void draw1() {
+  spacestop++;
   background(255);
   for (int y=3; y<golf.height-3; y+=6) {
     for (int x=3; x<golf.width-3; x+=6) {
@@ -585,25 +587,20 @@ void draw1() {
     }
   }
   //tear(202, 344, 1);
-  powerbar();
+  if(bx==160){
+      powerbar();
+  }
   tiger1(150, twy, .64, rLA, rLA2, rRA, rRA2, rLL, rLL2, rRL, rRL2, rH, rT);
   fill(250);
   ellipse(bx, by, 20, 20);
   if (space == true) {
-
-
     if (tty < 1000) {
       if (bx < 6000) {
         twy = 450;
-
-
-
         rLA = rLA - AD * .16;
         rLA2 = rLA2 + AD * 4;
         rRA = rRA + AD * .8;
         rC = rC + AD * .8;
-
-
         if (rLA2 > 40) {
           delay(200);
           AD = -1;
@@ -687,6 +684,11 @@ void draw1() {
       }
       ellipse(bx3, by3, bS, bS);
     }
+  }
+  if (space==false) {
+    textSize(20);
+    fill(0);
+    text("Press and hold SPACE to charge your swing", 50, 100);
   }
 }
 
@@ -949,7 +951,7 @@ void keyr1() {
     power=false;   
     //p=500;
 
-    if (key == ' ') {
+    if (key == ' '&& spacestop>30) {
       space = true;
     } else {
       space = false;
