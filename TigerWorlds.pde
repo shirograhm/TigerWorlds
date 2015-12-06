@@ -1812,7 +1812,7 @@ void battle() {
           fill(0);
           textSize(40);
           text("YOU CAN'T RUN AWAY!", 30, 550);
-          buzz(450, 200, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+          buzz6(450, 200, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
         } else {
           fstage = 10;
           bCounter=0;
@@ -1831,7 +1831,7 @@ void battle() {
           textSize(40);
           text("Tiger used FIST OF FURY!", 30, 550);
           if (bCounter>100) {
-            buzz(450-bCounter%5, 200, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+            buzz6(450-bCounter%5, 200, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
             pushMatrix();
             translate(450, 100);
             stroke(0);
@@ -1936,6 +1936,11 @@ void battle() {
           fill(0);
           textSize(40);
           text("Buzz used puncheroo", 30, 550);
+          if (bCounter>70) {
+            tiger6(137-bCounter%3, 373, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+          } else {
+            tiger6(137, 373, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+          }
           if (healthTo-30<1) {
             healthT-= healthTo/100;
           } else {
@@ -2214,7 +2219,7 @@ void tiger6(float tx, float ty, float S, float rLA, float rLA2, float rRA, float
   rotate(radians(rLA2));
   translate(70, 100);
 
-  fill(165, 104, 57);
+  fill(73, 50, 42);
   rect(-85, -100, 30, 100);
 
 
@@ -2238,7 +2243,7 @@ void tiger6(float tx, float ty, float S, float rLA, float rLA2, float rRA, float
   rotate(radians(rRA2));
   translate(-70, 100);
 
-  fill(165, 104, 57);
+  fill(73, 50, 42);
   rect(55, -100, 30, 100);
 
   popMatrix();
