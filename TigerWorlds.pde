@@ -1012,15 +1012,15 @@ void setup4() {
   pickups.clear();
   stars.clear();
   bullets.clear();
-  
+
   /*
   kombat = new SoundFile(this, "kombat.mp3");
-  pew = new SoundFile(this, "pew.mp3");
-  ouch = new SoundFile(this, "ouch.mp3");
-  laser = new SoundFile(this, "laser.mp3");
-  boom = new SoundFile(this, "boom.mp3");
-  */
-  
+   pew = new SoundFile(this, "pew.mp3");
+   ouch = new SoundFile(this, "ouch.mp3");
+   laser = new SoundFile(this, "laser.mp3");
+   boom = new SoundFile(this, "boom.mp3");
+   */
+
   for (int i = 0; i < 120; i++) {
     stars.add(new Star((int)random(0, width), (int)random(0, height)));
   }
@@ -1044,7 +1044,7 @@ void draw4() {
           s.drawStar();
           s.y = s.y + rate;
         }
-        
+
         //Logic for Shield
         fill(0);
         rect(13, 278, 13, 304);
@@ -1070,7 +1070,18 @@ void draw4() {
         text("Distance Traveled: " + distMoon, 400, height - 5);
         stroke(1);
         fill(255);
+        
+        //Draw Pickups
+        for (int q = 0; q < pickups.size(); q++) {
+          Pickup p = pickups.get(q);
 
+          p.drawPickup();
+          p.y = p.y + rate;
+          if (p.y < 0) {
+            pickups.remove(p);
+          }
+        }
+        
         //Draw Bullets
         for (int q = 0; q < bullets.size(); q++) {
           Bullet b = bullets.get(q);
@@ -1082,17 +1093,6 @@ void draw4() {
           }
         }
 
-        //Draw Pickups
-        for (int q = 0; q < pickups.size(); q++) {
-          Pickup p = pickups.get(q);
-
-          p.drawPickup();
-          p.y = p.y + rate;
-          if (p.y < 0) {
-            pickups.remove(p);
-          }
-        }
-
         roc.drawRocket();
         rx += rvx;
         ry += rvy;
@@ -1100,6 +1100,7 @@ void draw4() {
           if (random(0, 100) < 40) {
             stars.add(new Star((int)random(0, width), 0));
           }
+
           if (random(0, 100) < 10 + tAlive / 200) {
             asteroids.add(new Asteroid((int)random(60, width - 60), 0, random(1, 3), random(0, 2 * PI), (int)random(3)));
           }
@@ -1131,15 +1132,22 @@ void draw4() {
                   asteroids.remove(a);
 
                   //drop pickup health
-                  if (random(1, 101) <= 2) {    //2% Chance
+                  if (random(1, 101) <= 4) {    //4% Chance
                     pickups.add(new Pickup(a.x, a.y, 1));
                   }
                   //drop pickup antihealth
-                  if (random(1, 101) <= 3) {    //3% Chance
+                  if (random(1, 101) <= 4) {    //4% Chance
                     pickups.add(new Pickup(a.x, a.y, 2));
                   }
+                  
+                  boolean nukes = false;
+                  for(Pickup p : pickups) {
+                    if(p.getID() == 3) {
+                      nukes = true;
+                    }
+                  }
                   //drop nukes
-                  if (shield < 50 && random(1, 101) <= 7) {  //7% Chance
+                  if (nukes == false && shield < 50 && random(1, 101) <= 7) {  //7% Chance
                     pickups.add(new Pickup(a.x, a.y, 3));
                   }
 
@@ -1193,16 +1201,21 @@ void draw4() {
     } else {
       //PLACEHOLDER INSTRUCTIONS
       background(12, 34, 56);
+      fill(255);
+      stroke(0);
+      rect(150, 150, 300, 300);
       fill(0);
       textSize(16);
-      text("Welcome to \"To the Moon\"", 5, 20);
-      text("Travel a distance of 240,000 miles", 5, 40);
-      text("while dodging asteroids to get to the moon.", 5, 60);
 
-      text("Use the arrow keys to move your ship.", 5, 100);
+      text("Welcome to \"Tiger Moons\"", 205, 220);
+      text("Travel a distance of 240,000 miles", 205, 240);
+      text("while dodging asteroids.", 205, 260);
 
-      text("Collect pickups for health and avoid the antimatter!", 5, 120);
-      text("Press spacebar to start.", 5, 140);
+      text("Use the arrow keys to move.", 205, 300);
+
+      text("Collect pickups for health", 205, 320);
+      text("and avoid the antimatter!", 205, 340);
+      text("Press spacebar to start.", 205, 360);
     }
   } else { //IF YOU LOSE THE GAME
     //kombat.stop();
@@ -2254,9 +2267,8 @@ void tiger6(float tx, float ty, float S, float rLA, float rLA2, float rRA, float
 // Page 8
 void setup8() {
 }
-void draw8() { 
+void draw8() {
 }
-
 
 void spaceshipbuzz(float x, float y) {
   pushMatrix();
