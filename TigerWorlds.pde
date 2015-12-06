@@ -79,6 +79,11 @@ int miss;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Page 7~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Page 8~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PImage earth;
+float brkx, brky, brkvx, brkvy;
+int counter8;
+
+
 
 void setup() {
   size(600, 600);
@@ -1071,7 +1076,7 @@ void draw4() {
         text("Distance Traveled: " + distMoon, 400, height - 5);
         stroke(1);
         fill(255);
-        
+
         //Draw Pickups
         for (int q = 0; q < pickups.size(); q++) {
           Pickup p = pickups.get(q);
@@ -1082,7 +1087,7 @@ void draw4() {
             pickups.remove(p);
           }
         }
-        
+
         //Draw Bullets
         for (int q = 0; q < bullets.size(); q++) {
           Bullet b = bullets.get(q);
@@ -1140,10 +1145,10 @@ void draw4() {
                   if (random(1, 101) <= 4) {    //4% Chance
                     pickups.add(new Pickup(a.x, a.y, 2));
                   }
-                  
+
                   boolean nukes = false;
-                  for(Pickup p : pickups) {
-                    if(p.getID() == 3) {
+                  for (Pickup p : pickups) {
+                    if (p.getID() == 3) {
                       nukes = true;
                     }
                   }
@@ -2287,45 +2292,84 @@ void tiger6(float tx, float ty, float S, float rLA, float rLA2, float rRA, float
 // Page 7
 // Page 8
 void setup8() {
+  earth = loadImage("Earth.png");
+  brkx = 300;
+  brky = 380;
 }
 void draw8() {
+  background(12, 34, 56);
+
+  pushMatrix();
+  translate(0, 200);
+  //Moon ground
+  fill(128);
+  ellipse(300, 520, 1200, 750);
+
+  //Tiger Worlds circle
+  fill(170);
+  ellipse(150, 420, 300, 100);
+
+  //Buzz circle
+  fill(170);
+  ellipse(450, 270, 200, 70);
+  popMatrix();
+  pushMatrix();
+  if (counter8 > 100 && counter8 < 160) {
+    translate(random(-10, 10), random(-10, 10));
+  }
+  if (counter8 > 160) {
+    brkvy -= counter8 / 3;
+  }
+  spaceshipbuzz(brkx, brky);
+  popMatrix();
+
+  brkx += brkvx;
+  brky += brkvy;
+  counter8++;
+  if (counter8 > 240) {
+    isGameStart = true;
+    anim++;
+    setup();
+  }
 }
 
 void spaceshipbuzz(float x, float y) {
   pushMatrix();
   translate(x, y);
   //fire
-  float firex[] = new float[7];
-  float firey[] = new float[7];
-  float fire2[] = new float[7];
-  for (int i=0; i<7; i++) {
-    firex[i] = random(-35+10*i, -25+10*i);
-    if (i%2 == 0) {
-      firey[i] = random(30, 50);
-      fire2[i] = random(20, firey[i]-10);
-    } else {
-      firey[i] = random(10, 20);
-      fire2[i] = random(0, firey[i]-10);
+  if (counter8 > 100) {
+    float firex[] = new float[7];
+    float firey[] = new float[7];
+    float fire2[] = new float[7];
+    for (int i=0; i<7; i++) {
+      firex[i] = random(-35+10*i, -25+10*i);
+      if (i%2 == 0) {
+        firey[i] = random(30, 50);
+        fire2[i] = random(20, firey[i]-10);
+      } else {
+        firey[i] = random(10, 20);
+        fire2[i] = random(0, firey[i]-10);
+      }
     }
+    noStroke();
+    beginShape();
+    vertex(-35, 0);
+    for (int i=0; i<7; i++) {
+      fill(200, 50, 0);
+      vertex(firex[i], firey[i]);
+    }
+    vertex(35, 0);
+    endShape();
+    beginShape();
+    vertex(-30, 0);
+    for (int i=0; i<7; i++) {
+      fill(200, 150, 0);
+      vertex(firex[i], fire2[i]);
+    }
+    vertex(30, 0);
+    endShape();
+    stroke(0);
   }
-  noStroke();
-  beginShape();
-  vertex(-35, 0);
-  for (int i=0; i<7; i++) {
-    fill(200, 50, 0);
-    vertex(firex[i], firey[i]);
-  }
-  vertex(35, 0);
-  endShape();
-  beginShape();
-  vertex(-30, 0);
-  for (int i=0; i<7; i++) {
-    fill(200, 150, 0);
-    vertex(firex[i], fire2[i]);
-  }
-  vertex(30, 0);
-  endShape();
-  stroke(0);
   //ship
   strokeWeight(2);
   line(-70, -45, -100, 45);
@@ -2337,10 +2381,10 @@ void spaceshipbuzz(float x, float y) {
   line(-85, 0, 85, 0);
   line(-105, 45, -95, 45);
   line(105, 45, 95, 45);
-  
+
   line(0, -125, 0, -145);
   strokeWeight(1);
-  
+
   pushMatrix();
   translate(8, -150);
   rotate(PI/4);
@@ -2348,14 +2392,14 @@ void spaceshipbuzz(float x, float y) {
   line(-10, 0, 10, 0);
   arc(0, 0, 20, 20, 0, PI);
   popMatrix();
-  
+
   fill(70);
   ellipse(0, -80, 90, 90);
-  
+
   fill(220, 210, 220, 100);
   ellipse(0, -75, 40, 40);
-  
-  
+
+
   fill(70, 70, 0);
   beginShape();
   vertex(-50, 0);
@@ -2364,6 +2408,6 @@ void spaceshipbuzz(float x, float y) {
   vertex(50, 0);
   vertex(-50, 0);
   endShape();
-  
+
   popMatrix();
 }
