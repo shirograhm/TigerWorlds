@@ -1270,7 +1270,7 @@ void draw4() {
 
   //IF YOU WIN THE GAME
   if (isGameComplete) {
-    kombat.stop();
+    //kombat.stop();
     tAlive = -40;
     asteroids.clear();
     background(random(255), random(255), random(255));
@@ -1379,7 +1379,7 @@ void setup5() {
   SM = 3;
   face = loadImage("face.png");
   back = loadImage("back.png");
-  horn = new SoundFile(this, "horn.mp3");
+  //horn = new SoundFile(this, "horn.mp3");
   mtw = 0;
   buzz = loadImage("buzz.png");
   dxm = 0;
@@ -1874,7 +1874,7 @@ void tiger5(float tx, float ty, float S, float rLA, float rLA2, float rRA, float
     translate(-110, -433);
     translate(60, 140);
     rotate(radians(rH));
-    scale(.65);
+    scale(.50);
     translate(-60, -140);
     image(back, 0, 0);
   }
@@ -2396,7 +2396,7 @@ void battle() {
           tiger6(137+bCounter*2, 373-bCounter*1.25, .5, 1, 1, 1-bCounter/2, 1-bCounter, 1, 1, 1, 1, 1, 1);
           if (miss!=1 && bCounter>100) {
             if (healthBo-30<1) {
-              healthB-= healthBo/20;
+              healthB-= healthBo/10;
             } else {
               healthB-=1.333;
             }
