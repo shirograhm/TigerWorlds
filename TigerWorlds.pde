@@ -97,6 +97,11 @@ void setup() {
     setup5();
   } else if (anim == 6) {
     setup6();
+  } else if (anim == 7) {
+    anim++;
+    setup();
+  } else if (anim == 8) {
+    setup8();
   }
 }
 
@@ -115,8 +120,11 @@ void draw() {
     draw5();
   } else if (anim == 6) {
     draw6();
+  } else if (anim == 7) {
+  } else if (anim == 8) {
+    draw8();
   }
-  if (anim > 6) {
+  if (anim > 8) {
     anim = 0;
     setup();
   }
@@ -2119,3 +2127,7 @@ void tiger6(float tx, float ty, float S, float rLA, float rLA2, float rRA, float
 }
 // Page 7
 // Page 8
+void setup8() {
+}
+void draw8() { 
+}
