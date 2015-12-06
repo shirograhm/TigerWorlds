@@ -556,6 +556,7 @@ void setup1() {
   p = 0;
 }
 void draw1() {
+  background(255);
   for (int y=3; y<golf.height-3; y+=6) {
     for (int x=3; x<golf.width-3; x+=6) {
       int loc = x + golf.width*y;
@@ -2254,4 +2255,82 @@ void tiger6(float tx, float ty, float S, float rLA, float rLA2, float rRA, float
 void setup8() {
 }
 void draw8() { 
+}
+
+
+void spaceshipbuzz(float x, float y) {
+  pushMatrix();
+  translate(x, y);
+  //fire
+  float firex[] = new float[7];
+  float firey[] = new float[7];
+  float fire2[] = new float[7];
+  for (int i=0; i<7; i++) {
+    firex[i] = random(-35+10*i, -25+10*i);
+    if (i%2 == 0) {
+      firey[i] = random(30, 50);
+      fire2[i] = random(20, firey[i]-10);
+    } else {
+      firey[i] = random(10, 20);
+      fire2[i] = random(0, firey[i]-10);
+    }
+  }
+  noStroke();
+  beginShape();
+  vertex(-35, 0);
+  for (int i=0; i<7; i++) {
+    fill(200, 50, 0);
+    vertex(firex[i], firey[i]);
+  }
+  vertex(35, 0);
+  endShape();
+  beginShape();
+  vertex(-30, 0);
+  for (int i=0; i<7; i++) {
+    fill(200, 150, 0);
+    vertex(firex[i], fire2[i]);
+  }
+  vertex(30, 0);
+  endShape();
+  stroke(0);
+  //ship
+  strokeWeight(2);
+  line(-70, -45, -100, 45);
+  line(70, -45, 100, 45);
+  line(-70, -45, -50, -50);
+  line(70, -45, 50, -50);
+  line(-70, -45, -50, 0);
+  line(70, -45, 50, 0);
+  line(-85, 0, 85, 0);
+  line(-105, 45, -95, 45);
+  line(105, 45, 95, 45);
+  
+  line(0, -125, 0, -145);
+  strokeWeight(1);
+  
+  pushMatrix();
+  translate(8, -150);
+  rotate(PI/4);
+  fill(100);
+  line(-10, 0, 10, 0);
+  arc(0, 0, 20, 20, 0, PI);
+  popMatrix();
+  
+  fill(70);
+  ellipse(0, -80, 90, 90);
+  
+  fill(220, 210, 220, 100);
+  ellipse(0, -75, 40, 40);
+  
+  
+  fill(70, 70, 0);
+  beginShape();
+  vertex(-50, 0);
+  vertex(-50, -50);
+  vertex(50, -50);
+  vertex(50, 0);
+  vertex(-50, 0);
+  endShape();
+  
+  popMatrix();
 }
