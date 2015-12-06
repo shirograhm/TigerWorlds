@@ -72,6 +72,7 @@ float healthT = 120;
 int fstage = 0;
 PImage back;
 PImage cena;
+PImage buzzL;
 int bCounter = 0;
 float healthTo, healthBo;
 int miss;
@@ -1552,6 +1553,7 @@ void setup6() {
   buzz = loadImage("buzz.png");
   back = loadImage("back.png");
   cena = loadImage("cena.png");
+  buzzL = loadImage("buzzL.png");
 }
 void draw6() {
   battle();
@@ -1712,7 +1714,7 @@ void battle() {
         rect(445, 480, 130, 55, PI);
         fill(255);
         textSize(18);
-        text("GIVE UP", 475, 510);
+        text("RUN", 475, 510);
 
         if ( 445 < mouseX && 575>mouseX && 540<mouseY &&595 >mouseY) {
           fill(0, 0, 255);
@@ -1724,10 +1726,10 @@ void battle() {
         textSize(18);
         text("FIST OF FURY", 450, 570);
       }
-      if (fstage!=5 && fstage!=6 && fstage!=7) {
+      if (fstage==0 || fstage==2 || fstage==10 || fstage==8) {
         buzz6(450, 200, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
       }
-      if (fstage==0|| fstage==10 || fstage==5  || fstage==6 || fstage==7 || fstage==8) {
+      if (fstage==0|| fstage==10 || fstage==5 || fstage==8) {
         tiger6(137, 373, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
       }
       if (fstage == 1) {
@@ -1743,7 +1745,6 @@ void battle() {
           textSize(40);
           text("Tiger used BODY-SLAM!", 30, 550);
           tiger6(137, 373, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
-          image(cena, 200, -400+bCounter*4);
           if (miss!= 1) {
             if (bCounter > 80) {
               if (healthBo-40<1) {
@@ -1753,6 +1754,12 @@ void battle() {
               }
             }
           }
+          if (bCounter<=80) {
+            buzz6(450, 200, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+          } else {
+            buzz6(450-bCounter%5, 200, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+          }
+          image(cena, 200, -400+bCounter*4);
         } else {
           if (miss==1) {
             fstage=8;
@@ -1791,8 +1798,7 @@ void battle() {
       if (fstage == 3) {
         bCounter++;
         if (bCounter <120) {
-          tiger6(137, 373, .5, 1, 1, 1-bCounter*2, 1-bCounter, 1, 1, 1, 1, 1-bCounter, 1);
-          fill(255, 221, 23);
+          tiger(137, 373, .5, 1+bCounter*.35, 1+bCounter*.9, 1-bCounter*.35, 1-bCounter*.9, 1, 1, 1, 1, 1, 1);
           rect(10, 480, 550, 110, PI);
           fill(95, 93, 80);
           rect(15, 485, 540, 100, PI);
@@ -1800,12 +1806,8 @@ void battle() {
           rect(20, 490, 530, 90, PI);
           fill(0);
           textSize(40);
-          text("Tiger used GIVE UP!", 30, 550);
-          if (healthTo-119<0) {
-            healthT-= healthTo/110;
-          } else {
-            healthT-=1.1;
-          }
+          text("YOU CAN'T RUN AWAY!", 30, 550);
+          buzz(450, 200, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
         } else {
           fstage = 10;
           bCounter=0;
@@ -1814,7 +1816,6 @@ void battle() {
       if (fstage == 4) {
         bCounter++;
         if (bCounter <120) {
-          tiger6(137+bCounter*2, 373-bCounter*1.25, .5, 1, 1, 1-bCounter/2, 1-bCounter, 1, 1, 1, 1, 1, 1);
           fill(255, 221, 23);
           rect(10, 480, 550, 110, PI);
           fill(95, 93, 80);
@@ -1825,9 +1826,11 @@ void battle() {
           textSize(40);
           text("Tiger used FIST OF FURY!", 30, 550);
           if (bCounter>100) {
+            buzz(450-bCounter%5, 200, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
             pushMatrix();
             translate(450, 100);
             stroke(0);
+            strokeWeight(1);
             fill(255, 0, 0);
             beginShape();
             vertex(50, 0);
@@ -1845,12 +1848,18 @@ void battle() {
             vertex(50, 0);
             endShape();
             popMatrix();
+            fill(232, 227, 89);
+            textSize(30);
+            text("POW", 410, 110);
+          } else {
+            buzz6(450, 200, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
           }
-          if (miss!=1) {
+          tiger6(137+bCounter*2, 373-bCounter*1.25, .5, 1, 1, 1-bCounter/2, 1-bCounter, 1, 1, 1, 1, 1, 1);
+          if (miss!=1 && bCounter>100) {
             if (healthBo-30<1) {
-              healthB-= healthBo/110;
+              healthB-= healthBo/20;
             } else {
-              healthB-=.25;
+              healthB-=1.333;
             }
           }
         } else {
@@ -1934,6 +1943,7 @@ void battle() {
       if (fstage==7) {
         bCounter++;
         if (bCounter < 120) {
+          buzz6(450, 200, .5, 1+bCounter*.75, 1+bCounter*.5, 1, 1, 1, 1, 1, 1, 1, 1);
           fill(255, 221, 23);
           rect(10, 480, 550, 110, PI);
           fill(95, 93, 80);
@@ -1942,7 +1952,18 @@ void battle() {
           rect(20, 490, 530, 90, PI);
           fill(0);
           textSize(40);
-          text("Buzz used ultimatePOWERRRRRRR", 30, 550);
+          pushMatrix();
+          translate(700-bCounter*10, 300);
+          scale(.4);
+          rotate(-.5);
+          image(buzzL, 0, 0);
+          popMatrix();
+          text("Buzz used WOMBO-COMBO", 30, 550);
+          if (bCounter>70) {
+            tiger6(137-bCounter%3, 373, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+          } else {
+            tiger6(137, 373, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+          }
           if (healthTo-48<1) {
             healthT-= healthTo/110;
           } else {
