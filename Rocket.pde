@@ -13,38 +13,40 @@ class Rocket extends Object {
     translate(x, y);
     scale(size);
 
-    //fire
-    float firex[] = new float[7];
-    float firey[] = new float[7];
-    float fire2[] = new float[7];
-    for (int i=0; i<7; i++) {
-      firex[i] = random(-35+10*i, -25+10*i);
-      if (i%2 == 0) {
-        firey[i] = random(30, 50);
-        fire2[i] = random(20, firey[i]-10);
-      } else {
-        firey[i] = random(10, 20);
-        fire2[i] = random(0, firey[i]-10);
+    if (counter3 > 100) {
+      //fire
+      float firex[] = new float[7];
+      float firey[] = new float[7];
+      float fire2[] = new float[7];
+      for (int i=0; i<7; i++) {
+        firex[i] = random(-35+10*i, -25+10*i);
+        if (i%2 == 0) {
+          firey[i] = random(30, 50);
+          fire2[i] = random(20, firey[i]-10);
+        } else {
+          firey[i] = random(10, 20);
+          fire2[i] = random(0, firey[i]-10);
+        }
       }
-    }
 
-    noStroke();
-    beginShape();
-    vertex(-35, 60);
-    for (int i=0; i<7; i++) {
-      fill(200, 50, 0);
-      vertex(firex[i], firey[i] + 60);
+      noStroke();
+      beginShape();
+      vertex(-35, 60);
+      for (int i=0; i<7; i++) {
+        fill(200, 50, 0);
+        vertex(firex[i], firey[i] + 60);
+      }
+      vertex(35, 60);
+      endShape();
+      beginShape();
+      vertex(-30, 60);
+      for (int i=0; i<7; i++) {
+        fill(200, 150, 0);
+        vertex(firex[i], fire2[i] + 60);
+      }
+      vertex(30, 60);
+      endShape();
     }
-    vertex(35, 60);
-    endShape();
-    beginShape();
-    vertex(-30, 60);
-    for (int i=0; i<7; i++) {
-      fill(200, 150, 0);
-      vertex(firex[i], fire2[i] + 60);
-    }
-    vertex(30, 60);
-    endShape();
 
     stroke(0);
     //wings
@@ -107,12 +109,12 @@ class Rocket extends Object {
     rotate(-PI/8);
     ellipse(0, 0, 10, 10);
     popMatrix();
-    
+
     pushMatrix();
     scale(0.27);
     image(face, -58, -90);
     popMatrix();
-    
+
     //SHIELD
     fill(255, shieldOp);
     noStroke();
@@ -126,9 +128,9 @@ class Rocket extends Object {
     fill(100, 150, 100);
     rect(-80, -50, 30, 90);
     rect(50, -50, 30, 90);
-    
+
     popMatrix();
-    
+
     //BOUNDING FOR ROCKET
     if (x < 120) {
       rx = 120;
