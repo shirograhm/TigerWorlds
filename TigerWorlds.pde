@@ -285,7 +285,7 @@ void tiger(float tx, float ty, float S, float rLA, float rLA2, float rRA, float 
   rotate(radians(rT));
 
   fill(232, 36, 50);
-  rect(-40, -200, 80, 186);
+  rect(-60, -200, 120, 186);
 
   pushMatrix();
 
@@ -293,7 +293,8 @@ void tiger(float tx, float ty, float S, float rLA, float rLA2, float rRA, float 
   rotate(0);
   translate(0, 200);
   //shoulder
-
+  ellipse(-70,-185,30,30);
+  ellipse(70,-185,30,30);
   rect(-70, -200, 140, 30);
 
   pushMatrix();
@@ -430,7 +431,7 @@ void buzz(float tx, float ty, float S, float rLA, float rLA2, float rRA, float r
   rotate(radians(rT));
 
   fill(195);
-  rect(-40, -200, 80, 186);
+rect(-60, -200, 120, 186);
 
   pushMatrix();
 
@@ -438,7 +439,8 @@ void buzz(float tx, float ty, float S, float rLA, float rLA2, float rRA, float r
   rotate(0);
   translate(0, 200);
   //shoulder
-
+  ellipse(-70,-185,30,30);
+  ellipse(70,-185,30,30);
   rect(-70, -200, 140, 30);
 
   pushMatrix();
@@ -783,7 +785,7 @@ void tiger1(float tx, float ty, float S, float rLA, float rLA2, float rRA, float
   rotate(radians(rT));
 
   fill(232, 36, 50);
-  rect(-40, -200, 80, 186);
+  rect(-60, -200, 120, 186);
 
   pushMatrix();
 
@@ -791,7 +793,8 @@ void tiger1(float tx, float ty, float S, float rLA, float rLA2, float rRA, float
   rotate(0);
   translate(0, 200);
   //shoulder
-
+  ellipse(-70,-185,30,30);
+  ellipse(70,-185,30,30);
   rect(-70, -200, 140, 30);
 
   pushMatrix();
@@ -1913,7 +1916,7 @@ void tiger5(float tx, float ty, float S, float rLA, float rLA2, float rRA, float
   rotate(radians(rT));
 
   fill(232, 36, 50);
-  rect(-40, -200, 80, 186);
+  rect(-60, -200, 120, 186);
 
   pushMatrix();
 
@@ -1921,7 +1924,8 @@ void tiger5(float tx, float ty, float S, float rLA, float rLA2, float rRA, float
   rotate(0);
   translate(0, 200);
   //shoulder
-
+  ellipse(-70,-185,30,30);
+  ellipse(70,-185,30,30);
   rect(-70, -200, 140, 30);
 
   pushMatrix();
@@ -2023,7 +2027,7 @@ void buzz5(float tx, float ty, float S, float rLA, float rLA2, float rRA, float 
   rotate(radians(rT));
 
   fill(195);
-  rect(-40, -200, 80, 186);
+  rect(-60, -200, 120, 186);
 
   pushMatrix();
 
@@ -2031,7 +2035,8 @@ void buzz5(float tx, float ty, float S, float rLA, float rLA2, float rRA, float 
   rotate(0);
   translate(0, 200);
   //shoulder
-
+  ellipse(-70,-185,30,30);
+  ellipse(70,-185,30,30);
   rect(-70, -200, 140, 30);
 
   pushMatrix();
@@ -2707,7 +2712,7 @@ void buzz6(float tx, float ty, float S, float rLA, float rLA2, float rRA, float 
   rotate(radians(rT));
 
   fill(195);
-  rect(-40, -200, 80, 186);
+  rect(-60, -200, 120, 186);
 
   pushMatrix();
 
@@ -2715,7 +2720,8 @@ void buzz6(float tx, float ty, float S, float rLA, float rLA2, float rRA, float 
   rotate(0);
   translate(0, 200);
   //shoulder
-
+  ellipse(-70,-185,30,30);
+  ellipse(70,-185,30,30);
   rect(-70, -200, 140, 30);
 
   pushMatrix();
@@ -2856,7 +2862,7 @@ void tiger6(float tx, float ty, float S, float rLA, float rLA2, float rRA, float
   rotate(radians(rT));
 
   fill(232, 36, 50);
-  rect(-40, -200, 80, 186);
+  rect(-60, -200, 120, 186);
 
   pushMatrix();
 
@@ -2864,7 +2870,8 @@ void tiger6(float tx, float ty, float S, float rLA, float rLA2, float rRA, float
   rotate(0);
   translate(0, 200);
   //shoulder
-
+  ellipse(-70,-185,30,30);
+  ellipse(70,-185,30,30);
   rect(-70, -200, 140, 30);
 
   pushMatrix();
