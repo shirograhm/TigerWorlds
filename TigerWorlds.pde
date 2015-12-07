@@ -1239,7 +1239,7 @@ void draw4() {
       text("Press spacebar to start.", 205, 360);
     }
   } else { //IF YOU LOSE THE GAME
-    kombat.stop();
+    //kombat.stop();
     shield = -10;
     distMoon = 0;
     tAlive = -40;
