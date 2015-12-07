@@ -1441,8 +1441,8 @@ void setup5() {
   SM = 3;
   face = loadImage("face.png");
   back = loadImage("back.png");
-  horn = new SoundFile(this, "horn.mp3");
-  pokeBattle = new SoundFile(this, "pokeBattle.mp3");
+  //horn = new SoundFile(this, "horn.mp3");
+  //pokeBattle = new SoundFile(this, "pokeBattle.mp3");
   mtw = 0;
   buzz = loadImage("buzz.png");
   dxm = 0;
