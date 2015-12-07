@@ -2474,7 +2474,7 @@ void battle() {
           rect(20, 490, 530, 90, PI);
           fill(0);
           textSize(40);
-          text("Buzz used HYPERBEAM", 30, 550);
+          text("Buzz used HYPERBEAM!", 30, 550);
           if (bCounter<25) {
             buzz6(450, 200, .5, 1+bCounter*1.5, 1+bCounter*1, 1, 1, 1, 1, 1, 1, 1, 1);
           } else {
@@ -2552,7 +2552,7 @@ void battle() {
           rotate(-.5);
           image(buzzL, 0, 0);
           popMatrix();
-          text("Buzz used WOMBO-COMBO", 30, 550);
+          text("Buzz used TAG TEAM!", 30, 550);
           if (bCounter>70) {
             tiger6(137-bCounter%3, 373, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
           } else {
