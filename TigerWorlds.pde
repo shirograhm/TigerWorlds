@@ -1004,6 +1004,7 @@ void setup3() {
   rvx = 0;
   rvy = 0;
   counter3 = 0;
+  shield = 0;
 }
 
 void draw3() {
@@ -1449,6 +1450,7 @@ void setup5() {
   rRAB = 90;
   dir = 1;
   inc = 0;
+  shield = 0;
 }
 void draw5() {
   background(12, 34, 56);

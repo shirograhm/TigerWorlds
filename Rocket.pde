@@ -118,7 +118,9 @@ class Rocket extends Object {
     //SHIELD
     fill(255, shieldOp);
     noStroke();
-    ellipse(0, 0, radius * 2, radius * 2);
+    if (shield > 0) {
+      ellipse(0, 0, radius * 2, radius * 2);
+    }
     if (shield > 100) {
       ellipse(0, 0, radius * 2 + ((shield - 100) * 3), radius * 2 + ((shield - 100) * 3));
     }
