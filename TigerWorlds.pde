@@ -293,8 +293,8 @@ void tiger(float tx, float ty, float S, float rLA, float rLA2, float rRA, float 
   rotate(0);
   translate(0, 200);
   //shoulder
-  ellipse(-70,-185,30,30);
-  ellipse(70,-185,30,30);
+  ellipse(-70, -185, 30, 30);
+  ellipse(70, -185, 30, 30);
   rect(-70, -200, 140, 30);
 
   pushMatrix();
@@ -431,7 +431,7 @@ void buzz(float tx, float ty, float S, float rLA, float rLA2, float rRA, float r
   rotate(radians(rT));
 
   fill(195);
-rect(-60, -200, 120, 186);
+  rect(-60, -200, 120, 186);
 
   pushMatrix();
 
@@ -439,8 +439,8 @@ rect(-60, -200, 120, 186);
   rotate(0);
   translate(0, 200);
   //shoulder
-  ellipse(-70,-185,30,30);
-  ellipse(70,-185,30,30);
+  ellipse(-70, -185, 30, 30);
+  ellipse(70, -185, 30, 30);
   rect(-70, -200, 140, 30);
 
   pushMatrix();
@@ -793,8 +793,8 @@ void tiger1(float tx, float ty, float S, float rLA, float rLA2, float rRA, float
   rotate(0);
   translate(0, 200);
   //shoulder
-  ellipse(-70,-185,30,30);
-  ellipse(70,-185,30,30);
+  ellipse(-70, -185, 30, 30);
+  ellipse(70, -185, 30, 30);
   rect(-70, -200, 140, 30);
 
   pushMatrix();
@@ -1050,7 +1050,7 @@ void setup4() {
   shield = 100;
   isGameOver = false;
   isGameStart = false;
-  
+
   asteroids.clear();
   pickups.clear();
   stars.clear();
@@ -1225,7 +1225,7 @@ void draw4() {
       if (random(0, 100) < 40) {
         stars.add(new Star((int)random(0, width), 0));
       }
-      
+
       roc.drawRocket();
       roc.drawInfo();
 
@@ -1924,8 +1924,8 @@ void tiger5(float tx, float ty, float S, float rLA, float rLA2, float rRA, float
   rotate(0);
   translate(0, 200);
   //shoulder
-  ellipse(-70,-185,30,30);
-  ellipse(70,-185,30,30);
+  ellipse(-70, -185, 30, 30);
+  ellipse(70, -185, 30, 30);
   rect(-70, -200, 140, 30);
 
   pushMatrix();
@@ -2035,8 +2035,8 @@ void buzz5(float tx, float ty, float S, float rLA, float rLA2, float rRA, float 
   rotate(0);
   translate(0, 200);
   //shoulder
-  ellipse(-70,-185,30,30);
-  ellipse(70,-185,30,30);
+  ellipse(-70, -185, 30, 30);
+  ellipse(70, -185, 30, 30);
   rect(-70, -200, 140, 30);
 
   pushMatrix();
@@ -2659,13 +2659,13 @@ void battle() {
           text("Buzz used TAG TEAM!", 30, 550);
           if (bCounter>70) {
             tiger6(137-bCounter%3, 373, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+            if (healthTo-48<1) {
+              healthT-= healthTo/40;
+            } else {
+              healthT-=1;
+            }
           } else {
             tiger6(137, 373, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
-          }
-          if (healthTo-48<1) {
-            healthT-= healthTo/110;
-          } else {
-            healthT-=.4;
           }
         } else {
           fstage=0;
@@ -2720,8 +2720,8 @@ void buzz6(float tx, float ty, float S, float rLA, float rLA2, float rRA, float 
   rotate(0);
   translate(0, 200);
   //shoulder
-  ellipse(-70,-185,30,30);
-  ellipse(70,-185,30,30);
+  ellipse(-70, -185, 30, 30);
+  ellipse(70, -185, 30, 30);
   rect(-70, -200, 140, 30);
 
   pushMatrix();
@@ -2870,8 +2870,8 @@ void tiger6(float tx, float ty, float S, float rLA, float rLA2, float rRA, float
   rotate(0);
   translate(0, 200);
   //shoulder
-  ellipse(-70,-185,30,30);
-  ellipse(70,-185,30,30);
+  ellipse(-70, -185, 30, 30);
+  ellipse(70, -185, 30, 30);
   rect(-70, -200, 140, 30);
 
   pushMatrix();
@@ -3029,12 +3029,10 @@ void draw8() {
       qwe = qwe + 2;
     } else if (cntr < 1940) {
       qwe = qwe - 2;
-     
-    }
-   else if (cntr >= 1940 && cntr < 2067){
+    } else if (cntr >= 1940 && cntr < 2067) {
       qw = qw + 1.1;
       qwer8 =  abs(sin((cntr-1940)/40) )* 150;
-   }
+    }
 
     if (cntr >= 2057 && cntr < 2067) {
       qaz = qaz + 1.5;
