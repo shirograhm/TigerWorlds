@@ -2014,6 +2014,7 @@ void buzz5(float tx, float ty, float S, float rLA, float rLA2, float rRA, float 
   scale(S);
 
   //hip
+  noStroke();
   fill(185);
   rect(-71, -14, 142, 28);
   //fill(186);
