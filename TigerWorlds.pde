@@ -1043,11 +1043,11 @@ void setup4() {
   bullets.clear();
 
 
-  kombat = new SoundFile(this, "kombat.mp3");
-  pew = new SoundFile(this, "pew.mp3");
-  ouch = new SoundFile(this, "ouch.mp3");
-  laser = new SoundFile(this, "laser.mp3");
-  boom = new SoundFile(this, "boom.mp3");
+  //kombat = new SoundFile(this, "kombat.mp3");
+  //pew = new SoundFile(this, "pew.mp3");
+  //ouch = new SoundFile(this, "ouch.mp3");
+  //laser = new SoundFile(this, "laser.mp3");
+  //boom = new SoundFile(this, "boom.mp3");
 
 
   for (int i = 0; i < 120; i++) {
@@ -1063,7 +1063,7 @@ void draw4() {
     if (isGameStart) {
       if (distMoon < 240000) {
         if (distMoon < 1) {
-          kombat.play();
+          //kombat.play();
         }
         distMoon += 57;
         tDead = 0;
@@ -1146,7 +1146,7 @@ void draw4() {
               }
 
               if (a.doesCollide(roc)) {
-                ouch.play();
+                //ouch.play();
                 if (shield > 2) {
                   shield -= a.size;
                   roc.shieldOp = 80;
@@ -1202,7 +1202,7 @@ void draw4() {
 
                 //IF ANTIHEALTH
                 if (p.id == 2) {
-                  ouch.play();
+                  //ouch.play();
                   if (shield > 30) {
                     shield -= 30;
                   } else {
@@ -1214,7 +1214,7 @@ void draw4() {
 
                 //IF NUKE
                 if (p.id == 3) {
-                  boom.play();
+                  //boom.play();
                   if (asteroids.size() > 0) {
                     asteroids.clear();
                   }
@@ -1235,22 +1235,26 @@ void draw4() {
       rect(150, 150, 300, 300);
       fill(0);
       textSize(16);
-      text("Tiger has to get to the moon", 155, 200);
-      text("so he can get his ball!", 155, 220);
-      text("Travel a distance of 240,000 miles", 155, 240);
-      text("while dodging asteroids.", 155, 260);
-      text("Use the arrow keys to move.", 155, 300);
-      text("Collect pickups for health", 155, 320);
-      text("and avoid the antimatter!", 155, 340);
-      Pickup p1 = new Pickup(400, 310, 1);
-      Pickup p2 = new Pickup(400, 340, 2);
+      text("Tiger has to get to the moon", 155, 180);
+      text("so he can get his ball!", 155, 200);
+      text("Travel a distance of 240,000 miles", 155, 220);
+      text("while dodging asteroids.", 155, 240);
+      text("Use the arrow keys to move.", 155, 280);
+      text("Collect pickups for health", 155, 300);
+      text("and avoid the antimatter!", 155, 320);
+      text("Also, if you're low on health,", 155, 340);
+      text("look for nukes for help!", 155, 360);
+      Pickup p1 = new Pickup(400, 290, 1);
+      Pickup p2 = new Pickup(400, 320, 2);
+      Pickup p3 = new Pickup(400, 350, 3);
       p1.drawPickup();
       p2.drawPickup();
+      p3.drawPickup();
       fill(0);
-      text("Press spacebar to start.", 155, 360);
+      text("Press spacebar to start.", 155, 380);
     }
   } else { //IF YOU LOSE THE GAME
-    kombat.stop();
+    //kombat.stop();
     shield = -10;
     distMoon = 0;
     tAlive = -40;
@@ -1283,7 +1287,7 @@ void draw4() {
 
   //IF YOU WIN THE GAME
   if (isGameComplete) {
-    kombat.stop();
+    //kombat.stop();
     tAlive = -40;
     asteroids.clear();
     background(random(255), random(255), random(255));
@@ -1320,11 +1324,11 @@ void keyp4() {
     }
     if (!isGameOver && isGameStart) {
       if (shield <= 100) {
-        pew.play();
+        //pew.play();
         bullets.add(new Bullet((int)rx + 45, 10, 0));
         bullets.add(new Bullet((int)rx - 45, 10, 0));
       } else {
-        laser.play();
+        //laser.play();
         bullets.add(new Bullet((int)rx + 45, 10, 1));
         bullets.add(new Bullet((int)rx - 45, 10, 1));
       }
@@ -1437,7 +1441,7 @@ void draw5() {
     if (counter >= 150 && counter < 300) {
       background(180);
       if (counter == 150) {
-        horn.play();
+        //horn.play();
       }
       //tigerlegs(TX1 + 30, TY1 + 30, .25);
       spaceship_broken(TX1, TY1, PI/4, 2);
@@ -1449,7 +1453,7 @@ void draw5() {
       TY1 = 250;
     } else if (counter >=450 && counter < 600) {
       if (counter == 450) {
-        horn.play();
+        //horn.play();
       }
       background(180);
       tigerlegs(TX1 + -200, TY1 + 100, .5, 51);
@@ -1461,7 +1465,7 @@ void draw5() {
       background(0);
     } else if (counter >= 750 && counter < 1000) {
       if (counter == 750) {
-        horn.play();
+        //horn.play();
       }
       moon(300, 300, SM);
       SM+= -.003;
@@ -1542,7 +1546,7 @@ void draw5() {
           text("NEIL BEFORE", 320, 50);
           text("ME!!!", 320, 80);
           if(cntr > 1190 && cntr < 1192) {
-            pokeBattle.play();
+            //pokeBattle.play();
           }
         }
 
@@ -2186,7 +2190,7 @@ void mouse6() {
 }
 void battle() {
   if (healthB<=0) {
-    pokeBattle.stop();
+    //pokeBattle.stop();
     fill(255);
     rect(0, 0, width, height);
     textSize(70);
@@ -2196,7 +2200,7 @@ void battle() {
     text("click to continue", width/4+30, height/2+100);
   } else {
     if (healthT <= 0) {
-      pokeBattle.stop();
+      //pokeBattle.stop();
       fill(255);
       rect(0, 0, width, height);
       textSize(50);
