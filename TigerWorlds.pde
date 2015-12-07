@@ -75,7 +75,6 @@ float dxm;
 float dir;
 float rRAB;
 float inc;
-
 SoundFile horn;
 SoundFile pokeBattle;
 
@@ -95,13 +94,7 @@ int miss;
 PImage earth;
 float brkx, brky, brkvx, brkvy, brkx2, brky2, brks;
 int counter8;
-float qwe;
-float qw;
-float qwer8;
-float qaz;
-float qax;
-float qdx, qdy;
-float inc2;
+
 
 
 void setup() {
@@ -1396,8 +1389,8 @@ void setup5() {
   SM = 3;
   face = loadImage("face.png");
   back = loadImage("back.png");
-  horn = new SoundFile(this, "horn.mp3");
-  pokeBattle = new SoundFile(this, "pokeBattle.mp3");
+  //horn = new SoundFile(this, "horn.mp3");
+  //pokeBattle = new SoundFile(this, "pokeBattle.mp3");
   mtw = 0;
   buzz = loadImage("buzz.png");
   dxm = 0;
@@ -1507,7 +1500,7 @@ void draw5() {
         mtw = mtw + 0;
         ca = ca - 0;
 
-        buzz5(654 - tbx, 206, .35, -2, rRAB, -30, 34, 0, 0, 0, 0, 2, 0, dxm, 0, 0, 0);
+        buzz5(654 - tbx, 206, .35, -2, rRAB, -30, 34, 0, 0, 0, 0, 2, 0, dxm);
 
         if ( tbx < 170) {
           tbx = tbx + 1;
@@ -1954,12 +1947,11 @@ void tiger5(float tx, float ty, float S, float rLA, float rLA2, float rRA, float
   popMatrix();
 }
 
-void buzz5(float tx, float ty, float S, float rLA, float rLA2, float rRA, float rRA2, float rLL, float rLL2, float rRL, float rRL2, float rH, float rT, float dxm, float RBZ, float qdx, float qdy) {
-
+void buzz5(float tx, float ty, float S, float rLA, float rLA2, float rRA, float rRA2, float rLL, float rLL2, float rRL, float rRL2, float rH, float rT, float dxm) {
+  noStroke();
   pushMatrix();
 
   translate(tx, ty);
-  rotate(radians(RBZ));
   scale(S);
 
   //hip
@@ -2001,13 +1993,10 @@ void buzz5(float tx, float ty, float S, float rLA, float rLA2, float rRA, float 
   rotate(radians(rH));
   scale(.35);
   translate(-200, -500);
-  pushMatrix();
-  translate(qdx, qdy);
   fill(100);
   stroke(180);
   strokeWeight(20);
   ellipse(200, 250, 600, 600);
-  popMatrix();
   image(buzz, 0, 0);
   noStroke();
   popMatrix();
@@ -2112,30 +2101,6 @@ void buzz5(float tx, float ty, float S, float rLA, float rLA2, float rRA, float 
   popMatrix();
 }
 
-void ex(float x, float y, float s) {
-
-  fill(0, 0, 0);
-
-  pushMatrix();
-
-  translate(x, y);
-  rotate( PI/4);
-  scale(s);
-
-  rect(-5, -25, 10, 50);
-
-  popMatrix();
-
-  pushMatrix();
-
-  translate(x, y);
-  rotate( -PI/4);
-  scale(s);
-
-  rect(-5, -25, 10, 50);
-
-  popMatrix();
-}
 // Page 6
 void setup6() {
   buzz = loadImage("buzz.png");
@@ -2937,109 +2902,11 @@ void setup8() {
   brkx = 300;
   brky = 380;
   brks = 2;
-  cntr= 1500;
-  qwe = 0;
-  qw = 0;
-  qwer8 = 0;
-  qdx = 0;
-  qdy = 0;
-  inc2 = 0;
 }
 void draw8() {
-  cntr++;
-  if ( cntr >= 1500) {
-    background(134);
-
-    spaceship_broken(TX1 - 96, TY1, -2, 1.8);
-    if (cntr < 1900) {
-      tiger5(344, 206, .35, 26, -28, -60, 0, 0, 0, 0, 0, 6, 0, 0);
-    }
-    buzz5(450, 256, .35, 38, -68, -36, -112, 2, 72, -36, 18, -32, -4 - qaz, -2, 82, qdx, qdy);
-  }
-  if (cntr >= 1500 && cntr < 1750) {  
-    textSize(18);
-    fill(0);
-    text("You are a sad", 280, 50);
-    text("excuse for a man", 280, 70);
-    text("Buzz", 280, 90);
-  }
-  if (cntr >= 1750 && cntr < 1900) {
-    textSize(18);
-    fill(0);
-    text("Or should I say...", 280, 50);
-  }
-
-  if (cntr >=1900) {
-    tiger5(344 + qw, 206 + qwe * .5 - qwer8, .35, 26, -28, -60 + qax, 0 + qax, 0 + qwe, 0 - qwe, 0 - qwe, 0 + qwe, 6, 0, 0);
-    if (cntr < 1920) {
-      qwe = qwe + 2;
-    } else if (cntr < 1940) {
-      qwe = qwe - 2;
-     
-    }
-   else if (cntr >= 1940 && cntr < 2067){
-      qw = qw + 1.1;
-      qwer8 =  abs(sin((cntr-1940)/40) )* 150;
-   }
-
-    if (cntr >= 2057 && cntr < 2067) {
-      qaz = qaz + 1.5;
-    }
-
-    if (cntr >= 2067 && cntr < 2107) {
-      qax= qax -2;
-    }
-    if (cntr >= 2107 && cntr < 2147) {
-      qax = qax + 2;
-    }
-    if (cntr >= 2140) {
-      qdx = qdx + 20;
-      qdy = qdy + 20;
-    }
-    if (cntr >= 2200) {
-      ex(538, 198, .3);
-      ex(522, 192, .3);
-    }
-    if (cntr >= 2220 && cntr < 2400) {
-      textSize(18);
-      fill(0);
-      text("Oh....", 380, 70);
-    }
-    if (cntr >= 2400 && cntr < 2600) {
-      textSize(18);
-      fill(0);
-      text("I guess you were Buzz", 380, 70);
-    } 
-    if (cntr >= 2600) {
-      textSize(18);
-      fill(0);
-      text("Anywho, give me my ball", 370, 50);
-      text("and your ship...", 370, 70);
-    }
-
-    if (cntr >= 2780) {
-      inc2 = inc2 + 4;
-      for (int i=0; i < 20; i++) {
-        rect(0, i*30, inc2, 15);
-      }
-      for (int i=0; i<20; i++) {
-        rect(600, 15+i*30, -inc2, 15);
-      }
-    }
-  }
-  if (cntr >= 3000) {
-    counter8++;
-  }
-
-
-
-  if (counter8 > 1) {
-
-
-    stroke(0);
-    background(12, 34, 56);
-  }
-  if (counter8 <= 240 && counter8 > 1) {
+  stroke(0);
+  background(12, 34, 56);
+  if (counter8 <= 240) {
     pushMatrix();
     translate(0, 200);
     //Moon ground
@@ -3058,7 +2925,7 @@ void draw8() {
     if (counter8 > 100 && counter8 < 160) {
       translate(random(-10, 10), random(-10, 10));
     }
-    if (counter8 > 160 && counter8 > 1) {
+    if (counter8 > 160) {
       brkvy -= counter8 / 3;
     }
     spaceshipbuzz(brkx, brky);
@@ -3067,7 +2934,7 @@ void draw8() {
     brky += brkvy;
   } else if (counter8 == 240) {
     brkx2 = brky2 = -20;
-  } else if (counter8 >240) {
+  } else {
     brkvx = brkvy = 5;
     image(earth, 100, 100);
     if (brks > 0) {
@@ -3097,7 +2964,7 @@ void draw8() {
     anim++;
     setup();
   }
-  // counter8++;
+  counter8++;
 }
 
 void starthing(float cx, float cy) {
