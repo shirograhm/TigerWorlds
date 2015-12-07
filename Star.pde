@@ -8,7 +8,8 @@ class Star {
   }
   
   void drawStar() {
+    noStroke();
     fill(255);
-    ellipse(x, y, 2, 2);
+    ellipse(x, y, 4, 4);
   }
 }

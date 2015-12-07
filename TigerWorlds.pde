@@ -49,17 +49,20 @@ ArrayList<Pickup> pickups = new ArrayList<Pickup>();
 boolean isGameOver = false;
 boolean isGameComplete = false;
 boolean isGameStart = false;
+
 int shield = -10;
 int distMoon = 0;
 int tDead = 0;
 int tAlive;
 int rate = 1;
+int instruct = 0;
 
 SoundFile kombat;
 SoundFile pew;
 SoundFile ouch;
 SoundFile laser;
 SoundFile boom;
+SoundFile heal;
 
 PImage imgStatic;
 
@@ -156,7 +159,11 @@ void mousePressed() {
   //setup();
   //}
   if (anim == 4) {
-    distMoon = 230000;
+    mouse4();
+    //CHEAT FOR ROCKET GAME
+    if (instruct == 8 && tAlive > -10) {
+      distMoon = 230000;
+    }
   }
   if (anim == 6) {
     mouse6();
@@ -1006,7 +1013,7 @@ void draw3() {
   if (counter3 > 160) {
     rvy -= counter3 / 3;
   }
-  Rocket rShake = new Rocket(rx, ry, 1);
+  Rocket rShake = new Rocket(rx, ry, 0.8);
   rShake.drawRocket();
   popMatrix();
 
@@ -1025,25 +1032,27 @@ void setup4() {
   rx = 300;
   ry = 500;
   rvx = rvy = 0;
-  tAlive = -40;
+
+  distMoon = 0;
+  tDead = 0;
+  tAlive = -80;
+  shield = 100;
   isGameOver = false;
   isGameStart = false;
-  shield = 100;
-  distMoon = 0;
+  
   asteroids.clear();
   pickups.clear();
   stars.clear();
   bullets.clear();
-
 
   //kombat = new SoundFile(this, "kombat.mp3");
   //pew = new SoundFile(this, "pew.mp3");
   //ouch = new SoundFile(this, "ouch.mp3");
   //laser = new SoundFile(this, "laser.mp3");
   //boom = new SoundFile(this, "boom.mp3");
+  //heal = new SoundFile(this, "heal.mp3");
 
-
-  for (int i = 0; i < 120; i++) {
+  for (int i = 0; i < 160; i++) {
     stars.add(new Star((int)random(0, width), (int)random(0, height)));
   }
 }
@@ -1055,43 +1064,18 @@ void draw4() {
   if (!isGameOver) {
     if (isGameStart) {
       if (distMoon < 240000) {
-        if (distMoon < 1) {
+        if (distMoon < 57) {
           //kombat.play();
         }
         distMoon += 57;
-        tDead = 0;
-        background(12, 34, 56);
 
+        background(12, 34, 56);
         for (Star s : stars) {
           s.drawStar();
           s.y = s.y + rate;
         }
 
-        //Logic for Shield
-        fill(0);
-        rect(13, 278, 13, 304);
-        noStroke();
-        if (shield <= 20) {
-          fill(255, 100, 0);
-        } else if (shield < 50 && shield > 20) {
-          fill(240, 240, 0);
-        } else {
-          fill(100, 255, 0);
-        }
-        rect(15, 280 - (shield - 100) * 3, 10, shield * 3);
-        if (shield > 100) {
-          int sh = shield - 100;
-          fill(160);
-          rect(15, 280 - sh * 3, 10, sh * 3);
-        }
-        textSize(14);
-        text("Shield Strength: " + shield, 5, height - 5);
-
-        //Distance Traveled
-        fill(255);
-        text("Distance Traveled: " + distMoon, 400, height - 5);
-        stroke(1);
-        fill(255);
+        roc.drawInfo();
 
         //Draw Pickups
         for (int q = 0; q < pickups.size(); q++) {
@@ -1118,7 +1102,7 @@ void draw4() {
         roc.drawRocket();
         rx += rvx;
         ry += rvy;
-        if (tAlive > 0) {
+        if (tAlive > -80) {
           if (random(0, 100) < 40) {
             stars.add(new Star((int)random(0, width), 0));
           }
@@ -1169,7 +1153,7 @@ void draw4() {
                     }
                   }
                   //drop nukes
-                  if (nukes == false && shield < 50 && random(1, 101) <= 7) {  //7% Chance
+                  if (nukes == false && shield < 50 && random(1, 101) <= 5) {  //5% Chance
                     pickups.add(new Pickup(a.x, a.y, 3));
                   }
 
@@ -1186,6 +1170,7 @@ void draw4() {
               if (p.doesCollide(roc)) {
                 //IF HEALTH
                 if (p.id == 1) {
+                  //heal.play();
                   if (shield < 120) {
                     shield += 30;
                   }
@@ -1221,30 +1206,83 @@ void draw4() {
         isGameComplete = true;
       }
     } else {
-      //PLACEHOLDER INSTRUCTIONS
       background(12, 34, 56);
+      for (Star s : stars) {
+        s.drawStar();
+        s.y += 1;
+      }
+      if (random(0, 100) < 40) {
+        stars.add(new Star((int)random(0, width), 0));
+      }
+      
+      roc.drawRocket();
+      roc.drawInfo();
+
+      textSize(20);
+      rect(77, 115, 437, 91, 9);
       fill(255);
-      stroke(0);
-      rect(150, 150, 300, 300);
+      if (instruct != 8) {
+        text("Click to continue.", 200, 310);
+      }
+
       fill(0);
-      textSize(16);
-      text("Tiger has to get to the moon", 155, 180);
-      text("so he can get his ball!", 155, 200);
-      text("Travel a distance of 240,000 miles", 155, 220);
-      text("while dodging asteroids.", 155, 240);
-      text("Use the arrow keys to move.", 155, 280);
-      text("Collect pickups for health", 155, 300);
-      text("and avoid the antimatter!", 155, 320);
-      text("Also, if you're low on health,", 155, 340);
-      text("look for nukes for help!", 155, 360);
-      Pickup p1 = new Pickup(400, 290, 1);
-      Pickup p2 = new Pickup(400, 320, 2);
-      Pickup p3 = new Pickup(400, 350, 3);
-      p1.drawPickup();
-      p2.drawPickup();
-      p3.drawPickup();
-      fill(0);
-      text("Press spacebar to start.", 155, 380);
+      if (instruct == 0) {
+        text("Tiger Woods must make it to the moon and", 85, 140);
+        text("retrieve his golf ball!", 85, 165);
+      }
+
+      if (instruct == 1) {
+        text("Travel a distance of 240,000 miles,", 85, 140);
+      }
+
+      if (instruct == 2) {
+        text("while dodging the asteroids.", 85, 140);
+        fill(100, 68);
+        stroke(0);
+        ellipse(350, 180, 50, 50);
+        Asteroid a = new Asteroid(350, 180, 1.75, PI / 3, 2);
+        a.drawAst();
+      }
+
+      if (instruct == 3) {
+        text("Use the arrow keys to move.", 85, 140);
+      }
+
+      if (instruct == 4) {
+        text("Collect health pickups to fix your shield,", 85, 140);
+        fill(100, 68);
+        stroke(0);
+        ellipse(350, 180, 50, 50);
+        Pickup p1 = new Pickup(350, 180, 1);
+        p1.drawPickup();
+      }
+      if (instruct == 5) {
+        text("or overheal,", 85, 140);
+        shield = 150;
+      }
+
+      if (instruct == 6) {
+        shield = 100;
+        text("and avoid picking up the antimatter!", 85, 140);
+        fill(100, 68);
+        stroke(0);
+        ellipse(350, 180, 50, 50);
+        Pickup p2 = new Pickup(350, 180, 2);
+        p2.drawPickup();
+      }
+
+      if (instruct == 7) {
+        text("Nukes will clear the screen.", 85, 140);
+        fill(100, 68);
+        stroke(0);
+        ellipse(350, 180, 50, 50);
+        Pickup p3 = new Pickup(350, 180, 3);
+        p3.drawPickup();
+      }
+
+      if (instruct == 8) {
+        text("Press spacebar to start.", 85, 140);
+      }
     }
   } else { //IF YOU LOSE THE GAME
     //kombat.stop();
@@ -1299,23 +1337,20 @@ void draw4() {
 void keyp4() {
   if (key == CODED) {
     if (keyCode == LEFT) {
-      rvx=-5;
+      rvx = -5;
     }
     if (keyCode == RIGHT) {
-      rvx=5;
+      rvx = 5;
     }
     if (keyCode == UP) {
-      rvy=-2;
+      rvy = -2;
     }
     if (keyCode == DOWN) {
-      rvy=5;
+      rvy = 5;
     }
   }
   if (keyCode == 32) {
-    if (!isGameStart) {
-      isGameStart = true;
-    }
-    if (!isGameOver && isGameStart) {
+    if (!isGameOver && isGameStart && !isGameComplete) {
       if (shield <= 100) {
         //pew.play();
         bullets.add(new Bullet((int)rx + 45, 10, 0));
@@ -1326,6 +1361,9 @@ void keyp4() {
         bullets.add(new Bullet((int)rx - 45, 10, 1));
       }
     }
+    if (!isGameStart && instruct == 8) {
+      isGameStart = true;
+    }
   }
   if (key == 'r' && tDead > 60) {
     anim--;
@@ -1333,6 +1371,7 @@ void keyp4() {
     setup();
   }
 }
+
 void keyr4() {
   if (key == CODED) {
     if (keyCode == LEFT) {
@@ -1355,6 +1394,12 @@ void keyr4() {
         rvy=2;
       }
     }
+  }
+}
+
+void mouse4() {
+  if (instruct < 8) {
+    instruct++;
   }
 }
 
@@ -1538,7 +1583,7 @@ void draw5() {
           fill(0);
           text("NEIL BEFORE", 320, 50);
           text("ME!!!", 320, 80);
-          if(cntr > 1190 && cntr < 1192) {
+          if (cntr > 1190 && cntr < 1192) {
             //pokeBattle.play();
           }
         }
