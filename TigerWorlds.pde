@@ -2100,6 +2100,9 @@ void draw6() {
   battle();
 }
 void mouse6() {
+  if(400<mouseX && 500>mouseX && 150<mouseY && 300> mouseY){
+      healthB=0;
+    }
   if (fstage==0) {
     if (310< mouseX && 440>mouseX && 480<mouseY && 535> mouseY) {
       fstage=1;
