@@ -587,8 +587,8 @@ void draw1() {
     }
   }
   //tear(202, 344, 1);
-  if(bx==160){
-      powerbar();
+  if (bx==160) {
+    powerbar();
   }
   tiger1(150, twy, .64, rLA, rLA2, rRA, rRA2, rLL, rLL2, rRL, rRL2, rH, rT);
   fill(250);
@@ -2100,9 +2100,9 @@ void draw6() {
   battle();
 }
 void mouse6() {
-  if(400<mouseX && 500>mouseX && 150<mouseY && 300> mouseY){
-      healthB=0;
-    }
+  if (400<mouseX && 500>mouseX && 150<mouseY && 300> mouseY) {
+    healthB=0;
+  }
   if (fstage==0) {
     if (310< mouseX && 440>mouseX && 480<mouseY && 535> mouseY) {
       fstage=1;
@@ -2529,7 +2529,11 @@ void battle() {
             }
             popMatrix();
           }
-          tiger6(137, 373, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+          if (bCounter>25) {
+            tiger6(137-bCounter%5, 373, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+          } else {
+            tiger6(137, 373, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+          }
         } else {
           fstage=0;
         }
