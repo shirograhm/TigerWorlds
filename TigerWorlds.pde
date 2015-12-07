@@ -76,6 +76,7 @@ float dir;
 float rRAB;
 float inc;
 SoundFile horn;
+SoundFile pokeBattle;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Page 6~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 float healthB = 120;
@@ -1138,7 +1139,7 @@ void draw4() {
               }
 
               if (a.doesCollide(roc)) {
-                //ouch.play();
+                ouch.play();
                 if (shield > 2) {
                   shield -= a.size;
                   roc.shieldOp = 80;
@@ -1231,27 +1232,13 @@ void draw4() {
       text("so he can get his ball!", 155, 220);
       text("Travel a distance of 240,000 miles", 155, 240);
       text("while dodging asteroids.", 155, 260);
-
       text("Use the arrow keys to move.", 155, 300);
-
       text("Collect pickups for health", 155, 320);
-      fill(120, 255, 150);//HEALTH
-      rect(400-10, 310-10, 20, 20, 4);
-      fill(200, 255, 220);
-      rect(400- 3, 310 - 8, 6, 16);
-      rect(400 - 8, 310 - 3, 16, 6);
-      fill(0);
       text("and avoid the antimatter!", 155, 340);
-      fill(150, 0, 150);//ANTIHEALTH
-      rect(400 - 10, 340 - 10, 20, 20, 4);
-      fill(200, 50, 200);
-      pushMatrix();
-      translate(400, 340);
-      rotate(PI / 4);
-      translate(-400, -340);
-      rect(400 - 3, 340 - 8, 6, 16);
-      rect(400 - 8, 340 - 3, 16, 6);
-      popMatrix();
+      Pickup p1 = new Pickup(400, 310, 1);
+      Pickup p2 = new Pickup(400, 340, 2);
+      p1.drawPickup();
+      p2.drawPickup();
       fill(0);
       text("Press spacebar to start.", 155, 360);
     }
@@ -1326,11 +1313,11 @@ void keyp4() {
     }
     if (!isGameOver && isGameStart) {
       if (shield <= 100) {
-        //pew.play();
+        pew.play();
         bullets.add(new Bullet((int)rx + 45, 10, 0));
         bullets.add(new Bullet((int)rx - 45, 10, 0));
       } else {
-        //laser.play();
+        laser.play();
         bullets.add(new Bullet((int)rx + 45, 10, 1));
         bullets.add(new Bullet((int)rx - 45, 10, 1));
       }
@@ -1398,7 +1385,8 @@ void setup5() {
   SM = 3;
   face = loadImage("face.png");
   back = loadImage("back.png");
-  //horn = new SoundFile(this, "horn.mp3");
+  horn = new SoundFile(this, "horn.mp3");
+  pokeBattle = new SoundFile(this, "pokeBattle.mp3");
   mtw = 0;
   buzz = loadImage("buzz.png");
   dxm = 0;
@@ -1442,20 +1430,19 @@ void draw5() {
     if (counter >= 150 && counter < 300) {
       background(180);
       if (counter == 150) {
-        //horn.play();
+        horn.play();
       }
       //tigerlegs(TX1 + 30, TY1 + 30, .25);
       spaceship_broken(TX1, TY1, PI/4, 2);
       TX1= TX1 - .5;
       TY1 = TY1 - .3;
-      //file.play();
     } else if (counter >= 300 && counter < 450) {
       background(0);
       TX1 = 300;
       TY1 = 250;
     } else if (counter >=450 && counter < 600) {
       if (counter == 450) {
-        //horn.play();
+        horn.play();
       }
       background(180);
       tigerlegs(TX1 + -200, TY1 + 100, .5, 51);
@@ -1467,7 +1454,7 @@ void draw5() {
       background(0);
     } else if (counter >= 750 && counter < 1000) {
       if (counter == 750) {
-        //horn.play();
+        horn.play();
       }
       moon(300, 300, SM);
       SM+= -.003;
@@ -1547,6 +1534,9 @@ void draw5() {
           fill(0);
           text("NEIL BEFORE", 320, 50);
           text("ME!!!", 320, 80);
+          if(cntr > 1190 && cntr < 1192) {
+            pokeBattle.play();
+          }
         }
 
         if (cntr >= 1300) {
@@ -2161,6 +2151,7 @@ void mouse6() {
 }
 void battle() {
   if (healthB<=0) {
+    pokeBattle.stop();
     fill(255);
     rect(0, 0, width, height);
     textSize(70);
@@ -2170,6 +2161,7 @@ void battle() {
     text("click to continue", width/4+30, height/2+100);
   } else {
     if (healthT <= 0) {
+      pokeBattle.stop();
       fill(255);
       rect(0, 0, width, height);
       textSize(50);
@@ -2229,7 +2221,7 @@ void battle() {
       text("HP", 400, 415);
       fill(0);
       textSize(10);
-      text(healthT +"/ 120", 500, 425);
+      text((int)healthT + "/120", 500, 425);
       fill(232, 227, 227);
       rect(0, 470, width, 130);
       //Interaction Bar
