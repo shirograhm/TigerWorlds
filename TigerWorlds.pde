@@ -458,11 +458,17 @@ void buzz(float tx, float ty, float S, float rLA, float rLA2, float rRA, float r
   scale(.35);
   translate(-200, -500);
   image(buzz, 0, 0);
-  fill(#B8F0EE);
+  fill(0);
   stroke(180);
-  strokeWeight(20);
-  ellipse(200, 250, 600, 600);
+  strokeWeight(50);
+  ellipse(200, 250, 550, 550);
   noStroke();
+  pushMatrix();
+  translate(50,200);
+  rotate(-1);
+  fill(255);
+  ellipse(0, 0, 120, 60);
+  popMatrix();
   popMatrix();
   popMatrix();
 
