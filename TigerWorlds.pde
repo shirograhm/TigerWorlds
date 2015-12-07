@@ -1034,13 +1034,13 @@ void setup4() {
   stars.clear();
   bullets.clear();
 
-  /*
+
   kombat = new SoundFile(this, "kombat.mp3");
-   pew = new SoundFile(this, "pew.mp3");
-   ouch = new SoundFile(this, "ouch.mp3");
-   laser = new SoundFile(this, "laser.mp3");
-   boom = new SoundFile(this, "boom.mp3");
-   */
+  pew = new SoundFile(this, "pew.mp3");
+  ouch = new SoundFile(this, "ouch.mp3");
+  laser = new SoundFile(this, "laser.mp3");
+  boom = new SoundFile(this, "boom.mp3");
+
 
   for (int i = 0; i < 120; i++) {
     stars.add(new Star((int)random(0, width), (int)random(0, height)));
@@ -1054,8 +1054,8 @@ void draw4() {
   if (!isGameOver) {
     if (isGameStart) {
       if (distMoon < 240000) {
-        if (distMoon == 0) {
-          //kombat.play();
+        if (distMoon < 1) {
+          kombat.play();
         }
         distMoon += 57;
         tDead = 0;
@@ -1194,7 +1194,7 @@ void draw4() {
 
                 //IF ANTIHEALTH
                 if (p.id == 2) {
-                  //ouch.play();
+                  ouch.play();
                   if (shield > 30) {
                     shield -= 30;
                   } else {
@@ -1206,7 +1206,7 @@ void draw4() {
 
                 //IF NUKE
                 if (p.id == 3) {
-                  //boom.play();
+                  boom.play();
                   if (asteroids.size() > 0) {
                     asteroids.clear();
                   }
@@ -1227,19 +1227,36 @@ void draw4() {
       rect(150, 150, 300, 300);
       fill(0);
       textSize(16);
+      text("Tiger has to get to the moon", 155, 200);
+      text("so he can get his ball!", 155, 220);
+      text("Travel a distance of 240,000 miles", 155, 240);
+      text("while dodging asteroids.", 155, 260);
 
-      text("Welcome to \"Tiger Moons\"", 205, 220);
-      text("Travel a distance of 240,000 miles", 205, 240);
-      text("while dodging asteroids.", 205, 260);
+      text("Use the arrow keys to move.", 155, 300);
 
-      text("Use the arrow keys to move.", 205, 300);
-
-      text("Collect pickups for health", 205, 320);
-      text("and avoid the antimatter!", 205, 340);
-      text("Press spacebar to start.", 205, 360);
+      text("Collect pickups for health", 155, 320);
+      fill(120, 255, 150);//HEALTH
+      rect(400-10, 310-10, 20, 20, 4);
+      fill(200, 255, 220);
+      rect(400- 3, 310 - 8, 6, 16);
+      rect(400 - 8, 310 - 3, 16, 6);
+      fill(0);
+      text("and avoid the antimatter!", 155, 340);
+      fill(150, 0, 150);//ANTIHEALTH
+      rect(400 - 10, 340 - 10, 20, 20, 4);
+      fill(200, 50, 200);
+      pushMatrix();
+      translate(400, 340);
+      rotate(PI / 4);
+      translate(-400, -340);
+      rect(400 - 3, 340 - 8, 6, 16);
+      rect(400 - 8, 340 - 3, 16, 6);
+      popMatrix();
+      fill(0);
+      text("Press spacebar to start.", 155, 360);
     }
   } else { //IF YOU LOSE THE GAME
-    //kombat.stop();
+    kombat.stop();
     shield = -10;
     distMoon = 0;
     tAlive = -40;
@@ -1272,7 +1289,7 @@ void draw4() {
 
   //IF YOU WIN THE GAME
   if (isGameComplete) {
-    //kombat.stop();
+    kombat.stop();
     tAlive = -40;
     asteroids.clear();
     background(random(255), random(255), random(255));
