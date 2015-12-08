@@ -127,6 +127,9 @@ SoundFile orshould;
 SoundFile oh;
 SoundFile iguess;
 SoundFile anywho;
+SoundFile whack;
+SoundFile buzzhurt;
+SoundFile tjump;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Page 9~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ArrayList<Credit> creds = new ArrayList<Credit>();
 SoundFile credits;
@@ -189,10 +192,7 @@ void draw() {
 void mousePressed() {
   if (anim == 4) {
     mouse4();
-    //CHEAT FOR ROCKET GAME
-    if (instruct == 8 && tAlive > -10) {
-      distMoon = 230000;
-    }
+    distMoon = 230000;
   }
   if (anim == 6) {
     mouse6();
@@ -291,7 +291,7 @@ void startscreen() {
 
 
 void tiger(float tx, float ty, float S, float rLA, float rLA2, float rRA, float rRA2, float rLL, float rLL2, float rRL, float rRL2, float rH, float rT) {
-
+  noStroke();
   pushMatrix();
 
   translate(tx, ty);
@@ -437,7 +437,7 @@ void tiger(float tx, float ty, float S, float rLA, float rLA2, float rRA, float 
 
 
 void buzz(float tx, float ty, float S, float rLA, float rLA2, float rRA, float rRA2, float rLL, float rLL2, float rRL, float rRL2, float rH, float rT) {
-
+  noStroke();
   pushMatrix();
 
   translate(tx, ty);
@@ -671,7 +671,6 @@ void draw1() {
         }
 
         if ( rLA2 < -13) {
-          golfback.stop();
           if (bx == 160) {
             golfhit.play();
           }
@@ -686,6 +685,7 @@ void draw1() {
       }
       if (bx > 1800 && bx < 6000) {
         if (bx < 1815) {
+          golfback.stop();
           chariots.play();
         }
         part2();
@@ -1047,7 +1047,6 @@ void drawCloud(float tx, float ty, float scaleF) {
 
 // Page 3
 void setup3() {
-  chariots.stop();
   blastoff = new SoundFile(this, "blastoff.mp3");
   rx = 300;
   ry = 400;
@@ -1058,7 +1057,8 @@ void setup3() {
 }
 
 void draw3() {
-  if (counter3 > 100 && counter3 < 102) {
+  if (counter3 > 99 && counter3 < 101) {
+    chariots.stop();
     blastoff.play();
   }
   background(150);
@@ -1126,9 +1126,6 @@ void draw4() {
   if (!isGameOver) {
     if (isGameStart) {
       if (distMoon < 240000) {
-        if (distMoon < 57) {
-          kombat.play();
-        }
         distMoon += 57;
 
         background(12, 34, 56);
@@ -1480,6 +1477,9 @@ void keyr4() {
 }
 
 void mouse4() {
+  if (instruct == 7) {
+    kombat.play();
+  }
   if (instruct < 8) {
     instruct++;
   }
@@ -1593,11 +1593,11 @@ void draw5() {
       moon(300, 300, SM);
       SM+= -.003;
     } else if (counter >= 1000 && counter < 1200) {
-      background(0);
-    } else if (counter >= 1200) {
-      if (counter < 1202) {
+      if (counter < 1001) {
         moonAmbi.play();
       }
+      background(0);
+    } else if (counter >= 1200) {
       background(180);
       cntr = cntr + 1;
       int rotationH = 0;
@@ -1689,6 +1689,7 @@ void draw5() {
             rect(600, 15+i*30, -inc, 15);
           }
           if (cntr > 1500) {
+            cntr = 1300;
             anim++;
             setup();
           }
@@ -2346,7 +2347,6 @@ void battle() {
     text("click to continue", width/4+30, height/2+100);
   } else {
     if (healthT <= 0) {
-      pokeBattle.stop();
       fill(255);
       rect(0, 0, width, height);
       textSize(50);
@@ -3105,19 +3105,23 @@ void setup8() {
   qdx = 0;
   qdy = 0;
   inc2 = 0;
-
+  pokeBattle.stop();
   sadexcuse = new SoundFile(this, "sad excuse.mp3");
   orshould = new SoundFile (this, "or should i.mp3");
   oh = new SoundFile(this, "oh.mp3");
   iguess = new SoundFile(this, "I guess.mp3");
   anywho = new SoundFile(this, "anywho.mp3");
+  buzzhurt = new SoundFile(this, "buzzhurt.mp3");
+  tjump = new SoundFile(this, "tjump.mp3");
+  whack = new SoundFile(this, "whack.mp3");
+  credits = new SoundFile(this, "creditSong.mp3");
 }
 void draw8() {
-  if (cntr == 0) {
-    moonAmbi.play();
-  }
   cntr++;
-  if ( cntr >= 1500) {
+  if ( cntr >= 1300) {
+    if (cntr < 1302) {
+      moonAmbi.play();
+    }
     background(134);
 
     spaceship_broken(TX1 - 96, TY1, -2, 1.8);
@@ -3138,7 +3142,7 @@ void draw8() {
     text("Buzz", 280, 90);
   }
   if (cntr >= 1750 && cntr < 1900) {
-    if (cntr < 1752) {
+    if (cntr < 1751) {
       orshould.play();
     }
     textSize(18);
@@ -3152,6 +3156,9 @@ void draw8() {
     if (cntr < 1920) {
       qwe = qwe + 2;
     } else if (cntr < 1940) {
+      if (cntr == 1941) {
+        tjump.play();
+      }
       qwe = qwe - 2;
     } else if (cntr >= 1940 && cntr < 2067) {
       qw = qw + 1.1;
@@ -3163,12 +3170,18 @@ void draw8() {
     }
 
     if (cntr >= 2067 && cntr < 2107) {
+      if (cntr < 2068) {
+        buzzhurt.play();
+      }
       qax= qax -2;
     }
     if (cntr >= 2107 && cntr < 2147) {
       qax = qax + 2;
     }
     if (cntr >= 2140) {
+      if (cntr < 2141) {
+        whack.play();
+      }
       qdx = qdx + 20;
       qdy = qdy + 20;
     }
@@ -3203,6 +3216,10 @@ void draw8() {
     }
 
     if (cntr >= 2780) {
+      if (cntr < 2781) {
+        moonAmbi.stop();
+        credits.play();
+      }
       inc2 = inc2 + 4;
       for (int i=0; i < 20; i++) {
         rect(0, i*30, inc2, 15);
@@ -3215,12 +3232,7 @@ void draw8() {
   if (cntr >= 3000) {
     counter8++;
   }
-
-
-
   if (counter8 > 1) {
-
-
     stroke(0);
     background(12, 34, 56);
   }
@@ -3228,6 +3240,7 @@ void draw8() {
     pushMatrix();
     translate(0, 200);
     //Moon ground
+    strokeWeight(1);
     fill(128);
     ellipse(300, 520, 1200, 750);
 
@@ -3408,32 +3421,35 @@ void spaceshipbuzz(float x, float y) {
 //Page 9
 
 void setup9() {
-  credits = new SoundFile(this, "creditSong.mp3");
-  credits.play();
-  int start = 800;
-  
-  creds.add(new Credit("TIGER WORLDS", 50, 620, 65));
+  int start = 900;
+
+  creds.add(new Credit("TIGER WORLDS", 50, 720, 65));
   creds.add(new Credit("Starring: ", 50, start, 20));
   creds.add(new Credit("salamisounds.de", 50, start + 30, 20));
   creds.add(new Credit("youtube-mp3.org", 50, start + 60, 20));
   creds.add(new Credit("Tiger Woods", 50, start + 90, 20));
   creds.add(new Credit("Buzz Aldrin", 50, start + 120, 20));
-  creds.add(new Credit("youtube-mp3.org", 50, start + 150, 20));
-  creds.add(new Credit("Tiger Woods", 50, start + 180, 20));
+  creds.add(new Credit("Xavier Graham", 50, start + 150, 20));
+  creds.add(new Credit("Evin Killian", 50, start + 180, 20));
+  creds.add(new Credit("Jake Territo", 50, start + 210, 20));
+  creds.add(new Credit("Jake Roberts", 50, start + 240, 20));
+  creds.add(new Credit("Ryan Cook", 50, start + 270, 20));
 
   creds.add(new Credit("launch.play();", 420, start + 30, 20));
   creds.add(new Credit("assorted noise;", 420, start + 60, 20));
   creds.add(new Credit("Tiger Woods;", 420, start + 90, 20));
   creds.add(new Credit("Buzz Aldrin", 420, start + 120, 20));
-  creds.add(new Credit("youtube-mp3.org", 50, start + 150, 20));
-  creds.add(new Credit("Tiger Woods", 50, start + 180, 20));
-  
-  tiger(200, ty, 1, rLA, rLA2, rRA, rRA2, rLL, rLL2, rRL, rRL2, rH, rT);
+  creds.add(new Credit("Potato", 420, start + 150, 20));
+  creds.add(new Credit("Celery", 420, start + 180, 20));
+  creds.add(new Credit("Broccoli", 420, start + 210, 20));
+  creds.add(new Credit("Squash", 420, start + 240, 20));
+  creds.add(new Credit("The explosion", 420, start + 270, 20));
 }
 
 void draw9() {
   background(0);
-
+  tiger(200, ty, 1, rLA, rLA2, rRA, rRA2, rLL, rLL2, rRL, rRL2, rH, rT);
+  buzz(400, ty, 1, rLA, rLA2, rRA, rRA2, rLL, rLL2, rRL, rRL2, rH, rT);
   for (Credit c : creds) {
     c.drawCredit();
     c.y -= 0.75;

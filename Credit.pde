@@ -12,6 +12,7 @@ class Credit {
   }
   
   void drawCredit() {
+    fill(255);
     textSize(size);
     text(txt, x, y);
   }
