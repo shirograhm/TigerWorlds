@@ -1948,7 +1948,7 @@ void tiger5(float tx, float ty, float S, float rLA, float rLA2, float rRA, float
     translate(-60, -140);
     image(face, 0, 0);
   } else {
-    translate(-110, -433);
+    translate(-95, -433);
     translate(60, 140);
     rotate(radians(rH));
     scale(.50);
@@ -2916,7 +2916,7 @@ void tiger6(float tx, float ty, float S, float rLA, float rLA2, float rRA, float
   rotate(radians(rLA2));
   translate(70, 100);
 
-  fill(73, 50, 42);
+  fill(165, 104, 57);
   rect(-85, -100, 30, 100);
 
 
@@ -2940,7 +2940,7 @@ void tiger6(float tx, float ty, float S, float rLA, float rLA2, float rRA, float
   rotate(radians(rRA2));
   translate(-70, 100);
 
-  fill(73, 50, 42);
+  fill(165, 104, 57);
   rect(55, -100, 30, 100);
 
   popMatrix();
@@ -3010,7 +3010,7 @@ void draw8() {
   cntr++;
   if ( cntr >= 1500) {
     background(134);
-
+    strokeWeight(1);
     spaceship_broken(TX1 - 96, TY1, -2, 1.8);
     if (cntr < 1900) {
       tiger5(344, 206, .35, 26, -28, -60, 0, 0, 0, 0, 0, 6, 0, 0);
