@@ -140,9 +140,12 @@ class Rocket extends Object {
     if (x > width - 120) {
       rx = width - 120;
     }
-    if (y < 80) {
-      ry = 80;
+    if (!isGameComplete) {
+      if (y < 80) {
+        ry = 80;
+      }
     }
+
     if (y > 500) {
       ry = 500;
     }
