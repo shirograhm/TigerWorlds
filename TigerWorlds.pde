@@ -3013,6 +3013,7 @@ void draw8() {
     strokeWeight(1);
     spaceship_broken(TX1 - 96, TY1, -2, 1.8);
     if (cntr < 1900) {
+      noStroke();
       tiger5(344, 206, .35, 26, -28, -60, 0, 0, 0, 0, 0, 6, 0, 0);
     }
     buzz5(450, 256, .35, 38, -68, -36, -112, 2, 72, -36, 18, -32, -4 - qaz, -2, 82, qdx, qdy);
@@ -3031,6 +3032,7 @@ void draw8() {
   }
 
   if (cntr >=1900) {
+    noStroke();
     tiger5(344 + qw, 206 + qwe * .5 - qwer8, .35, 26, -28, -60 + qax, 0 + qax, 0 + qwe, 0 - qwe, 0 - qwe, 0 + qwe, 6, 0, 0);
     if (cntr < 1920) {
       qwe = qwe + 2;
