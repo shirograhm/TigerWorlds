@@ -2585,10 +2585,10 @@ void battle() {
           if (bCounter<25) {
             buzz6(450, 200, .5, 1+bCounter*1.5, 1+bCounter*1, 1, 1, 1, 1, 1, 1, 1, 1);
           } else {
-            if (healthTo-30<1) {
+            if (healthTo-50<1) {
               healthT-= healthTo/85;
             } else {
-              healthT-=.316;
+              healthT-=.52;
             }
             //beam
             pushMatrix();
@@ -2666,10 +2666,10 @@ void battle() {
           text("Buzz used TAG TEAM!", 30, 550);
           if (bCounter>70) {
             tiger6(137-bCounter%3, 373, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
-            if (healthTo-48<1) {
+            if (healthTo-30<1) {
               healthT-= healthTo/40;
             } else {
-              healthT-=1;
+              healthT-=.6;
             }
           } else {
             tiger6(137, 373, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
