@@ -1464,7 +1464,7 @@ void setup5() {
 void draw5() {
   background(12, 34, 56);
   fill(128);
-  moon(450, 150, 1+(tx5/40));
+  moon(450, 150, 1+(tx5*tx5/10000));
   if (t2 <= 1250) {
     spaceship5(150+5*sin(tx5), 450+5*sin(ty5));
   } else if (t2 >= 1275 && t2 <= 1300) {
