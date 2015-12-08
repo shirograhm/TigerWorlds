@@ -15,6 +15,7 @@ float ADH = 1;
 float ADT = 1;
 PImage face;
 PImage buzz;
+SoundFile opening;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Page 1~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 float p;
@@ -32,12 +33,17 @@ float bx3, by3;
 float ttx, tty, tS;
 float bS;
 int spacestop=0;
+
+SoundFile golfhit;
+SoundFile golfback;
+SoundFile chariots;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Page 2~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Page 3~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 float rx, ry, rvx, rvy;
 float counter3;
 
+SoundFile blastoff;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Page 4~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 int count4 = 0;
 
@@ -79,7 +85,11 @@ float dir;
 float rRAB;
 float inc;
 
+SoundFile rocketfly;
 SoundFile horn;
+SoundFile moonAmbi;
+SoundFile buzzSpeak;
+SoundFile exclamation;
 SoundFile pokeBattle;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Page 6~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -92,6 +102,12 @@ PImage buzzL;
 int bCounter = 0;
 float healthTo, healthBo;
 int miss;
+
+SoundFile stopgivingup;
+SoundFile pokeCena;
+SoundFile pokeHeal;
+SoundFile buzzLight;
+SoundFile hyperbeam;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Page 7~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Page 8~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -106,6 +122,17 @@ float qax;
 float qdx, qdy;
 float inc2;
 
+SoundFile sadexcuse;
+SoundFile orshould;
+SoundFile oh;
+SoundFile iguess;
+SoundFile anywho;
+SoundFile whack;
+SoundFile buzzhurt;
+SoundFile tjump;
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Page 9~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ArrayList<Credit> creds = new ArrayList<Credit>();
+SoundFile credits;
 
 void setup() {
   size(600, 600);
@@ -130,6 +157,8 @@ void setup() {
     setup();
   } else if (anim == 8) {
     setup8();
+  } else if (anim == 9) {
+    setup9();
   }
 }
 
@@ -151,26 +180,19 @@ void draw() {
   } else if (anim == 7) {
   } else if (anim == 8) {
     draw8();
+  } else if (anim == 9) {
+    draw9();
   }
-  if (anim > 8) {
-    anim = 0;
-    setup();
+  if (anim > 9) {
+    noLoop();
+    //credits.stop();
   }
 }
 
 void mousePressed() {
-  //anim++;
-  //setup();
-  //if (anim > 6) {
-  //anim = 0;
-  //setup();
-  //}
   if (anim == 4) {
     mouse4();
-    //CHEAT FOR ROCKET GAME
-    if (instruct == 8 && tAlive > -10) {
-      distMoon = 230000;
-    }
+    //distMoon = 230000;
   }
   if (anim == 6) {
     mouse6();
@@ -197,6 +219,9 @@ void keyReleased() {
 
 // Page 0
 void setup0() {
+  //golfback = new SoundFile(this, "golfback.mp3");
+  //opening = new SoundFile(this, "opening.mp3");
+  //opening.play();
   noStroke();
   ty = 580;
   face = loadImage("face.png");
@@ -206,6 +231,7 @@ void draw0() {
   startscreen();
 }
 void keyp0() {
+  //golfback.play();
   anim++;
   setup();
 }
@@ -265,7 +291,7 @@ void startscreen() {
 
 
 void tiger(float tx, float ty, float S, float rLA, float rLA2, float rRA, float rRA2, float rLL, float rLL2, float rRL, float rRL2, float rH, float rT) {
-
+  noStroke();
   pushMatrix();
 
   translate(tx, ty);
@@ -411,7 +437,7 @@ void tiger(float tx, float ty, float S, float rLA, float rLA2, float rRA, float 
 
 
 void buzz(float tx, float ty, float S, float rLA, float rLA2, float rRA, float rRA2, float rLL, float rLL2, float rRL, float rRL2, float rH, float rT) {
-
+  noStroke();
   pushMatrix();
 
   translate(tx, ty);
@@ -464,7 +490,7 @@ void buzz(float tx, float ty, float S, float rLA, float rLA2, float rRA, float r
   ellipse(200, 250, 550, 550);
   noStroke();
   pushMatrix();
-  translate(50,200);
+  translate(50, 200);
   rotate(-1);
   fill(255);
   ellipse(0, 0, 120, 60);
@@ -566,6 +592,9 @@ void buzz(float tx, float ty, float S, float rLA, float rLA2, float rRA, float r
 }
 // Page 1
 void setup1() {
+  //golfhit = new SoundFile(this, "golfhit.mp3");
+  //chariots = new SoundFile(this, "chariots.mp3");
+  //opening.stop();
   pv=10;
   golf = loadImage("golf.jpg");
   golf.loadPixels();
@@ -601,8 +630,8 @@ void setup1() {
 void draw1() {
   spacestop++;
   background(255);
-  for (int y=3; y<golf.height-3; y+=6) {
-    for (int x=3; x<golf.width-3; x+=6) {
+  for (int y = 3; y < golf.height-3; y+=6) {
+    for (int x = 3; x < golf.width-3; x+=6) {
       int loc = x + golf.width*y;
       noStroke();
       fill(golf.pixels[loc]);
@@ -610,7 +639,7 @@ void draw1() {
     }
   }
   //tear(202, 344, 1);
-  if (bx==160) {
+  if (bx == 160) {
     powerbar();
   }
   tiger1(150, twy, .64, rLA, rLA2, rRA, rRA2, rLL, rLL2, rRL, rRL2, rH, rT);
@@ -642,6 +671,9 @@ void draw1() {
         }
 
         if ( rLA2 < -13) {
+          if (bx == 160) {
+            //golfhit.play();
+          }
           bx = bx + 15;
           by-= 13;
           if (rH > -32) {
@@ -652,6 +684,10 @@ void draw1() {
         }
       }
       if (bx > 1800 && bx < 6000) {
+        if (bx < 1815) {
+          //golfback.stop();
+          //chariots.play();
+        }
         part2();
       }
 
@@ -701,6 +737,9 @@ void draw1() {
       } else {
         bS = 0;
       }
+      if (bx3 > 600) {
+        starthing(475, 225);
+      }
       if (bx3 > 1000) {
         anim++;
         setup();
@@ -708,7 +747,7 @@ void draw1() {
       ellipse(bx3, by3, bS, bS);
     }
   }
-  if (space==false) {
+  if (space == false) {
     textSize(20);
     fill(0);
     text("Press and hold SPACE to charge your swing", 50, 100);
@@ -1008,6 +1047,7 @@ void drawCloud(float tx, float ty, float scaleF) {
 
 // Page 3
 void setup3() {
+  //blastoff = new SoundFile(this, "blastoff.mp3");
   rx = 300;
   ry = 400;
   rvx = 0;
@@ -1017,6 +1057,10 @@ void setup3() {
 }
 
 void draw3() {
+  if (counter3 > 99 && counter3 < 101) {
+    //chariots.stop();
+    //blastoff.play();
+  }
   background(150);
   fill(#0DB4FF);
   rect(0, 0, 600, 360);
@@ -1068,6 +1112,7 @@ void setup4() {
   //laser = new SoundFile(this, "laser.mp3");
   //boom = new SoundFile(this, "boom.mp3");
   //heal = new SoundFile(this, "heal.mp3");
+  //rocketfly = new SoundFile(this, "rocketfly.mp3");
 
   for (int i = 0; i < 160; i++) {
     stars.add(new Star((int)random(0, width), (int)random(0, height)));
@@ -1081,9 +1126,6 @@ void draw4() {
   if (!isGameOver) {
     if (isGameStart) {
       if (distMoon < 240000) {
-        if (distMoon < 57) {
-          //kombat.play();
-        }
         distMoon += 57;
 
         background(12, 34, 56);
@@ -1305,7 +1347,7 @@ void draw4() {
     //kombat.stop();
     shield = -10;
     distMoon = 0;
-    tAlive = -40;
+    tAlive = -80;
     if (tDead < 20) {
       staticScreen();
     }
@@ -1336,17 +1378,37 @@ void draw4() {
   //IF YOU WIN THE GAME
   if (isGameComplete) {
     //kombat.stop();
-    tAlive = -40;
-    asteroids.clear();
-    background(random(255), random(255), random(255));
+    background(12, 34, 56);
+    tAlive = -80;
+    for (Star s : stars) {
+      s.drawStar();
+      s.y += 1;
+    }
+    if (random(0, 100) < 40) {
+      stars.add(new Star((int)random(0, width), 0));
+    }
+    for (int i = 0; i < asteroids.size(); i++) {
+      Asteroid a = asteroids.get(i);
+      a.drawAst();
+
+      if (a.y < height + 25) {
+        a.y += 5 / a.size;
+      } else {
+        asteroids.remove(a);
+      }
+    }
+
     roc.drawRocket();
-    fill(0);
-    textSize(20);
-    text("YOU WIN", random(100, 300), random(100, 300));
-    count4++;
-    if (count4 > 20) {
+    if (count4 > 100) {
+      ry -= 10;
+    }
+    if (ry < -100) {
       anim++;
       setup();
+    }
+    count4++;
+    if (count4 < 2) {
+      //rocketfly.play();
     }
   }
 }
@@ -1415,6 +1477,9 @@ void keyr4() {
 }
 
 void mouse4() {
+  if (instruct == 7) {
+    //kombat.play();
+  }
   if (instruct < 8) {
     instruct++;
   }
@@ -1451,7 +1516,11 @@ void setup5() {
   SM = 3;
   face = loadImage("face.png");
   back = loadImage("back.png");
+
   //horn = new SoundFile(this, "horn.mp3");
+  //moonAmbi = new SoundFile(this, "moonAmbi.mp3");
+  //buzzSpeak = new SoundFile(this, "buzzSpeak.mp3");
+  //exclamation = new SoundFile(this, "exclamation.mp3");
   //pokeBattle = new SoundFile(this, "pokeBattle.mp3");
   mtw = 0;
   buzz = loadImage("buzz.png");
@@ -1464,15 +1533,9 @@ void setup5() {
 void draw5() {
   background(12, 34, 56);
   fill(128);
-  moon(450, 150, 1+(tx5*tx5/10000));
-  if (t2 <= 1250) {
+  moon(450, 150, 1+((tx5 * tx5)/10000));
+  if (t2 <= 1050) {
     spaceship5(150+5*sin(tx5), 450+5*sin(ty5));
-  } else if (t2 >= 1275 && t2 <= 1300) {
-    spaceship5(150, 450);
-  } else if (t2 >= 1325 && t2 <= 1350) {
-    spaceship5(150, 450);
-  } else if (t2 >= 1375 && t2 <= 1400) {
-    spaceship5(150, 450);
   }
   if (t <= 950) {
     t+=2;
@@ -1484,13 +1547,18 @@ void draw5() {
   if (t == 950) {
     t2 = 951;
   }
-  if (t2 > 950 && t2 <= 1250) {
+  if (t2 > 950 && t2 <= 1050) {
+    //rocketfly.stop();
+    if (t2 < 952) {
+      //boom.play();
+    }
     t2++;
     explosion(150, 450);
     explosion(150, 450);
-  } else if (t2 > 1250) {
+  } else if (t2 > 1050) {
     t2++;
 
+    //boom.stop();
     background(0);
     counter++;
 
@@ -1499,7 +1567,6 @@ void draw5() {
       if (counter == 150) {
         //horn.play();
       }
-      //tigerlegs(TX1 + 30, TY1 + 30, .25);
       spaceship_broken(TX1, TY1, PI/4, 2);
       TX1= TX1 - .5;
       TY1 = TY1 - .3;
@@ -1526,6 +1593,9 @@ void draw5() {
       moon(300, 300, SM);
       SM+= -.003;
     } else if (counter >= 1000 && counter < 1200) {
+      if (counter < 1001) {
+        //moonAmbi.play();
+      }
       background(0);
     } else if (counter >= 1200) {
       background(180);
@@ -1585,6 +1655,9 @@ void draw5() {
 
 
         if (cntr >= 750 && cntr < 900) {
+          if (cntr < 752) {
+            //buzzSpeak.play();
+          }
           textSize(14);
           fill(0);
           text("Hello, Tiger Woods...", 280, 50);
@@ -1603,6 +1676,7 @@ void draw5() {
           text("ME!!!", 320, 80);
           if (cntr > 1190 && cntr < 1192) {
             //pokeBattle.play();
+            //moonAmbi.stop();
           }
         }
 
@@ -1615,6 +1689,7 @@ void draw5() {
             rect(600, 15+i*30, -inc, 15);
           }
           if (cntr > 1500) {
+            cntr = 1300;
             anim++;
             setup();
           }
@@ -1625,6 +1700,7 @@ void draw5() {
 }
 
 void spaceship_broken(float x, float y, float r, float S) {
+  strokeWeight(1);
   pushMatrix();
   translate(x, y);
   rotate(r);
@@ -1732,6 +1808,7 @@ void spaceship_broken(float x, float y, float r, float S) {
 }
 
 void moon(float cx, float cy, float s) {
+  strokeWeight(1);
   pushMatrix();
   translate(cx, cy);
   scale(s);
@@ -1942,6 +2019,9 @@ void tiger5(float tx, float ty, float S, float rLA, float rLA2, float rRA, float
 
   pushMatrix();
   if (cntr > 600) {
+    if (cntr < 602) {
+      //exclamation.play();
+    }
     translate(-60, -360);
     translate(60, 140);
     rotate(radians(rH));
@@ -2200,6 +2280,11 @@ void setup6() {
   buzz = loadImage("buzz.png");
   cena = loadImage("cena.png");
   buzzL = loadImage("buzzL.png");
+  //stopgivingup = new SoundFile(this, "stopgivingup.mp3");
+  //pokeCena = new SoundFile(this, "cenamove.mp3");
+  //pokeHeal = new SoundFile(this, "pokeHeal.mp3");
+  //hyperbeam = new SoundFile(this, "hyperbeam.mp3");
+  //buzzLight = new SoundFile(this, "buzzLight.mp3");
 }
 void draw6() {
   battle();
@@ -2210,6 +2295,7 @@ void mouse6() {
   }
   if (fstage==0) {
     if (310< mouseX && 440>mouseX && 480<mouseY && 535> mouseY) {
+      //pokeCena.play();
       fstage=1;
       miss = int(random(0, 3));
       bCounter = 0;
@@ -2217,18 +2303,20 @@ void mouse6() {
       healthTo=healthT;
     }
     if (310< mouseX && 440>mouseX && 540<mouseY && 595> mouseY) {
+      //pokeHeal.play();
       fstage=2;
       bCounter = 0;
       healthBo=healthB;
       healthTo=healthT;
     }
-    if ( 445 < mouseX && 575>mouseX && 480<mouseY &&535 >mouseY) {
+    if (445 < mouseX && 575>mouseX && 480<mouseY &&535 >mouseY) {
+      //stopgivingup.play();
       fstage=3;
       bCounter = 0;
       healthBo=healthB;
       healthTo=healthT;
     }
-    if (  445 < mouseX && 575>mouseX && 540<mouseY &&595 >mouseY) {
+    if (445 < mouseX && 575>mouseX && 540<mouseY &&595 >mouseY) {
       fstage=4;
       miss = int(random(0, 8));
       bCounter = 0;
@@ -2259,7 +2347,6 @@ void battle() {
     text("click to continue", width/4+30, height/2+100);
   } else {
     if (healthT <= 0) {
-      //pokeBattle.stop();
       fill(255);
       rect(0, 0, width, height);
       textSize(50);
@@ -2358,6 +2445,7 @@ void battle() {
         text("HEAL", 355, 570);
 
         if ( 445 < mouseX && 575>mouseX && 480<mouseY &&535 >mouseY) {
+
           fill(243, 243, 32);
         } else {
           fill(232, 164, 26);
@@ -2476,6 +2564,9 @@ void battle() {
           fill(0);
           textSize(40);
           text("Tiger used FIST OF FURY!", 30, 550);
+          if (bCounter == 100) {
+            //ouch.play();
+          }
           if (bCounter>100) {
             buzz6(450-bCounter%5, 200, .5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
             pushMatrix();
@@ -2551,6 +2642,9 @@ void battle() {
       if (fstage==5) {
         bCounter++;
         if (bCounter < 120) {
+          if (bCounter < 2) {
+            //pokeHeal.play();
+          }
           fill(255, 221, 23);
           rect(10, 480, 550, 110, PI);
           fill(95, 93, 80);
@@ -2588,7 +2682,7 @@ void battle() {
             if (healthTo-50<1) {
               healthT-= healthTo/85;
             } else {
-              healthT-=.52;
+              healthT-=.51;
             }
             //beam
             pushMatrix();
@@ -2607,6 +2701,9 @@ void battle() {
             rect(0, 0, 175, 9);
             popMatrix();
             buzz6(450, 200, .5, 1+25*1.5, 1+25, 1, 1, 1, 1, 1, 1, 1, 1);
+            if (bCounter == 25) {
+              //hyperbeam.play();
+            }
             //lasergun
             pushMatrix();
             translate(350, 150);
@@ -2647,6 +2744,9 @@ void battle() {
       }
       if (fstage==7) {
         bCounter++;
+        if (bCounter < 2) {
+          //buzzLight.play();
+        }
         if (bCounter < 120) {
           buzz6(450, 200, .5, 1+bCounter*.75, 1+bCounter*.5, 1, 1, 1, 1, 1, 1, 1, 1);
           fill(255, 221, 23);
@@ -2849,7 +2949,7 @@ void buzz6(float tx, float ty, float S, float rLA, float rLA2, float rRA, float 
 
 
 void tiger6(float tx, float ty, float S, float rLA, float rLA2, float rRA, float rRA2, float rLL, float rLL2, float rRL, float rRL2, float rH, float rT) {
-
+  noStroke();
   pushMatrix();
 
   translate(tx, ty);
@@ -3005,12 +3105,25 @@ void setup8() {
   qdx = 0;
   qdy = 0;
   inc2 = 0;
+  //pokeBattle.stop();
+  //sadexcuse = new SoundFile(this, "sad excuse.mp3");
+  //orshould = new SoundFile (this, "or should i.mp3");
+  //oh = new SoundFile(this, "oh.mp3");
+  //iguess = new SoundFile(this, "I guess.mp3");
+  //anywho = new SoundFile(this, "anywho.mp3");
+  //buzzhurt = new SoundFile(this, "buzzhurt.mp3");
+  //tjump = new SoundFile(this, "tjump.mp3");
+  //whack = new SoundFile(this, "whack.mp3");
+  //credits = new SoundFile(this, "creditSong.mp3");
 }
 void draw8() {
   cntr++;
-  if ( cntr >= 1500) {
+  if ( cntr >= 1300) {
+    if (cntr < 1302) {
+      //moonAmbi.play();
+    }
     background(134);
-    strokeWeight(1);
+
     spaceship_broken(TX1 - 96, TY1, -2, 1.8);
     if (cntr < 1900) {
       noStroke();
@@ -3019,6 +3132,9 @@ void draw8() {
     buzz5(450, 256, .35, 38, -68, -36, -112, 2, 72, -36, 18, -32, -4 - qaz, -2, 82, qdx, qdy);
   }
   if (cntr >= 1500 && cntr < 1750) {  
+    if (cntr < 1502) {
+      //sadexcuse.play();
+    }
     textSize(18);
     fill(0);
     text("You are a sad", 280, 50);
@@ -3026,6 +3142,9 @@ void draw8() {
     text("Buzz", 280, 90);
   }
   if (cntr >= 1750 && cntr < 1900) {
+    if (cntr < 1751) {
+      //orshould.play();
+    }
     textSize(18);
     fill(0);
     text("Or should I say...", 280, 50);
@@ -3037,6 +3156,9 @@ void draw8() {
     if (cntr < 1920) {
       qwe = qwe + 2;
     } else if (cntr < 1940) {
+      if (cntr == 1941) {
+        //tjump.play();
+      }
       qwe = qwe - 2;
     } else if (cntr >= 1940 && cntr < 2067) {
       qw = qw + 1.1;
@@ -3048,12 +3170,18 @@ void draw8() {
     }
 
     if (cntr >= 2067 && cntr < 2107) {
+      if (cntr < 2068) {
+        //buzzhurt.play();
+      }
       qax= qax -2;
     }
     if (cntr >= 2107 && cntr < 2147) {
       qax = qax + 2;
     }
     if (cntr >= 2140) {
+      if (cntr < 2141) {
+        //whack.play();
+      }
       qdx = qdx + 20;
       qdy = qdy + 20;
     }
@@ -3062,16 +3190,25 @@ void draw8() {
       ex(522, 192, .3);
     }
     if (cntr >= 2220 && cntr < 2400) {
+      if (cntr < 2222) {
+        //oh.play();
+      }
       textSize(18);
       fill(0);
       text("Oh....", 380, 70);
     }
     if (cntr >= 2400 && cntr < 2600) {
+      if (cntr < 2402) {
+        //iguess.play();
+      }
       textSize(18);
       fill(0);
       text("I guess you were Buzz", 380, 70);
     } 
     if (cntr >= 2600) {
+      if (cntr < 2602) {
+        //anywho.play();
+      }
       textSize(18);
       fill(0);
       text("Anywho, give me my ball", 370, 50);
@@ -3079,6 +3216,10 @@ void draw8() {
     }
 
     if (cntr >= 2780) {
+      if (cntr < 2781) {
+        //moonAmbi.stop();
+        //credits.play();
+      }
       inc2 = inc2 + 4;
       for (int i=0; i < 20; i++) {
         rect(0, i*30, inc2, 15);
@@ -3091,12 +3232,7 @@ void draw8() {
   if (cntr >= 3000) {
     counter8++;
   }
-
-
-
   if (counter8 > 1) {
-
-
     stroke(0);
     background(12, 34, 56);
   }
@@ -3104,6 +3240,7 @@ void draw8() {
     pushMatrix();
     translate(0, 200);
     //Moon ground
+    strokeWeight(1);
     fill(128);
     ellipse(300, 520, 1200, 750);
 
@@ -3279,4 +3416,42 @@ void spaceshipbuzz(float x, float y) {
   endShape();
 
   popMatrix();
+}
+
+//Page 9
+
+void setup9() {
+  int start = 900;
+
+  creds.add(new Credit("TIGER WORLDS", 50, 720, 65));
+  creds.add(new Credit("Starring: ", 50, start, 20));
+  creds.add(new Credit("salamisounds.de", 50, start + 30, 20));
+  creds.add(new Credit("youtube-mp3.org", 50, start + 60, 20));
+  creds.add(new Credit("Tiger Woods", 50, start + 90, 20));
+  creds.add(new Credit("Buzz Aldrin", 50, start + 120, 20));
+  creds.add(new Credit("Xavier Graham", 50, start + 150, 20));
+  creds.add(new Credit("Evin Killian", 50, start + 180, 20));
+  creds.add(new Credit("Jake Territo", 50, start + 210, 20));
+  creds.add(new Credit("Jeremy Roberts", 50, start + 240, 20));
+  creds.add(new Credit("Ryan Cook", 50, start + 270, 20));
+
+  creds.add(new Credit("launch.play();", 420, start + 30, 20));
+  creds.add(new Credit("assorted noise;", 420, start + 60, 20));
+  creds.add(new Credit("Tiger Woods;", 420, start + 90, 20));
+  creds.add(new Credit("Buzz Aldrin", 420, start + 120, 20));
+  creds.add(new Credit("Potato", 420, start + 150, 20));
+  creds.add(new Credit("Celery", 420, start + 180, 20));
+  creds.add(new Credit("Broccoli", 420, start + 210, 20));
+  creds.add(new Credit("Squash", 420, start + 240, 20));
+  creds.add(new Credit("The explosion", 420, start + 270, 20));
+}
+
+void draw9() {
+  background(0);
+  tiger(200, ty, 1, rLA, rLA2, rRA, rRA2, rLL, rLL2, rRL, rRL2, rH, rT);
+  buzz(400, ty, 1, rLA, rLA2, rRA, rRA2, rLL, rLL2, rRL, rRL2, rH, rT);
+  for (Credit c : creds) {
+    c.drawCredit();
+    c.y -= 0.75;
+  }
 }
