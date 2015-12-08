@@ -3432,7 +3432,7 @@ void setup9() {
   creds.add(new Credit("Xavier Graham", 50, start + 150, 20));
   creds.add(new Credit("Evin Killian", 50, start + 180, 20));
   creds.add(new Credit("Jake Territo", 50, start + 210, 20));
-  creds.add(new Credit("Jake Roberts", 50, start + 240, 20));
+  creds.add(new Credit("Jeremy Roberts", 50, start + 240, 20));
   creds.add(new Credit("Ryan Cook", 50, start + 270, 20));
 
   creds.add(new Credit("launch.play();", 420, start + 30, 20));
